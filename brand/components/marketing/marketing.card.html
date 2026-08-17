@@ -1,0 +1,33 @@
+<!-- @dsCard group="Components" viewport="700x1000" name="Marketing — Heading, Stat, Process, Testimonial, Feature" subtitle="Content blocks built from the KLR deck" -->
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>body{margin:0;font-family:var(--font-body);background:var(--surface-page);padding:24px;box-sizing:border-box}.block{margin-bottom:32px}</style>
+<div id="root"></div>
+<script type="text/babel">
+const { SectionHeading, StatCard, ProcessStep, TestimonialCard, FeatureCard } = window.KLRBuildDesignSystem_2c8ebf;
+function Demo(){
+  return (
+    <div>
+      <div className="block"><SectionHeading eyebrow="Our Process" title="From consultation to final walk-through" intro="Seven steps, one team, start to finish." /></div>
+      <div className="block" style={{display:'flex',gap:32}}>
+        <StatCard stat="8–15%" label="Typical patio ROI" description="Outdoor living spaces are regularly valued for expanding usable square footage." tone="navy" />
+        <StatCard stat="3 costs" label="That waiting can trigger" description="Inflation, site damage, and re-doing demolition and scheduling later." tone="bronze" />
+        <StatCard stat="1 vision" label="Delivered together" description="Bundling layout, drainage, hardscape, and planting keeps the job cohesive." tone="olive" />
+      </div>
+      <div className="block" style={{display:'flex',flexDirection:'column',gap:20}}>
+        <ProcessStep number={1} title="Initial Design Consultation" description="We learn what you're envisioning, how you want the space to feel, and what priorities matter most." />
+        <ProcessStep number={2} title="Design Preview" description="In 5–7 days we return with 2D and 3D renderings plus a detailed, itemized estimate." />
+      </div>
+      <div className="block"><TestimonialCard quote="We couldn't be more impressed with the transformation of our front and backyard into a truly elevated outdoor living space." attribution="Oceanside, CA homeowner" /></div>
+      <div className="block" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16}}>
+        <FeatureCard tone="navy" title="Family-Owned" description="Clients work with a team that values trust, flexibility, and personal accountability." />
+        <FeatureCard tone="olive" title="Tailored Design" description="No generic packages. Projects are shaped around lifestyle, taste, and budget." />
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo />);
+</script>

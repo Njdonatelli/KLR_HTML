@@ -1,0 +1,704 @@
+{
+  "domains": {
+    "GOV": {
+      "name": "Governance & Framework",
+      "owner": "Operations Manager",
+      "system": "Dropbox"
+    },
+    "SAL": {
+      "name": "Sales & Lead Management",
+      "owner": "Sales Lead",
+      "system": "SalesRabbit"
+    },
+    "DES": {
+      "name": "Design & Estimating",
+      "owner": "Design Lead",
+      "system": "Contractor Foreman + geospatial"
+    },
+    "CON": {
+      "name": "Contracts, Permitting & HOA",
+      "owner": "Operations Manager",
+      "system": "Contractor Foreman"
+    },
+    "PRO": {
+      "name": "Project & Production Management",
+      "owner": "Production Lead",
+      "system": "Contractor Foreman"
+    },
+    "FLD": {
+      "name": "Field Execution & Craft Standards",
+      "owner": "Production Lead",
+      "system": "Field"
+    },
+    "PRC": {
+      "name": "Procurement & Vendor Management",
+      "owner": "Operations Manager",
+      "system": "SiteOne / nurseries"
+    },
+    "FIN": {
+      "name": "Finance & Administration",
+      "owner": "Admin / Finance",
+      "system": "Contractor Foreman"
+    },
+    "SAF": {
+      "name": "Safety & Compliance",
+      "owner": "Operations Manager",
+      "system": "—"
+    },
+    "TEC": {
+      "name": "Technology, Data & Automation",
+      "owner": "Tech Manager",
+      "system": "Dropbox / Zapier"
+    },
+    "CX": {
+      "name": "Customer Experience & Warranty",
+      "owner": "Operations Manager",
+      "system": "—"
+    },
+    "HR": {
+      "name": "People & HR",
+      "owner": "Principal",
+      "system": "—"
+    }
+  },
+  "spine": [
+    {
+      "num": 1,
+      "label": "Initial Consultation",
+      "sops": [
+        "DES-001"
+      ]
+    },
+    {
+      "num": 2,
+      "label": "Design Preview (5–7 day)",
+      "sops": [
+        "DES-004",
+        "DES-005",
+        "DES-006"
+      ]
+    },
+    {
+      "num": 3,
+      "label": "Deposit & HOA (3–4 day)",
+      "sops": [
+        "CON-001",
+        "CON-002"
+      ]
+    },
+    {
+      "num": 4,
+      "label": "Commencement",
+      "sops": [
+        "PRO-001",
+        "PRO-002"
+      ]
+    },
+    {
+      "num": 5,
+      "label": "Delivery & Install",
+      "sops": [
+        "PRO-003",
+        "PRC-002",
+        "FLD-002",
+        "FLD-003"
+      ]
+    },
+    {
+      "num": 6,
+      "label": "Plants & Turf",
+      "sops": [
+        "PRO-006"
+      ]
+    },
+    {
+      "num": 7,
+      "label": "Final Walk-Through",
+      "sops": [
+        "CX-001"
+      ]
+    }
+  ],
+  "sops": [
+    {
+      "id": "GOV-000",
+      "title": "SOP Framework",
+      "domain": "GOV",
+      "tier": null,
+      "status": "Draft",
+      "ver": "v1.12",
+      "owner": "Ops Manager",
+      "cluster": null
+    },
+    {
+      "id": "SAL-001",
+      "title": "Canvassing & Territory Assignment",
+      "domain": "SAL",
+      "tier": "P2",
+      "status": "Registered",
+      "ver": null,
+      "owner": "Sales Lead",
+      "cluster": null
+    },
+    {
+      "id": "SAL-002",
+      "title": "Lead Intake & Qualification",
+      "domain": "SAL",
+      "tier": "P1",
+      "status": "Draft",
+      "ver": "v1.0",
+      "owner": "Sales Lead",
+      "cluster": null
+    },
+    {
+      "id": "SAL-003",
+      "title": "Appointment Setting & Confirmation",
+      "domain": "SAL",
+      "tier": "P1",
+      "status": "Draft",
+      "ver": "v1.0",
+      "owner": "Sales Lead",
+      "cluster": null
+    },
+    {
+      "id": "SAL-004",
+      "title": "CRM Data Hygiene & Pipeline Stages",
+      "domain": "SAL",
+      "tier": "P2",
+      "status": "Registered",
+      "ver": null,
+      "owner": "Sales Lead",
+      "cluster": null
+    },
+    {
+      "id": "SAL-005",
+      "title": "Lead → Design Handoff",
+      "domain": "SAL",
+      "tier": "P1",
+      "status": "Draft",
+      "ver": "v1.0",
+      "owner": "Sales Lead",
+      "cluster": null
+    },
+    {
+      "id": "DES-001",
+      "title": "Initial Consultation & Site Assessment",
+      "domain": "DES",
+      "tier": "P1",
+      "status": "Draft",
+      "ver": "v1.0",
+      "owner": "Design Lead",
+      "cluster": null
+    },
+    {
+      "id": "DES-002",
+      "title": "Drone / Aerial Survey & GCP Capture",
+      "domain": "DES",
+      "tier": "P2",
+      "status": "Registered",
+      "ver": null,
+      "owner": "Design Lead",
+      "cluster": null
+    },
+    {
+      "id": "DES-003",
+      "title": "Photogrammetry & 3D Model Generation",
+      "domain": "DES",
+      "tier": "P2",
+      "status": "Registered",
+      "ver": null,
+      "owner": "Design Lead",
+      "cluster": null
+    },
+    {
+      "id": "DES-004",
+      "title": "2D/3D Rendering Production",
+      "domain": "DES",
+      "tier": "P1",
+      "status": "Draft",
+      "ver": "v1.0",
+      "owner": "Design Lead",
+      "cluster": null
+    },
+    {
+      "id": "DES-005",
+      "title": "Takeoff & Itemized Estimate Build",
+      "domain": "DES",
+      "tier": "P1",
+      "status": "Draft",
+      "ver": "v1.0",
+      "owner": "Design Lead",
+      "cluster": null
+    },
+    {
+      "id": "DES-006",
+      "title": "Proposal Assembly & Delivery",
+      "domain": "DES",
+      "tier": "P1",
+      "status": "Draft",
+      "ver": "v1.0",
+      "owner": "Design Lead",
+      "cluster": null
+    },
+    {
+      "id": "CON-001",
+      "title": "Deposit Processing & Contract Execution",
+      "domain": "CON",
+      "tier": "P1",
+      "status": "Draft",
+      "ver": "v1.0",
+      "owner": "Ops Manager",
+      "cluster": null
+    },
+    {
+      "id": "CON-002",
+      "title": "HOA Submission Package",
+      "domain": "CON",
+      "tier": "P1",
+      "status": "Draft",
+      "ver": "v1.0",
+      "owner": "Ops Manager",
+      "cluster": null
+    },
+    {
+      "id": "CON-003",
+      "title": "Permit Application & Tracking",
+      "domain": "CON",
+      "tier": "P2",
+      "status": "Registered",
+      "ver": null,
+      "owner": "Ops Manager",
+      "cluster": null
+    },
+    {
+      "id": "CON-004",
+      "title": "Change Order Authorization",
+      "domain": "CON",
+      "tier": "P1",
+      "status": "Draft",
+      "ver": "v1.0",
+      "owner": "Ops Manager",
+      "cluster": null
+    },
+    {
+      "id": "PRO-001",
+      "title": "Project Kickoff & Handoff to Production",
+      "domain": "PRO",
+      "tier": "P1",
+      "status": "Draft",
+      "ver": "v1.0",
+      "owner": "Production Lead",
+      "cluster": null
+    },
+    {
+      "id": "PRO-002",
+      "title": "Scheduling & Crew Allocation",
+      "domain": "PRO",
+      "tier": "P1",
+      "status": "Draft",
+      "ver": "v1.0",
+      "owner": "Production Lead",
+      "cluster": null
+    },
+    {
+      "id": "PRO-003",
+      "title": "Materials Timeline & Delivery Coordination",
+      "domain": "PRO",
+      "tier": "P1",
+      "status": "Draft",
+      "ver": "v1.0",
+      "owner": "Production Lead",
+      "cluster": null
+    },
+    {
+      "id": "PRO-004",
+      "title": "Subcontractor Onboarding & Scheduling",
+      "domain": "PRO",
+      "tier": "P2",
+      "status": "Registered",
+      "ver": null,
+      "owner": "Production Lead",
+      "cluster": null
+    },
+    {
+      "id": "PRO-005",
+      "title": "Daily Jobsite Log & Progress Reporting",
+      "domain": "PRO",
+      "tier": "P2",
+      "status": "Registered",
+      "ver": null,
+      "owner": "Production Lead",
+      "cluster": null
+    },
+    {
+      "id": "PRO-006",
+      "title": "Project Closeout & Punch List",
+      "domain": "PRO",
+      "tier": "P1",
+      "status": "Draft",
+      "ver": "v1.0",
+      "owner": "Production Lead",
+      "cluster": null
+    },
+    {
+      "id": "FLD-001",
+      "title": "Site Prep & Excavation",
+      "domain": "FLD",
+      "tier": "P2",
+      "status": "Registered",
+      "ver": null,
+      "owner": "Production Lead",
+      "cluster": null
+    },
+    {
+      "id": "FLD-002",
+      "title": "Drainage & Grading Standards",
+      "domain": "FLD",
+      "tier": "P1",
+      "status": "Draft",
+      "ver": "v1.0",
+      "owner": "Production Lead",
+      "cluster": null
+    },
+    {
+      "id": "FLD-003",
+      "title": "Hardscape / Paver Installation Standards",
+      "domain": "FLD",
+      "tier": "P1",
+      "status": "Draft",
+      "ver": "v1.0",
+      "owner": "Production Lead",
+      "cluster": null
+    },
+    {
+      "id": "FLD-004",
+      "title": "Pool & Water Feature Rough-In Coordination",
+      "domain": "FLD",
+      "tier": "P2",
+      "status": "Registered",
+      "ver": null,
+      "owner": "Production Lead",
+      "cluster": null
+    },
+    {
+      "id": "FLD-005",
+      "title": "Planting, Turf & Irrigation Install",
+      "domain": "FLD",
+      "tier": "P2",
+      "status": "Registered",
+      "ver": null,
+      "owner": "Production Lead",
+      "cluster": null
+    },
+    {
+      "id": "FLD-006",
+      "title": "Jobsite Cleanliness & Daily Close",
+      "domain": "FLD",
+      "tier": "P3",
+      "status": "Registered",
+      "ver": null,
+      "owner": "Production Lead",
+      "cluster": null
+    },
+    {
+      "id": "PRC-001",
+      "title": "Vendor Setup & Approved Supplier List",
+      "domain": "PRC",
+      "tier": "P2",
+      "status": "Registered",
+      "ver": null,
+      "owner": "Ops Manager",
+      "cluster": null
+    },
+    {
+      "id": "PRC-002",
+      "title": "Material Ordering & PO Process",
+      "domain": "PRC",
+      "tier": "P1",
+      "status": "Draft",
+      "ver": "v1.0",
+      "owner": "Ops Manager",
+      "cluster": null
+    },
+    {
+      "id": "PRC-003",
+      "title": "Nursery Plant Selection Walk (client-attended)",
+      "domain": "PRC",
+      "tier": "P2",
+      "status": "Registered",
+      "ver": null,
+      "owner": "Ops Manager",
+      "cluster": null
+    },
+    {
+      "id": "PRC-004",
+      "title": "Delivery Receiving & Inspection",
+      "domain": "PRC",
+      "tier": "P2",
+      "status": "Registered",
+      "ver": null,
+      "owner": "Ops Manager",
+      "cluster": null
+    },
+    {
+      "id": "FIN-001",
+      "title": "Payment Schedule & Milestone Billing",
+      "domain": "FIN",
+      "tier": "P1",
+      "status": "Draft",
+      "ver": "v1.0",
+      "owner": "Admin/Finance",
+      "cluster": null
+    },
+    {
+      "id": "FIN-002",
+      "title": "Invoicing & AR Follow-up",
+      "domain": "FIN",
+      "tier": "P1",
+      "status": "Draft",
+      "ver": "v1.0",
+      "owner": "Admin/Finance",
+      "cluster": null
+    },
+    {
+      "id": "FIN-003",
+      "title": "Job Costing & Margin Tracking",
+      "domain": "FIN",
+      "tier": "P2",
+      "status": "Registered",
+      "ver": null,
+      "owner": "Admin/Finance",
+      "cluster": null
+    },
+    {
+      "id": "FIN-004",
+      "title": "Expense & Receipt Capture",
+      "domain": "FIN",
+      "tier": "P3",
+      "status": "Registered",
+      "ver": null,
+      "owner": "Admin/Finance",
+      "cluster": null
+    },
+    {
+      "id": "SAF-001",
+      "title": "Jobsite Safety & PPE Standards",
+      "domain": "SAF",
+      "tier": "P2",
+      "status": "Registered",
+      "ver": null,
+      "owner": "Ops Manager",
+      "cluster": null
+    },
+    {
+      "id": "SAF-002",
+      "title": "Equipment Operation & Inspection",
+      "domain": "SAF",
+      "tier": "P2",
+      "status": "Registered",
+      "ver": null,
+      "owner": "Ops Manager",
+      "cluster": null
+    },
+    {
+      "id": "SAF-003",
+      "title": "Drone Ops Safety & FAA Part 107 Compliance",
+      "domain": "SAF",
+      "tier": "P2",
+      "status": "Registered",
+      "ver": null,
+      "owner": "Ops Manager",
+      "cluster": null
+    },
+    {
+      "id": "SAF-004",
+      "title": "Incident Reporting & Insurance Claims",
+      "domain": "SAF",
+      "tier": "P1",
+      "status": "Draft",
+      "ver": "v1.0",
+      "owner": "Ops Manager",
+      "cluster": null
+    },
+    {
+      "id": "SAF-005",
+      "title": "Licensing & Insurance Currency (CSLB)",
+      "domain": "SAF",
+      "tier": "P1",
+      "status": "Draft",
+      "ver": "v1.0",
+      "owner": "Ops Manager",
+      "cluster": null
+    },
+    {
+      "id": "TEC-001",
+      "title": "Software Stack Admin & Access Control",
+      "domain": "TEC",
+      "tier": "P2",
+      "status": "Draft",
+      "ver": "v1.0",
+      "owner": "Tech Mgr",
+      "cluster": "INFRA"
+    },
+    {
+      "id": "TEC-002",
+      "title": "Dropbox File Structure & Naming (PARA)",
+      "domain": "TEC",
+      "tier": "P1",
+      "status": "Draft",
+      "ver": "v1.1",
+      "owner": "Tech Mgr",
+      "cluster": "DATA"
+    },
+    {
+      "id": "TEC-003",
+      "title": "Zapier Automation Governance & Change Log",
+      "domain": "TEC",
+      "tier": "P2",
+      "status": "Draft",
+      "ver": "v1.1",
+      "owner": "Tech Mgr",
+      "cluster": "AUTO"
+    },
+    {
+      "id": "TEC-004",
+      "title": "Knowledge Base Indexing & LLM Retrieval",
+      "domain": "TEC",
+      "tier": "P2",
+      "status": "Draft",
+      "ver": "v1.0",
+      "owner": "Tech Mgr",
+      "cluster": "DATA"
+    },
+    {
+      "id": "TEC-005",
+      "title": "3D Asset Pipeline (RealityScan/Blender → Realtime)",
+      "domain": "TEC",
+      "tier": "P3",
+      "status": "Registered",
+      "ver": null,
+      "owner": "Tech Mgr",
+      "cluster": "ASSET"
+    },
+    {
+      "id": "TEC-006",
+      "title": "Data Backup & Retention",
+      "domain": "TEC",
+      "tier": "P2",
+      "status": "Draft",
+      "ver": "v1.0",
+      "owner": "Tech Mgr",
+      "cluster": "INFRA"
+    },
+    {
+      "id": "TEC-007",
+      "title": "n8n Automation Governance & Change Log (retired — see TEC-003)",
+      "domain": "TEC",
+      "tier": "P2",
+      "status": "Retired",
+      "ver": "v1.1",
+      "owner": "Tech Mgr",
+      "cluster": "AUTO"
+    },
+    {
+      "id": "TEC-008",
+      "title": "Zoom Meeting Setup, Recording & Archival",
+      "domain": "TEC",
+      "tier": "P3",
+      "status": "Registered",
+      "ver": null,
+      "owner": "Tech Mgr",
+      "cluster": "COMMS"
+    },
+    {
+      "id": "TEC-009",
+      "title": "Outlook / M365 Mail & Calendar Administration",
+      "domain": "TEC",
+      "tier": "P2",
+      "status": "Draft",
+      "ver": "v1.0",
+      "owner": "Tech Mgr",
+      "cluster": "COMMS"
+    },
+    {
+      "id": "CX-001",
+      "title": "Final Walk-Through & Client Sign-off",
+      "domain": "CX",
+      "tier": "P1",
+      "status": "Draft",
+      "ver": "v1.0",
+      "owner": "Ops Manager",
+      "cluster": null
+    },
+    {
+      "id": "CX-002",
+      "title": "Warranty Registration & Claims",
+      "domain": "CX",
+      "tier": "P2",
+      "status": "Registered",
+      "ver": null,
+      "owner": "Ops Manager",
+      "cluster": null
+    },
+    {
+      "id": "CX-003",
+      "title": "Review & Referral Solicitation",
+      "domain": "CX",
+      "tier": "P2",
+      "status": "Registered",
+      "ver": null,
+      "owner": "Ops Manager",
+      "cluster": null
+    },
+    {
+      "id": "CX-004",
+      "title": "Post-Project Follow-up Cadence",
+      "domain": "CX",
+      "tier": "P3",
+      "status": "Registered",
+      "ver": null,
+      "owner": "Ops Manager",
+      "cluster": null
+    },
+    {
+      "id": "HR-001",
+      "title": "Role Definition & Job Descriptions",
+      "domain": "HR",
+      "tier": "P3",
+      "status": "Registered",
+      "ver": null,
+      "owner": "Principal",
+      "cluster": null
+    },
+    {
+      "id": "HR-002",
+      "title": "Recruiting & Interview Rubric",
+      "domain": "HR",
+      "tier": "P2",
+      "status": "Registered",
+      "ver": null,
+      "owner": "Principal",
+      "cluster": null
+    },
+    {
+      "id": "HR-003",
+      "title": "New Hire Onboarding",
+      "domain": "HR",
+      "tier": "P2",
+      "status": "Registered",
+      "ver": null,
+      "owner": "Principal",
+      "cluster": null
+    },
+    {
+      "id": "HR-004",
+      "title": "Employment Classification (W2/1099) Review",
+      "domain": "HR",
+      "tier": "P1",
+      "status": "Draft",
+      "ver": "v1.0",
+      "owner": "Principal",
+      "cluster": null
+    }
+  ]
+}

@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLR Build — SOP Framework</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#fcfcfb;--bg2:#f4f3f0;--bg3:#eae9e4;
+  --fg:#0b0b0b;--fg2:#52514e;--fg3:#8a8880;
+  --border:#ddd9d0;--border2:#c8c4ba;
+  --accent:#2a78d6;--accent-light:#e8f0fb;
+  --p1:#e34948;--p1-bg:#fef0f0;
+  --p2:#eda100;--p2-bg:#fdf6e5;
+  --p3:#1baf7a;--p3-bg:#e8f7f0;
+  --draft:#2a78d6;--draft-bg:#e8f0fb;
+  --registered:#8a8880;--registered-bg:#f0efeb;
+  --retired:#8a5a2a;--retired-bg:#f7efe4;
+  --active:#1baf7a;--active-bg:#e8f7f0;
+  --radius:6px;--radius-lg:10px;
+  --shadow:0 1px 3px rgba(0,0,0,.08);
+  --shadow-lg:0 4px 16px rgba(0,0,0,.1);
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --mono:"SF Mono",Menlo,Monaco,Consolas,monospace;
+  /* domain colors */
+  --dom-GOV:#52514e;--dom-SAL:#2a78d6;--dom-DES:#eb6834;
+  --dom-CON:#4a3aa7;--dom-PRO:#1baf7a;--dom-FLD:#008300;
+  --dom-PRC:#eda100;--dom-FIN:#e87ba4;--dom-SAF:#e34948;
+  --dom-TEC:#1baf7a;--dom-CX:#2a78d6;--dom-HR:#eb6834;
+}
+[data-theme="dark"]{
+  --bg:#1a1a19;--bg2:#232322;--bg3:#2e2e2c;
+  --fg:#f0efeb;--fg2:#c3c2b7;--fg3:#8a8880;
+  --border:#3a3a37;--border2:#4a4a46;
+  --accent:#3987e5;--accent-light:#1e2d42;
+  --p1:#e66767;--p1-bg:#3a1e1e;
+  --p2:#c98500;--p2-bg:#3a2e10;
+  --p3:#199e70;--p3-bg:#152e24;
+  --draft:#3987e5;--draft-bg:#1e2d42;
+  --registered:#8a8880;--registered-bg:#2e2e2c;
+  --retired:#c08a4a;--retired-bg:#332a1e;
+  --active:#199e70;--active-bg:#152e24;
+  --shadow:0 1px 3px rgba(0,0,0,.3);
+  --shadow-lg:0 4px 16px rgba(0,0,0,.4);
+  /* domain hues that fail contrast on a dark ground, lifted */
+  --dom-GOV:#a3a199;--dom-FLD:#3fbf4a;--dom-CON:#8c7ce8;--dom-PRC:#f0ae1a;
+}
+html{font-family:var(--font);font-size:15px;line-height:1.6;color:var(--fg);background:var(--bg)}
+body{display:flex;height:100vh;overflow:hidden}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* SIDEBAR */
+.sidebar{width:260px;min-width:260px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;transition:width .2s}
+.sidebar-header{padding:16px 16px 12px;border-bottom:1px solid var(--border)}
+.sidebar-header h1{font-size:16px;font-weight:700;letter-spacing:-.02em}
+.sidebar-header p{font-size:11px;color:var(--fg3);margin-top:2px}
+.sidebar-search{padding:8px 12px}
+.sidebar-search input{width:100%;padding:7px 10px 7px 30px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);font-size:13px;color:var(--fg);outline:none}
+.sidebar-search input:focus{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-light)}
+.sidebar-search{position:relative}
+.sidebar-search::before{content:"⌕";position:absolute;left:20px;top:50%;transform:translateY(-50%);color:var(--fg3);font-size:14px}
+.sidebar-nav{flex:1;overflow-y:auto;padding:6px 0}
+.nav-section{margin-bottom:2px}
+.nav-section-header{padding:6px 16px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--fg3);cursor:pointer;display:flex;align-items:center;gap:6px;user-select:none}
+.nav-section-header .arrow{font-size:9px;transition:transform .15s}
+.nav-section.collapsed .arrow{transform:rotate(-90deg)}
+.nav-section.collapsed .nav-items{display:none}
+.nav-item{padding:5px 16px 5px 28px;font-size:13px;cursor:pointer;color:var(--fg2);display:flex;align-items:center;gap:8px;border-left:3px solid transparent;transition:background .1s}
+.nav-item:hover{background:var(--bg3)}
+.nav-item.active{background:var(--accent-light);color:var(--accent);border-left-color:var(--accent);font-weight:500}
+.nav-item .id{font-family:var(--mono);font-size:11px;color:var(--fg3);min-width:62px}
+.nav-item.active .id{color:var(--accent)}
+.nav-item .tier{font-size:9px;font-weight:700;padding:1px 4px;border-radius:3px;margin-left:auto}
+.nav-item .tier.p1{background:var(--p1-bg);color:var(--p1)}
+.nav-item .tier.p2{background:var(--p2-bg);color:var(--p2)}
+.nav-item .tier.p3{background:var(--p3-bg);color:var(--p3)}
+.nav-special{padding:5px 16px;font-size:13px;cursor:pointer;color:var(--fg2);display:flex;align-items:center;gap:8px;border-left:3px solid transparent;transition:background .1s;font-weight:500}
+.nav-special:hover{background:var(--bg3)}
+.nav-special.active{background:var(--accent-light);color:var(--accent);border-left-color:var(--accent)}
+.nav-special .icon{font-size:15px}
+.sidebar-footer{padding:10px 16px;border-top:1px solid var(--border);font-size:11px;color:var(--fg3);display:flex;justify-content:space-between;align-items:center}
+.theme-toggle{background:none;border:1px solid var(--border);border-radius:var(--radius);padding:3px 8px;cursor:pointer;font-size:11px;color:var(--fg3)}
+.theme-toggle:hover{background:var(--bg3);color:var(--fg)}
+
+/* MAIN */
+.main{flex:1;overflow-y:auto;background:var(--bg)}
+.main-inner{max-width:960px;margin:0 auto;padding:32px 40px 80px}
+
+/* DASHBOARD */
+.dash-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
+.stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 18px}
+.stat-card .label{font-size:11px;color:var(--fg3);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+.stat-card .value{font-size:28px;font-weight:700;line-height:1.1}
+.stat-card .sub{font-size:12px;color:var(--fg3);margin-top:4px}
+.stat-card .value.accent{color:var(--accent)}
+
+.section-title{font-size:18px;font-weight:700;margin:28px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.section-title:first-child{margin-top:0}
+
+/* COVERAGE CHART */
+.coverage-chart{display:flex;flex-direction:column;gap:8px;margin-bottom:28px}
+.cov-row{display:flex;align-items:center;gap:10px}
+.cov-label{width:40px;font-family:var(--mono);font-size:12px;font-weight:600;color:var(--fg2);text-align:right}
+.cov-bar-wrap{flex:1;height:22px;background:var(--bg3);border-radius:4px;position:relative;overflow:hidden}
+.cov-bar{height:100%;border-radius:4px;transition:width .4s ease}
+.cov-bar.authored{background:var(--accent)}
+.cov-count{font-size:11px;color:var(--fg3);width:50px;text-align:right;font-family:var(--mono)}
+
+/* SPINE */
+.spine-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px 24px;margin-bottom:28px;overflow-x:auto}
+.spine-step{display:flex;align-items:flex-start;margin-bottom:12px;position:relative}
+.spine-step:not(:last-child)::after{content:"";position:absolute;left:15px;top:32px;bottom:-12px;width:2px;background:var(--border2)}
+.spine-num{width:32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;position:relative;z-index:1}
+.spine-content{margin-left:12px;flex:1}
+.spine-label{font-size:13px;font-weight:600;margin-bottom:4px}
+.spine-sops{display:flex;flex-wrap:wrap;gap:4px}
+.spine-sop{font-family:var(--mono);font-size:11px;padding:2px 7px;border-radius:3px;cursor:pointer;border:1px solid var(--border);background:var(--bg);transition:all .15s}
+.spine-sop:hover{background:var(--accent-light);border-color:var(--accent);color:var(--accent)}
+.spine-sop.authored{background:var(--draft-bg);border-color:var(--draft);color:var(--draft)}
+.spine-sop.registered{background:var(--registered-bg);color:var(--registered)}
+
+/* REGISTER TABLE */
+.register-controls{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+.filter-btn{padding:5px 12px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);font-size:12px;cursor:pointer;color:var(--fg2);transition:all .15s}
+.filter-btn:hover{background:var(--bg3)}
+.filter-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.register-table{width:100%;border-collapse:separate;border-spacing:0;font-size:13px}
+.register-table th{text-align:left;padding:8px 10px;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--fg3);border-bottom:2px solid var(--border);font-weight:600;position:sticky;top:0;background:var(--bg)}
+.register-table td{padding:7px 10px;border-bottom:1px solid var(--border);vertical-align:top}
+.register-table tr:hover td{background:var(--bg2)}
+.register-table tr.clickable{cursor:pointer}
+.register-table tr.clickable:hover td{background:var(--accent-light)}
+.badge{display:inline-block;padding:1px 7px;border-radius:3px;font-size:11px;font-weight:600}
+.badge.draft{background:var(--draft-bg);color:var(--draft)}
+.badge.registered{background:var(--registered-bg);color:var(--registered)}
+.badge.retired{background:var(--retired-bg);color:var(--retired)}
+.badge.active{background:var(--active-bg);color:var(--active)}
+.badge.p1{background:var(--p1-bg);color:var(--p1)}
+.badge.p2{background:var(--p2-bg);color:var(--p2)}
+.badge.p3{background:var(--p3-bg);color:var(--p3)}
+.dom-tag{font-family:var(--mono);font-size:11px;font-weight:600;padding:1px 6px;border-radius:3px;background:var(--bg3);color:var(--fg2);white-space:nowrap}
+
+/* SOP READER */
+.sop-reader{max-width:720px}
+.sop-header{margin-bottom:24px}
+.sop-header .sop-id{font-family:var(--mono);font-size:13px;color:var(--accent);font-weight:600}
+.sop-header h2{font-size:22px;font-weight:700;margin:4px 0 8px;line-height:1.3}
+.sop-meta{display:flex;flex-wrap:wrap;gap:6px}
+.sop-body h2{font-size:16px;font-weight:700;margin:24px 0 8px;padding-bottom:4px;border-bottom:1px solid var(--border)}
+.sop-body h3{font-size:14px;font-weight:600;margin:16px 0 6px}
+.sop-body p{margin-bottom:10px;color:var(--fg)}
+.sop-body ul,.sop-body ol{margin:0 0 10px 20px}
+.sop-body li{margin-bottom:4px}
+.sop-body strong{font-weight:600}
+.sop-body em{font-style:italic;color:var(--fg2)}
+.sop-body blockquote{border-left:3px solid var(--accent);padding:8px 14px;margin:10px 0;background:var(--bg2);border-radius:0 var(--radius) var(--radius) 0;font-size:13px;color:var(--fg2)}
+.sop-body code{font-family:var(--mono);font-size:12px;background:var(--bg3);padding:1px 5px;border-radius:3px}
+.sop-body pre{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;overflow-x:auto;margin:10px 0;font-size:12px;line-height:1.5}
+.sop-body pre code{background:none;padding:0}
+.sop-body table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}
+.sop-body table th{text-align:left;padding:6px 10px;border-bottom:2px solid var(--border);font-weight:600;font-size:12px;background:var(--bg2)}
+.sop-body table td{padding:6px 10px;border-bottom:1px solid var(--border)}
+.sop-links{margin-top:16px;padding:12px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg)}
+.sop-links h4{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--fg3);margin-bottom:6px}
+.sop-links .link-list{display:flex;flex-wrap:wrap;gap:5px}
+.sop-links .link-item{font-family:var(--mono);font-size:12px;padding:3px 8px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;color:var(--fg2);transition:all .15s}
+.sop-links .link-item:hover{background:var(--accent-light);border-color:var(--accent);color:var(--accent)}
+
+/* FRAMEWORK READER */
+.fw-body{max-width:720px}
+.fw-body h1{font-size:20px;font-weight:700;margin-bottom:12px}
+.fw-body h2{font-size:16px;font-weight:700;margin:24px 0 8px;padding-bottom:4px;border-bottom:1px solid var(--border)}
+.fw-body h3{font-size:14px;font-weight:600;margin:16px 0 6px}
+.fw-body p{margin-bottom:10px}
+.fw-body ul,.fw-body ol{margin:0 0 10px 20px}
+.fw-body li{margin-bottom:4px}
+.fw-body table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}
+.fw-body table th{text-align:left;padding:6px 10px;border-bottom:2px solid var(--border);font-weight:600;font-size:12px;background:var(--bg2)}
+.fw-body table td{padding:6px 10px;border-bottom:1px solid var(--border)}
+.fw-body blockquote{border-left:3px solid var(--accent);padding:8px 14px;margin:10px 0;background:var(--bg2);border-radius:0 var(--radius) var(--radius) 0;font-size:13px;color:var(--fg2)}
+.fw-body pre{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;overflow-x:auto;margin:10px 0;font-size:12px;line-height:1.5}
+.fw-body code{font-family:var(--mono);font-size:12px;background:var(--bg3);padding:1px 5px;border-radius:3px}
+.fw-body pre code{background:none;padding:0}
+
+/* PAGE HEADER */
+.page-header{margin-bottom:24px}
+.page-header h2{font-size:22px;font-weight:700}
+.page-header p{color:var(--fg2);font-size:14px;margin-top:4px}
+
+/* VERIFY TABLE */
+.verify-section{margin-bottom:28px}
+.verify-section h3{font-size:14px;font-weight:600;margin-bottom:8px}
+
+/* PLACEHOLDER TABLE */
+.placeholder-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:28px}
+.ph-cell{background:var(--bg);padding:8px 12px;font-size:12px}
+.ph-cell.header{background:var(--bg2);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--fg3)}
+.ph-cell .ph-val{font-family:var(--mono);font-size:11px;color:var(--accent)}
+.ph-cell .ph-sops{font-size:11px;color:var(--fg3)}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .sidebar{width:220px;min-width:220px}
+  .main-inner{padding:20px 24px 60px}
+  .dash-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:700px){
+  .sidebar{position:absolute;z-index:100;height:100vh;transform:translateX(-100%);transition:transform .2s}
+  .sidebar.open{transform:translateX(0)}
+  .mobile-toggle{display:block !important}
+  .main-inner{padding-top:52px}
+  .sidebar-header{padding-left:52px}
+}
+.mobile-toggle{display:none;position:fixed;top:10px;left:10px;z-index:101;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:6px 10px;cursor:pointer;font-size:16px;color:var(--fg)}
+
+/* FOCUS — keyboard visibility (WCAG 2.4.7) */
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px}
+.nav-item:focus-visible,.nav-special:focus-visible,.register-table tr.clickable:focus-visible{outline-offset:-2px}
+[role="button"]{cursor:pointer}
+
+/* DOMAIN COLOR CODING */
+.nav-item{border-left:3px solid transparent}
+.nav-item[data-dom]{border-left-color:color-mix(in srgb,var(--dom-c) 45%,transparent)}
+.nav-item[data-dom].active{border-left-color:var(--dom-c)}
+.nav-section-header .dom-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0;background:var(--dom-c)}
+.dom-tag[data-dom]{background:color-mix(in srgb,var(--dom-c) 13%,transparent);color:var(--dom-c)}
+[data-theme="dark"] .dom-tag[data-dom]{background:color-mix(in srgb,var(--dom-c) 22%,transparent)}
+
+/* SEARCH RESULTS */
+.search-meta{padding:2px 16px 6px;font-size:11px;color:var(--fg3)}
+.nav-empty{padding:20px 16px;font-size:12px;color:var(--fg3);text-align:center;line-height:1.5}
+.hit-snippet{padding:0 16px 7px 28px;font-size:11px;color:var(--fg3);line-height:1.45;cursor:pointer}
+.hit-snippet mark{background:var(--p2-bg);color:var(--fg);padding:0 2px;border-radius:2px}
+
+/* SOP HEADER ACTIONS */
+.sop-id-row{display:flex;align-items:center;gap:8px}
+.copy-link{margin-left:auto;background:none;border:1px solid var(--border);border-radius:var(--radius);padding:3px 9px;font-size:11px;color:var(--fg3);cursor:pointer;font-family:var(--font)}
+.copy-link:hover{background:var(--bg3);color:var(--fg)}
+
+/* TOC + GOVERNANCE FLAG */
+.sop-toc{margin-bottom:16px;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg)}
+.sop-toc h4{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--fg3);margin-bottom:6px}
+.sop-toc .link-item{font-family:var(--font);font-size:12px;padding:3px 9px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;color:var(--fg2);transition:all .15s}
+.sop-toc .link-item:hover{background:var(--accent-light);border-color:var(--accent);color:var(--accent)}
+.gov-flag{margin-bottom:16px;padding:9px 14px;background:var(--p2-bg);border-left:3px solid var(--p2);border-radius:0 var(--radius) var(--radius) 0;font-size:12px;color:var(--fg2);line-height:1.5}
+html{scroll-behavior:smooth}
+
+/* FRESHNESS INDICATOR */
+.freshness{padding:7px 12px;border-top:1px solid var(--border);font-size:11px;display:flex;align-items:center;gap:6px;color:var(--fg3);line-height:1.35}
+.freshness .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;background:var(--fg3)}
+.freshness.live .dot{background:var(--p3);box-shadow:0 0 0 3px color-mix(in srgb,var(--p3) 22%,transparent)}
+.freshness.stale .dot{background:var(--p2)}
+.freshness.error .dot{background:var(--p1)}
+.freshness.loading .dot{background:var(--accent);animation:pulse 1s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.freshness .label{flex:1;min-width:0}
+.freshness .label b{display:block;color:var(--fg2);font-weight:600}
+.freshness button{background:none;border:1px solid var(--border);border-radius:var(--radius);padding:2px 7px;cursor:pointer;font-size:11px;color:var(--fg3);font-family:var(--font)}
+.freshness button:hover{background:var(--bg3);color:var(--fg)}
+.doc-meta{font-size:11px;color:var(--fg3);margin-top:6px;font-family:var(--mono)}
+
+/* SIDEBAR SCRIM (mobile) */
+.scrim{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99}
+.scrim.show{display:block}
+
+/* PRINT — make every SOP a distributable PDF */
+@media print{
+  html{font-size:11pt;background:#fff;color:#000}
+  body{display:block;height:auto;overflow:visible}
+  .sidebar,.mobile-toggle,.scrim,.copy-link,.register-controls,.theme-toggle{display:none !important}
+  .main{overflow:visible;height:auto}
+  .main-inner{max-width:none;padding:0}
+  .sop-reader,.fw-body{max-width:none}
+  .fade-in{animation:none}
+  a{color:#000;text-decoration:none}
+  .sop-body h2,.sop-body h3,.section-title{break-after:avoid}
+  .sop-body table,.register-table,.spine-wrap,pre,blockquote{break-inside:avoid}
+  .badge,.dom-tag{border:1px solid #999;color:#000 !important;background:#fff !important}
+  .register-table th{position:static}
+  .sop-body pre,.fw-body pre{white-space:pre-wrap}
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:7px;height:7px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:var(--fg3)}
+
+/* TRANSITIONS */
+.fade-in{animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+<button class="mobile-toggle" aria-label="Toggle navigation" aria-expanded="false" onclick="toggleSidebar()">☰</button>
+<div class="scrim" id="scrim" onclick="toggleSidebar(false)"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <h1>KLR Build LLC</h1>
+    <p>SOP Framework v1.12 &middot; GOV-000</p>
+  </div>
+  <div class="sidebar-search">
+    <input type="search" id="searchInput" aria-label="Search SOPs by ID, title, or full text" placeholder="Search SOPs…  ( / )" oninput="filterNav(this.value)">
+  </div>
+  <nav class="sidebar-nav" id="sidebarNav" aria-label="SOP navigation"></nav>
+  <div class="freshness" id="freshness" role="status" aria-live="polite"></div>
+  <div class="sidebar-footer">
+    <span id="footerCount"></span>
+    <button class="theme-toggle" onclick="toggleTheme()">◑ Theme</button>
+  </div>
+</aside>
+
+<main class="main" id="mainContent" tabindex="-1"></main>
+
+<script type="application/json" id="sop-data">__SOP_DATA_JSON__</script>
+
+<script>
+// ──────────────────────── DATA ────────────────────────
+// GENERATED BLOCK — do not hand-edit. Canonical source is the Markdown corpus
+// in Dropbox (/03_Resources/Reference/SOP/) plus sop_register.json.
+// Rebuild with:  python build_gui.py
+// Data is carried as inert JSON rather than JS template literals so an SOP
+// body containing a backtick or ${ cannot break the page at parse time.
+const DATA = JSON.parse(document.getElementById('sop-data').textContent);
+const BUILD = DATA.build || {};
+
+// ── FEED CONFIG ───────────────────────────────────────────────────────
+// Corpus is refreshed by a DAILY AUDIT (Zapier), not by a per-request pull.
+// The audit regenerates this file with content embedded, so opening the GUI
+// costs zero network calls and works offline. `endpoint` is an optional
+// override for a STATIC bundle URL; left empty in the daily-audit model.
+const FEED = {
+  endpoint: DATA.feed?.endpoint || '',
+  folderId: DATA.feed?.folder_id || '',
+  timeoutMs: 8000,
+  refreshOnLoad: !!(DATA.feed?.endpoint),
+  // Audit runs daily; flag amber once it has plainly missed a cycle.
+  staleAfterHours: DATA.feed?.stale_after_hours || 48
+};
+
+let DOMAINS = DATA.domains;
+let SOPS = DATA.sops;
+let SPINE_STEPS = DATA.spine;
+let SOP_CONTENT = DATA.content;
+let SOURCE = {mode: 'audit', at: BUILD.audited || BUILD.generated || null, error: null,
+              files: Object.keys(DATA.content).length, manifest: DATA.manifest || {}};
+
+function mdToHtml(md) {
+  if (!md) return '';
+  let html = md;
+  // code blocks
+  html = html.replace(/```([^`]*?)```/gs, (m, code) => `<pre><code>${escHtml(code.replace(/^\w*\n/,''))}</code></pre>\n`);
+  // inline code
+  html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+  // tables
+  html = html.replace(/(\|.+\|[\r\n]+\|[-| :]+\|[\r\n]+((?:\|.+\|[\r\n]*)+))/gm, (m) => {
+    const rows = m.trim().split('\n').filter(r => r.trim());
+    if (rows.length < 2) return m;
+    const parseRow = r => r.split('|').slice(1,-1).map(c => c.trim());
+    const headers = parseRow(rows[0]);
+    let t = '<table><thead><tr>' + headers.map(h => `<th>${h}</th>`).join('') + '</tr></thead><tbody>';
+    for (let i = 2; i < rows.length; i++) {
+      const cells = parseRow(rows[i]);
+      t += '<tr>' + cells.map(c => `<td>${c}</td>`).join('') + '</tr>';
+    }
+    // trailing \n is load-bearing: without it the next line is no longer at a
+    // line start and every ^## heading after a table silently fails to parse
+    return t + '</tbody></table>\n';
+  });
+  // headers
+  html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+  html = html.replace(/^## (.+)$/gm, (m, t) => `<h2 id="s-${slug(t)}">${t}</h2>`);
+  html = html.replace(/^# (.+)$/gm, '<h1 style="display:none">$1</h1>');
+  // blockquotes
+  html = html.replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>');
+  // bold + italic
+  html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+  // lists
+  html = html.replace(/^(\d+)\. (.+)$/gm, '<li>$2</li>');
+  html = html.replace(/^- (.+)$/gm, '<li>$1</li>');
+  // wrap consecutive <li> in <ul>
+  html = html.replace(/((?:<li>.+<\/li>\n?)+)/g, '<ul>$1</ul>');
+  // paragraphs
+  html = html.replace(/\n\n/g, '</p><p>');
+  html = '<p>' + html + '</p>';
+  html = html.replace(/<p>\s*<(h[1-3]|ul|ol|table|pre|blockquote)/g, '<$1');
+  html = html.replace(/<\/(h[1-3]|ul|ol|table|pre|blockquote)>\s*<\/p>/g, '</$1>');
+  html = html.replace(/<p>\s*<\/p>/g, '');
+  // link SOP references
+  html = html.replace(/\b((?:SAL|DES|CON|PRO|FLD|PRC|FIN|SAF|TEC|CX|HR|GOV)-\d{3})\b/g, (m, id) => {
+    const s = SOPS.find(s => s.id === id);
+    if (s && SOP_CONTENT[id]) return `<a href="#" onclick="event.preventDefault();navigateTo('sop','${id}')">${id}</a>`;
+    return id;
+  });
+  return html;
+}
+function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function escAttr(s){return escHtml(String(s)).replace(/"/g,'&quot;')}
+function slug(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
+
+// ──────────────────────── GOVERNANCE ENGINE ────────────────────────
+// Conformance is computed from the Markdown itself, not from a maintained
+// checklist — a checklist would drift the same way the hardcoded counts did.
+const REQUIRED_SECTIONS = [
+  ['Purpose',/^purpose/i],
+  ['Scope / Trigger',/^scope/i],
+  ['Roles (RACI-lite)',/^roles/i],
+  ['Systems & Inputs',/^systems/i],
+  ['Procedure',/^procedure/i],
+  ['Acceptance Criteria / QC',/^acceptance/i],
+  ['Exceptions & Escalation',/^exceptions/i],
+  ['Outputs',/^outputs/i],
+  ['Revision History',/^revision/i]
+];
+const REQUIRED_FIELDS = ['Owner','Version','Effective','Last reviewed','Next review','Linked SOPs'];
+const UNSET = /^(_+|—|-|n\/?a|tbd)?$/i;
+
+function parseMeta(md) {
+  const fields = {};
+  // only the leading metadata table — later spec tables use the same pipe syntax
+  for (const line of md.split('\n').slice(0, 20)) {
+    const m = line.match(/^\| *([A-Za-z][^|]*?) *\| *(.*?) *\|\s*$/);
+    if (m && m[1] !== 'Field' && !/^-+$/.test(m[1])) fields[m[1]] = m[2];
+  }
+  return fields;
+}
+
+function headingsOf(md) {
+  return [...md.matchAll(/^## +(.+)$/gm)].map(m => m[1].trim());
+}
+
+function parseDate(v) {
+  if (!v || UNSET.test(v.trim())) return null;
+  const d = new Date(v.trim());
+  return isNaN(d) ? null : d;
+}
+
+// Review state per GOV-000: every Active SOP reviewed annually minimum.
+function reviewState(fields) {
+  const next = parseDate(fields['Next review']);
+  const last = parseDate(fields['Last reviewed']);
+  if (!next && !last) return {code: 'unset', label: 'No review date', days: null};
+  const due = next || new Date(last.getTime() + 365 * 864e5);
+  const days = Math.round((due - Date.now()) / 864e5);
+  if (days < 0) return {code: 'overdue', label: `Overdue ${Math.abs(days)}d`, days};
+  if (days <= 60) return {code: 'due', label: `Due in ${days}d`, days};
+  return {code: 'ok', label: `Due in ${days}d`, days};
+}
+
+function conformance(id) {
+  const md = SOP_CONTENT[id];
+  if (!md) return null;
+  const fields = parseMeta(md);
+  const heads = headingsOf(md);
+  const missingSections = REQUIRED_SECTIONS
+    .filter(([, re]) => !heads.some(h => re.test(h)))
+    .map(([name]) => name);
+  const missingFields = REQUIRED_FIELDS.filter(f => !(f in fields) || UNSET.test(fields[f] || ''));
+  return {
+    id, fields, heads, missingSections, missingFields,
+    review: reviewState(fields),
+    conformant: !missingSections.length && !missingFields.length
+  };
+}
+
+function allConformance() {
+  return Object.keys(SOP_CONTENT).map(conformance).filter(Boolean)
+    .sort((a, b) => a.id.localeCompare(b.id));
+}
+
+// ──────────────────────── NAVIGATION ────────────────────────
+// Derived, not hardcoded — a new domain appearing in the live corpus renders
+// without a code change.
+const DOMAIN_SEED = ['SAL','DES','CON','PRO','FLD','PRC','FIN','SAF','TEC','CX','HR'];
+function domainOrder() {
+  const seen = new Set(SOPS.map(s => s.domain).filter(d => d !== 'GOV'));
+  return [...DOMAIN_SEED.filter(d => seen.has(d)), ...[...seen].filter(d => !DOMAIN_SEED.includes(d)).sort()];
+}
+Object.defineProperty(globalThis, 'DOMAIN_ORDER', {get: domainOrder});
+
+// Single source of truth for every count rendered anywhere in the UI.
+// Nothing about totals is hardcoded — the register drifts the moment it is.
+const isAuthored = s => s.status === 'Draft' || s.status === 'Active' || s.status === 'Retired';
+function stats() {
+  const all = SOPS.filter(s => s.id !== 'GOV-000');
+  const tier = t => {
+    const set = all.filter(s => s.tier === t);
+    return {total: set.length, authored: set.filter(isAuthored).length};
+  };
+  return {
+    total: all.length,
+    authored: all.filter(isAuthored).length,
+    P1: tier('P1'), P2: tier('P2'), P3: tier('P3')
+  };
+}
+const pct = (n, d) => d ? Math.round(n / d * 100) : 0;
+
+function buildNav() {
+  const nav = document.getElementById('sidebarNav');
+  let html = '';
+  const special = [
+    ['dashboard','◫','Dashboard'], ['register','☷','Register'],
+    ['spine','⟁','Customer Spine'], ['governance','⚖','Governance'], ['framework','⚙','Framework']
+  ];
+  for (const [v, icon, label] of special) {
+    html += `<div class="nav-special" role="button" tabindex="0" data-view="${v}" onclick="navigateTo('${v}')"><span class="icon" aria-hidden="true">${icon}</span> ${label}</div>`;
+  }
+  html += '<div style="height:6px;border-bottom:1px solid var(--border);margin:4px 12px 4px"></div>';
+  html += '<div id="navResults"></div>';
+  for (const dom of DOMAIN_ORDER) {
+    const domSops = SOPS.filter(s => s.domain === dom);
+    const auth = domSops.filter(isAuthored).length;
+    html += `<div class="nav-section" data-domain="${dom}" style="--dom-c:var(--dom-${dom})">`;
+    html += `<div class="nav-section-header" role="button" tabindex="0" aria-expanded="true" onclick="toggleSection(this)"><span class="arrow" aria-hidden="true">▾</span><span class="dom-dot" aria-hidden="true"></span> ${dom} <span style="font-weight:400;text-transform:none;letter-spacing:0">(${auth}/${domSops.length})</span></div>`;
+    html += '<div class="nav-items">';
+    for (const s of domSops) {
+      const authored = isAuthored(s);
+      const tierCls = s.tier ? s.tier.toLowerCase() : '';
+      html += `<div class="nav-item${authored?'':' dim'}" role="button" tabindex="0" data-sop="${s.id}" data-dom="${s.domain}" style="--dom-c:var(--dom-${s.domain});${authored?'':'opacity:.5'}" title="${escAttr(s.id + ' · ' + s.title)}" onclick="navigateTo('sop','${s.id}')">`;
+      html += `<span class="id">${s.id}</span>`;
+      html += `<span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${s.title}</span>`;
+      if (s.tier) html += `<span class="tier ${tierCls}">${s.tier}</span>`;
+      html += '</div>';
+    }
+    html += '</div></div>';
+  }
+  nav.innerHTML = html;
+  const st = stats();
+  const fc = document.getElementById('footerCount');
+  fc.textContent = `${st.authored} / ${st.total} authored`;
+  if (BUILD.generated) fc.title = `Built ${BUILD.generated} from ${BUILD.source || 'Markdown corpus'}`;
+}
+
+function toggleSection(el) {
+  const sec = el.parentElement;
+  sec.classList.toggle('collapsed');
+  el.setAttribute('aria-expanded', String(!sec.classList.contains('collapsed')));
+}
+
+let currentView = 'dashboard';
+let currentSop = null;
+
+// ──────────────────────── ROUTING ────────────────────────
+// Hash routes make every SOP citable from Trello / Contractor Foreman / SMS
+// and restore Back-button + refresh behaviour.
+function hashFor(view, id) { return view === 'sop' && id ? `#/sop/${id}` : `#/${view}`; }
+
+function navigateTo(view, id, push = true) {
+  currentView = view;
+  currentSop = id || null;
+  if (push) {
+    const h = hashFor(view, id);
+    if (location.hash !== h) history.pushState(null, '', h);
+  }
+  document.querySelectorAll('.nav-special,.nav-item').forEach(el => {
+    el.classList.remove('active');
+    el.removeAttribute('aria-current');
+  });
+  const el = (view === 'sop' && id)
+    ? document.querySelector(`.nav-item[data-sop="${id}"]`)
+    : document.querySelector(`.nav-special[data-view="${view}"]`);
+  if (el) { el.classList.add('active'); el.setAttribute('aria-current', 'page'); }
+  renderView();
+  document.getElementById('mainContent').scrollTop = 0;
+  toggleSidebar(false);
+}
+
+const VALID_VIEWS = ['dashboard','register','spine','governance','framework','sop'];
+function routeFromHash() {
+  const parts = (location.hash || '').replace(/^#\/?/, '').split('/');
+  let view = parts[0] || 'dashboard';
+  let id = parts[1] ? decodeURIComponent(parts[1]) : null;
+  if (!VALID_VIEWS.includes(view)) { view = 'dashboard'; id = null; }
+  if (view === 'sop' && !SOPS.some(s => s.id === id)) { view = 'dashboard'; id = null; }
+  navigateTo(view, id, false);
+}
+
+function jumpTo(anchorId) {
+  const el = document.getElementById(anchorId);
+  if (el) el.scrollIntoView({behavior: 'smooth', block: 'start'});
+}
+
+function copyLink(id) {
+  const url = location.href.split('#')[0] + hashFor('sop', id);
+  const done = () => {
+    const b = document.getElementById('copyBtn');
+    if (!b) return;
+    b.textContent = '✓ Copied';
+    setTimeout(() => { b.textContent = '⧉ Copy link'; }, 1600);
+  };
+  if (navigator.clipboard) navigator.clipboard.writeText(url).then(done).catch(done);
+  else done();
+}
+
+// ──────────────────────── SIDEBAR / KEYBOARD ────────────────────────
+function toggleSidebar(force) {
+  const sb = document.getElementById('sidebar');
+  const open = force === undefined ? !sb.classList.contains('open') : force;
+  sb.classList.toggle('open', open);
+  document.getElementById('scrim').classList.toggle('show', open);
+  document.querySelector('.mobile-toggle').setAttribute('aria-expanded', String(open));
+}
+
+// Every clickable div/span/tr carries role="button" or .clickable; one delegated
+// handler gives the whole surface Enter/Space activation without 88 inline dupes.
+document.addEventListener('keydown', e => {
+  const t = e.target;
+  if ((e.key === 'Enter' || e.key === ' ') && t.matches?.('[role="button"],tr.clickable')) {
+    e.preventDefault();
+    t.click();
+    return;
+  }
+  if (e.key === 'Escape') {
+    toggleSidebar(false);
+    const s = document.getElementById('searchInput');
+    if (document.activeElement === s && s.value) { s.value = ''; filterNav(''); }
+    return;
+  }
+  // "/" focuses search, unless already typing somewhere
+  if (e.key === '/' && !/^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName)) {
+    e.preventDefault();
+    document.getElementById('searchInput').focus();
+  }
+});
+
+function renderView() {
+  const main = document.getElementById('mainContent');
+  let html = '<div class="main-inner fade-in">';
+  switch(currentView) {
+    case 'dashboard': html += renderDashboard(); break;
+    case 'register': html += renderRegister(); break;
+    case 'spine': html += renderSpine(); break;
+    case 'governance': html += renderGovernance(); break;
+    case 'framework': html += renderFramework(); break;
+    case 'sop': html += renderSop(currentSop); break;
+  }
+  html += '</div>';
+  main.innerHTML = html;
+}
+
+// ──────────────────────── DASHBOARD ────────────────────────
+function renderDashboard() {
+  const st = stats();
+  const sub = t => t.total ? `${pct(t.authored, t.total)}% authored` : '—';
+
+  let h = '';
+  h += '<div class="page-header"><h2>SOP Dashboard</h2><p>KLR Build LLC — Standard Operating Procedure Framework v1.12</p></div>';
+
+  // Stat cards — all values derived from SOPS, none hardcoded
+  h += '<div class="dash-grid">';
+  h += `<div class="stat-card"><div class="label">Total SOPs</div><div class="value">${st.total}</div><div class="sub">${st.authored} authored, ${st.total - st.authored} pending</div></div>`;
+  h += `<div class="stat-card"><div class="label">P1 Core</div><div class="value accent">${st.P1.authored}/${st.P1.total}</div><div class="sub">${sub(st.P1)}</div></div>`;
+  h += `<div class="stat-card"><div class="label">P2 Important</div><div class="value">${st.P2.authored}/${st.P2.total}</div><div class="sub">${sub(st.P2)}</div></div>`;
+  h += `<div class="stat-card"><div class="label">P3 Optimize</div><div class="value">${st.P3.authored}/${st.P3.total}</div><div class="sub">${st.P3.authored ? sub(st.P3) : 'Not started'}</div></div>`;
+  h += '</div>';
+
+  // Coverage by domain — click a bar to filter the register to that domain
+  h += '<div class="section-title">Coverage by Domain</div>';
+  h += '<div class="coverage-chart">';
+  for (const dom of DOMAIN_ORDER) {
+    const all = SOPS.filter(s => s.domain === dom);
+    const auth = all.filter(isAuthored).length;
+    const p = pct(auth, all.length);
+    h += `<div class="cov-row" role="button" tabindex="0" title="Filter register to ${dom}" onclick="filterByDomain('${dom}')" style="--dom-c:var(--dom-${dom});cursor:pointer">`;
+    h += `<div class="cov-label">${dom}</div>`;
+    h += `<div class="cov-bar-wrap"><div class="cov-bar authored" style="width:${p}%;background:var(--dom-c)"></div></div>`;
+    h += `<div class="cov-count">${auth} / ${all.length}</div>`;
+    h += '</div>';
+  }
+  h += '</div>';
+
+  // Customer spine preview
+  h += '<div class="section-title">Customer Spine (7-Step Process)</div>';
+  h += renderSpineWidget();
+
+  // Verify-before-Effective
+  h += '<div class="section-title">Verify-before-Effective</div>';
+  h += '<div class="verify-section"><h3>Legal (route to counsel / CPA / broker)</h3>';
+  h += '<table class="register-table"><thead><tr><th>SOP</th><th>Item</th></tr></thead><tbody>';
+  const legalItems = [
+    ['CON-001 / FIN-001','CA down-payment cap (≤ $1,000 or 10%); progress payments ≤ value of work performed'],
+    ['FIN-002','CA preliminary-notice / mechanics-lien deadlines'],
+    ['SAF-004','Cal/OSHA serious-injury + workers\'-comp reporting windows'],
+    ['SAF-005','CSLB renewal cycle, bond, required coverage limits'],
+    ['HR-004','AB5 / ABC test + construction-subcontractor provisions (highest liability)']
+  ];
+  for (const [sop, item] of legalItems) {
+    h += `<tr><td><span class="dom-tag">${sop}</span></td><td>${item}</td></tr>`;
+  }
+  h += '</tbody></table></div>';
+
+  h += '<div class="verify-section"><h3>Engineering / Craft (route to Production Lead + manufacturer/code)</h3>';
+  h += '<table class="register-table"><thead><tr><th>SOP</th><th>Item</th></tr></thead><tbody>';
+  const engItems = [
+    ['FLD-002','Foundation fall (~6"/10ft), surface slope (1–2%), subgrade compaction, legal discharge'],
+    ['FLD-003','Base depth (ped 4–6" / veh 8–12"), 95% Proctor, ~1" bedding, edge restraint — vs. ICPI + paver manufacturer + local code']
+  ];
+  for (const [sop, item] of engItems) {
+    h += `<tr><td><span class="dom-tag">${sop}</span></td><td>${item}</td></tr>`;
+  }
+  h += '</tbody></table></div>';
+
+  return h;
+}
+
+// ──────────────────────── SPINE ────────────────────────
+function renderSpineWidget() {
+  let h = '<div class="spine-wrap">';
+  for (const step of SPINE_STEPS) {
+    h += '<div class="spine-step">';
+    h += `<div class="spine-num">${step.num}</div>`;
+    h += '<div class="spine-content">';
+    h += `<div class="spine-label">${step.label}</div>`;
+    h += '<div class="spine-sops">';
+    for (const sopId of step.sops) {
+      const sop = SOPS.find(s => s.id === sopId);
+      const authored = sop && isAuthored(sop);
+      const cls = authored ? 'authored' : 'registered';
+      const clickable = SOP_CONTENT[sopId] ? ` role="button" tabindex="0" onclick="navigateTo('sop','${sopId}')"` : '';
+      h += `<span class="spine-sop ${cls}"${clickable}>${sopId}</span>`;
+    }
+    h += '</div></div></div>';
+  }
+  h += '</div>';
+  return h;
+}
+
+function renderSpine() {
+  let h = '<div class="page-header"><h2>Customer Spine</h2><p>The 7-step process from flyer to final walk-through — the P1 revenue path</p></div>';
+  h += renderSpineWidget();
+
+  // Dependency chain
+  h += '<div class="section-title">Dependency Chain</div>';
+  h += '<div class="spine-wrap"><pre style="font-size:12px;line-height:1.6;color:var(--fg2);white-space:pre-wrap">';
+  h += `SAL-002 ─→ SAL-003 ─→ SAL-005 ─→ DES-001 ─┬─→ (DES-002 → DES-003)
+                                          └─→ DES-004 ─→ DES-005 ─→ DES-006 ─→ CON-001
+CON-001 ─┬─→ CON-002 (HOA) ─⟂─ PRO-002
+         ├─→ PRO-001 ─→ PRO-002 ⇄ PRO-003 ─→ PRC-002 (PO) ─→ FLD-002 ─→ FLD-003
+         └─→ FIN-001 ─→ FIN-002
+FLD-003 ─→ PRO-006 ─→ CX-001 ─→ (CX-002 warranty · CX-003 referral)
+CON-004 (change orders) ⟂ any active phase`;
+  h += '</pre></div>';
+
+  // Cross-cutting gates
+  h += '<div class="section-title">Cross-cutting Gates</div>';
+  h += '<table class="register-table"><thead><tr><th>Gate SOP</th><th>Gates</th></tr></thead><tbody>';
+  h += '<tr><td><span class="dom-tag">SAF-005</span></td><td>CON-001 + PRO-004 — licensing/insurance must be current before contracting or scheduling subs</td></tr>';
+  h += '<tr><td><span class="dom-tag">HR-004</span></td><td>Any worker engagement — classification must be determined before engagement</td></tr>';
+  h += '<tr><td><span class="dom-tag">TEC-002</span></td><td>Substrate under every file path — all SOPs write to TEC-002 defined locations</td></tr>';
+  h += '</tbody></table>';
+  return h;
+}
+
+// ──────────────────────── REGISTER ────────────────────────
+let registerFilter = {tier: null, status: null, domain: null};
+
+let registerSort = {key: 'id', dir: 1};
+
+function renderRegister() {
+  const st = stats();
+  let h = `<div class="page-header"><h2>SOP Register</h2><p>Single source of truth for SOP status — ${st.total} SOPs catalogued, ${st.authored} authored</p></div>`;
+
+  // Filters
+  h += '<div class="register-controls">';
+  h += '<span style="font-size:12px;color:var(--fg3);margin-right:4px">Tier:</span>';
+  for (const t of ['P1','P2','P3']) {
+    h += `<button class="filter-btn${registerFilter.tier===t?' active':''}" onclick="toggleFilter('tier','${t}')">${t}</button>`;
+  }
+  h += '<span style="font-size:12px;color:var(--fg3);margin:0 4px 0 12px">Status:</span>';
+  for (const s of ['Draft','Registered','Retired']) {
+    h += `<button class="filter-btn${registerFilter.status===s?' active':''}" onclick="toggleFilter('status','${s}')">${s}</button>`;
+  }
+  h += `<button class="filter-btn" onclick="registerFilter={tier:null,status:null,domain:null};renderView()" style="margin-left:auto">Clear filters</button>`;
+  h += '</div>';
+  h += '<div class="register-controls" style="margin-top:-4px">';
+  h += '<span style="font-size:12px;color:var(--fg3);margin-right:4px">Domain:</span>';
+  for (const d of DOMAIN_ORDER) {
+    h += `<button class="filter-btn${registerFilter.domain===d?' active':''}" style="--dom-c:var(--dom-${d})${registerFilter.domain===d?';background:var(--dom-c);border-color:var(--dom-c)':''}" onclick="toggleFilter('domain','${d}')">${d}</button>`;
+  }
+  h += '</div>';
+
+  let filtered = SOPS.filter(s => s.id !== 'GOV-000');
+  if (registerFilter.tier) filtered = filtered.filter(s => s.tier === registerFilter.tier);
+  if (registerFilter.status) filtered = filtered.filter(s => s.status === registerFilter.status);
+  if (registerFilter.domain) filtered = filtered.filter(s => s.domain === registerFilter.domain);
+
+  const k = registerSort.key;
+  filtered = filtered.slice().sort((a, b) => {
+    const av = (a[k] ?? '~').toString(), bv = (b[k] ?? '~').toString();
+    return av.localeCompare(bv, undefined, {numeric: true}) * registerSort.dir;
+  });
+
+  h += `<div style="font-size:12px;color:var(--fg3);margin-bottom:8px">${filtered.length} of ${st.total} shown${registerFilter.domain?` · ${DOMAINS[registerFilter.domain].name}`:''}</div>`;
+
+  // Table
+  const cols = [['id','ID'],['title','Title'],['domain','Domain'],['tier','Tier'],['status','Status'],['ver','Version'],['owner','Owner']];
+  h += '<table class="register-table"><thead><tr>';
+  for (const [key, label] of cols) {
+    const arrow = k === key ? (registerSort.dir === 1 ? ' ▲' : ' ▼') : '';
+    const aria = k === key ? (registerSort.dir === 1 ? 'ascending' : 'descending') : 'none';
+    h += `<th role="button" tabindex="0" aria-sort="${aria}" style="cursor:pointer;user-select:none" onclick="sortRegister('${key}')">${label}${arrow}</th>`;
+  }
+  h += '</tr></thead><tbody>';
+
+  for (const s of filtered) {
+    const hasContent = SOP_CONTENT[s.id];
+    const attrs = hasContent ? ` class="clickable" tabindex="0" onclick="navigateTo('sop','${s.id}')"` : '';
+    const tierCls = s.tier ? s.tier.toLowerCase() : '';
+    const statusCls = s.status.toLowerCase();
+    h += `<tr${attrs}>`;
+    h += `<td><span class="dom-tag" data-dom="${s.domain}" style="--dom-c:var(--dom-${s.domain})">${s.id}</span></td>`;
+    h += `<td>${s.title}${s.cluster ? ` <span style="font-size:10px;color:var(--fg3)">[${s.cluster}]</span>` : ''}</td>`;
+    h += `<td>${s.domain}</td>`;
+    h += `<td>${s.tier ? `<span class="badge ${tierCls}">${s.tier}</span>` : '—'}</td>`;
+    h += `<td><span class="badge ${statusCls}">${s.status}</span></td>`;
+    h += `<td style="font-family:var(--mono);font-size:12px">${s.ver || '—'}</td>`;
+    h += `<td style="font-size:12px">${s.owner}</td>`;
+    h += '</tr>';
+  }
+  h += '</tbody></table>';
+  if (!filtered.length) h += '<div style="padding:32px;text-align:center;color:var(--fg3);font-size:13px">No SOPs match these filters.</div>';
+  return h;
+}
+
+function toggleFilter(key, val) {
+  registerFilter[key] = registerFilter[key] === val ? null : val;
+  renderView();
+}
+
+function sortRegister(key) {
+  registerSort = {key, dir: registerSort.key === key ? -registerSort.dir : 1};
+  renderView();
+}
+
+function filterByDomain(dom) {
+  registerFilter = {tier: null, status: null, domain: dom};
+  navigateTo('register');
+}
+
+// ──────────────────────── SOP READER ────────────────────────
+function renderSop(id) {
+  const sop = SOPS.find(s => s.id === id);
+  if (!sop) return '<p>SOP not found.</p>';
+  const content = SOP_CONTENT[id];
+
+  let h = '<div class="sop-reader">';
+  h += '<div class="sop-header">';
+  h += '<div class="sop-id-row">';
+  h += `<div class="sop-id">${sop.id}${sop.cluster ? ` · ${sop.cluster}` : ''}</div>`;
+  h += `<button class="copy-link" id="copyBtn" onclick="copyLink('${sop.id}')">⧉ Copy link</button>`;
+  h += `<button class="copy-link" style="margin-left:0" onclick="window.print()">⎙ Print</button>`;
+  h += '</div>';
+  h += `<h2>${sop.title}</h2>`;
+  h += '<div class="sop-meta">';
+  if (sop.tier) h += `<span class="badge ${sop.tier.toLowerCase()}">${sop.tier}</span>`;
+  h += `<span class="badge ${sop.status.toLowerCase()}">${sop.status}${sop.ver ? ' ' + sop.ver : ''}</span>`;
+  h += `<span class="badge" style="background:var(--bg3);color:var(--fg2)">${sop.owner}</span>`;
+  h += `<span class="badge" style="background:var(--bg3);color:var(--fg2)">${sop.domain} — ${DOMAINS[sop.domain]?.name || ''}</span>`;
+  h += '</div>';
+  // Provenance — TEC-004 requires every served chunk be traceable to a source
+  // and revision. Same obligation applies to what a human reads on screen.
+  if (SOURCE.mode === 'live' && sop.rev) {
+    h += `<div class="doc-meta">rev ${escHtml(sop.rev.slice(0, 12))} · modified ${sop.modified ? new Date(sop.modified).toLocaleString() : '—'} · live from Dropbox</div>`;
+  } else if (SOP_CONTENT[id]) {
+    const mf = SOURCE.manifest?.[id];
+    h += `<div class="doc-meta">`
+      + (mf?.rev ? `rev ${escHtml(String(mf.rev).slice(0, 12))} · ` : '')
+      + `audited ${escHtml(SOURCE.at || '—')}</div>`;
+  }
+  h += '</div>';
+
+  if (content) {
+    const conf = conformance(id);
+
+    // Section jump list — these documents run 2+ printed pages
+    const heads = conf.heads;
+    if (heads.length > 2) {
+      h += '<nav class="sop-toc" aria-label="Sections"><h4>Sections</h4><div class="link-list">';
+      for (const t of heads) {
+        h += `<span class="link-item" role="button" tabindex="0" onclick="jumpTo('s-${slug(t)}')">${escHtml(t)}</span>`;
+      }
+      h += '</div></nav>';
+    }
+
+    if (!conf.conformant) {
+      const bits = [];
+      if (conf.missingSections.length) bits.push(`missing <strong>${conf.missingSections.length}</strong> required section${conf.missingSections.length>1?'s':''} (${conf.missingSections.join(', ')})`);
+      if (conf.missingFields.length) bits.push(`unset field${conf.missingFields.length>1?'s':''}: ${conf.missingFields.join(', ')}`);
+      h += `<div class="gov-flag">⚠ <strong>Not template-conformant</strong> — ${bits.join('; ')}. <span role="button" tabindex="0" onclick="navigateTo('governance')" style="color:var(--accent);cursor:pointer;text-decoration:underline">See governance</span></div>`;
+    }
+
+    h += '<div class="sop-body">';
+    h += mdToHtml(content);
+    h += '</div>';
+
+    // Linked SOPs
+    const linkedMatch = content.match(/Linked SOPs\s*\|\s*([^|]+)\|/);
+    if (linkedMatch) {
+      const links = linkedMatch[1].split(',').map(s => s.trim()).filter(Boolean);
+      h += '<div class="sop-links"><h4>Linked SOPs</h4><div class="link-list">';
+      for (const l of links) {
+        const linked = SOPS.find(s => s.id === l);
+        const hasContent = SOP_CONTENT[l];
+        if (linked && hasContent) {
+          h += `<span class="link-item" role="button" tabindex="0" onclick="navigateTo('sop','${l}')">${l} · ${linked.title}</span>`;
+        } else if (linked) {
+          h += `<span class="link-item" style="opacity:.5">${l} · ${linked.title}</span>`;
+        }
+      }
+      h += '</div></div>';
+    }
+  } else {
+    h += '<div style="padding:40px;text-align:center;color:var(--fg3)">';
+    h += '<div style="font-size:32px;margin-bottom:12px">☷</div>';
+    h += `<p>This SOP is <strong>registered</strong> but not yet authored.</p>`;
+    h += `<p style="font-size:13px;margin-top:8px">Tier: ${sop.tier || '—'} · Owner: ${sop.owner}</p>`;
+    h += '</div>';
+  }
+  h += '</div>';
+  return h;
+}
+
+// ──────────────────────── GOVERNANCE ────────────────────────
+function renderGovernance() {
+  const rows = allConformance();
+  const conformant = rows.filter(r => r.conformant).length;
+  const noDate = rows.filter(r => r.review.code === 'unset').length;
+  const overdue = rows.filter(r => r.review.code === 'overdue').length;
+  const dueSoon = rows.filter(r => r.review.code === 'due').length;
+
+  // Which required sections are most often absent — tells you what to batch-fix
+  const gap = {};
+  for (const r of rows) for (const s of r.missingSections) gap[s] = (gap[s] || 0) + 1;
+  const gapRanked = Object.entries(gap).sort((a, b) => b[1] - a[1]);
+
+  let h = '<div class="page-header"><h2>Governance</h2><p>Conformance of the ' + rows.length + ' authored SOPs against the SOP-GOV-000 v1.12 template and review cadence</p></div>';
+
+  h += '<div class="dash-grid">';
+  h += `<div class="stat-card"><div class="label">Template conformant</div><div class="value${conformant?' accent':''}">${conformant}/${rows.length}</div><div class="sub">all 9 sections + 6 metadata fields</div></div>`;
+  h += `<div class="stat-card"><div class="label">No review date</div><div class="value" style="color:var(--p1)">${noDate}</div><div class="sub">cadence not enforceable</div></div>`;
+  h += `<div class="stat-card"><div class="label">Review overdue</div><div class="value"${overdue?' style="color:var(--p1)"':''}>${overdue}</div><div class="sub">past Next review</div></div>`;
+  h += `<div class="stat-card"><div class="label">Due ≤ 60 days</div><div class="value"${dueSoon?' style="color:var(--p2)"':''}>${dueSoon}</div><div class="sub">schedule now</div></div>`;
+  h += '</div>';
+
+  if (noDate === rows.length) {
+    h += '<blockquote style="border-left:3px solid var(--p1);background:var(--p1-bg);border-radius:0 var(--radius) var(--radius) 0;padding:10px 14px;margin-bottom:24px;font-size:13px;color:var(--fg)">';
+    h += '<strong>No SOP carries a review date.</strong> GOV-000 mandates annual review of every Active SOP, but <code>Effective</code> / <code>Last reviewed</code> / <code>Next review</code> are unset or absent across all ' + rows.length + ' authored SOPs, so the cadence cannot be tracked or audited. Populating those three fields is what turns the cards above from static to live.';
+    h += '</blockquote>';
+  }
+
+  if (gapRanked.length) {
+    h += '<div class="section-title">Most common template gaps</div>';
+    h += '<div class="coverage-chart">';
+    for (const [name, n] of gapRanked) {
+      const p = pct(n, rows.length);
+      h += '<div class="cov-row">';
+      h += `<div class="cov-label" style="width:150px;text-align:left;font-family:var(--font);font-size:12px">${name}</div>`;
+      h += `<div class="cov-bar-wrap"><div class="cov-bar" style="width:${p}%;background:var(--p1)"></div></div>`;
+      h += `<div class="cov-count">${n} / ${rows.length}</div>`;
+      h += '</div>';
+    }
+    h += '</div>';
+  }
+
+  h += '<div class="section-title">Per-SOP conformance</div>';
+  h += '<table class="register-table"><thead><tr><th>SOP</th><th>Title</th><th>Missing required sections</th><th>Missing fields</th><th>Review</th></tr></thead><tbody>';
+  for (const r of rows) {
+    const sop = SOPS.find(s => s.id === r.id);
+    const rc = r.review.code;
+    const color = rc === 'overdue' ? 'var(--p1)' : rc === 'due' ? 'var(--p2)' : rc === 'ok' ? 'var(--p3)' : 'var(--fg3)';
+    h += `<tr class="clickable" tabindex="0" onclick="navigateTo('sop','${r.id}')">`;
+    h += `<td><span class="dom-tag" data-dom="${sop.domain}" style="--dom-c:var(--dom-${sop.domain})">${r.id}</span></td>`;
+    h += `<td style="font-size:12px">${sop.title}</td>`;
+    h += `<td style="font-size:12px;color:${r.missingSections.length ? 'var(--fg2)' : 'var(--p3)'}">${r.missingSections.join(', ') || '✓ complete'}</td>`;
+    h += `<td style="font-size:12px;color:${r.missingFields.length ? 'var(--fg2)' : 'var(--p3)'}">${r.missingFields.join(', ') || '✓ complete'}</td>`;
+    h += `<td style="font-size:12px;color:${color};white-space:nowrap">${r.review.label}</td>`;
+    h += '</tr>';
+  }
+  h += '</tbody></table>';
+  return h;
+}
+
+// ──────────────────────── FRAMEWORK ────────────────────────
+function renderFramework() {
+  let h = '<div class="fw-body">';
+  h += '<div class="page-header"><h2>SOP Framework</h2><p>SOP-GOV-000 v1.12 — Meta-SOP governing how all SOPs are authored, numbered, stored, and maintained</p></div>';
+
+  // Domain taxonomy
+  h += '<div class="section-title">Domain Taxonomy</div>';
+  h += '<table class="register-table"><thead><tr><th>Code</th><th>Domain</th><th>Default Owner</th><th>Primary System</th></tr></thead><tbody>';
+  const domainOrder = ['GOV','SAL','DES','CON','PRO','FLD','PRC','FIN','SAF','TEC','CX','HR'];
+  for (const code of domainOrder) {
+    const d = DOMAINS[code];
+    h += `<tr><td><span class="dom-tag">${code}</span></td><td>${d.name}</td><td>${d.owner}</td><td>${d.system}</td></tr>`;
+  }
+  h += '</tbody></table>';
+
+  // Numbering
+  h += '<div class="section-title">Numbering & Naming</div>';
+  h += '<p>Format: <code>SOP-[DOMAIN]-[###]</code> — zero-padded sequential within domain. Never reused after retirement.</p>';
+  h += '<p>Filename: <code>SOP-DES-004_rendering-production_v1.2.md</code></p>';
+
+  // SOP template
+  h += '<div class="section-title">Standard SOP Structure</div>';
+  h += '<p>Every SOP is a Markdown file using this skeleton. Non-negotiable fields: ID, Owner, Version, Acceptance Criteria, Revision History.</p>';
+  h += `<pre><code># SOP-XXX-000 · [Title]
+
+| Field | Value |
+|-------|-------|
+| Owner | [role] |
+| Version | v1.0 |
+| Effective | YYYY-MM-DD |
+| Last reviewed | YYYY-MM-DD |
+| Next review | YYYY-MM-DD |
+| Linked SOPs | [IDs] |
+
+## Purpose
+## Scope / Trigger
+## Roles (RACI-lite)
+## Systems & Inputs
+## Procedure
+## Acceptance Criteria / QC
+## Exceptions & Escalation
+## Outputs
+## Revision History</code></pre>`;
+
+  // Storage
+  h += '<div class="section-title">Storage & Access</div>';
+  h += `<pre><code>/03_Resources/Reference/SOP/
+├── KLR_Build_SOP_Register.md
+├── KLR_Build_SOP_Framework.md
+├── SOP-SAL-002_lead-intake-qualification_v1.0.md
+└── …flat; one file per SOP, domain encoded in the ID prefix</code></pre>`;
+  h += '<p>Master = Markdown, one file per SOP, feeds the LLM KB (TEC-004). Layout is flat. Domain is carried by the SOP-XXX-### ID prefix, not by folder.</p>';
+
+  // Governance
+  h += '<div class="section-title">Governance</div>';
+  h += '<p><strong>Versioning:</strong> vMAJOR.MINOR. Minor = wording/clarity. Major = the procedure itself changed.</p>';
+  h += '<p><strong>Lifecycle:</strong> Draft → Reviewed → Approved → Active → Retired</p>';
+  h += '<p><strong>Approval chain:</strong> Owner drafts → Ops Manager reviews → Principal approves</p>';
+  h += '<p><strong>Review cadence:</strong> every Active SOP reviewed annually minimum, plus event-triggered on any tool swap, regulatory change, or repeated field failure.</p>';
+
+  // Rollout
+  h += '<div class="section-title">Rollout Sequence</div>';
+  h += '<p><strong>P1 spine (sell→build→close):</strong> SAL-002, SAL-003, SAL-005 → DES-001, DES-004, DES-005, DES-006 → CON-001, CON-002, CON-004 → PRO-001, PRO-002, PRO-003, PRO-006 → FLD-002, FLD-003 → FIN-001, FIN-002 → CX-001</p>';
+  h += '<p><strong>P1 compliance floor:</strong> SAF-004, SAF-005, HR-004, TEC-002</p>';
+  h += '<p><strong>P2 layer:</strong> domain by domain — TEC backbone complete (7/9)</p>';
+  h += '<p><strong>P3:</strong> as capacity allows</p>';
+
+  // Tech stack
+  h += '<div class="section-title">Tech Stack</div>';
+  h += '<table class="register-table"><thead><tr><th>System</th><th>Role</th></tr></thead><tbody>';
+  const stack = [
+    ['SalesRabbit','Canvassing / CRM — lead management'],
+    ['Contractor Foreman','Project mgmt / scheduling / financial'],
+    ['Trello','Pipeline orchestration — stages 1-5, 8'],
+    ['Dropbox','Document store — PARA structure, Markdown SOT, feeds LLM KB'],
+    ['Zapier','Automation — canonical platform for all workflows'],
+    ['Microsoft 365','Canonical mail/calendar (Gmail forwards to M365 shared mailbox)'],
+    ['Zoom','Meetings'],
+    ['DJI Air 2S','Drone / aerial surveys'],
+    ['RealityScan / Blender','Photogrammetry / 3D modeling'],
+    ['Realtime Landscaping','2D/3D rendering production']
+  ];
+  for (const [sys, role] of stack) {
+    h += `<tr><td><strong>${sys}</strong></td><td>${role}</td></tr>`;
+  }
+  h += '</tbody></table>';
+
+  h += '</div>';
+  return h;
+}
+
+// ──────────────────────── SEARCH ────────────────────────
+// Matches metadata AND full SOP body text. Metadata-only search silently
+// missed terms that are the actual acceptance criteria (e.g. "compaction").
+function searchSops(q) {
+  const needle = q.toLowerCase();
+  return SOPS.map(s => {
+    const meta = `${s.id} ${s.title} ${s.domain} ${s.owner} ${s.cluster || ''}`.toLowerCase();
+    if (meta.includes(needle)) return {sop: s, where: 'meta', snippet: null};
+    const body = SOP_CONTENT[s.id];
+    if (!body) return null;
+    const i = body.toLowerCase().indexOf(needle);
+    if (i === -1) return null;
+    const start = Math.max(0, i - 45);
+    const raw = body.slice(start, i + needle.length + 55).replace(/[\r\n|#*`>]+/g, ' ').replace(/\s+/g, ' ');
+    const snippet = escHtml(raw).replace(new RegExp(escRe(escHtml(body.substr(i, needle.length))), 'i'), m => `<mark>${m}</mark>`);
+    return {sop: s, where: 'body', snippet: (start ? '…' : '') + snippet + '…'};
+  }).filter(Boolean);
+}
+function escRe(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}
+
+function filterNav(q) {
+  q = q.trim();
+  const results = document.getElementById('navResults');
+  const sections = document.querySelectorAll('.nav-section');
+
+  if (!q) {
+    results.innerHTML = '';
+    sections.forEach(sec => {
+      sec.style.display = '';
+      sec.classList.remove('collapsed');
+      sec.querySelectorAll('.nav-item').forEach(el => el.style.display = '');
+    });
+    return;
+  }
+
+  const hits = searchSops(q);
+  const ids = new Set(hits.map(h => h.sop.id));
+
+  // Body-only hits get their own result list with a highlighted snippet —
+  // otherwise the match is invisible in a nav tree keyed on title.
+  const bodyHits = hits.filter(h => h.where === 'body');
+  let rh = `<div class="search-meta">${hits.length} match${hits.length === 1 ? '' : 'es'} for “${escHtml(q)}”</div>`;
+  for (const h of bodyHits.slice(0, 8)) {
+    rh += `<div class="hit-snippet" role="button" tabindex="0" onclick="navigateTo('sop','${h.sop.id}')"><strong style="color:var(--accent)">${h.sop.id}</strong> ${h.snippet}</div>`;
+  }
+  if (!hits.length) rh += '<div class="nav-empty">No SOPs match.<br>Search covers IDs, titles, owners and full document text.</div>';
+  results.innerHTML = rh;
+
+  sections.forEach(sec => {
+    let any = false;
+    sec.querySelectorAll('.nav-item').forEach(el => {
+      const match = ids.has(el.dataset.sop);
+      el.style.display = match ? '' : 'none';
+      if (match) any = true;
+    });
+    sec.style.display = any ? '' : 'none';
+    sec.classList.toggle('collapsed', !any);
+  });
+}
+
+// ──────────────────────── LIVE DATA ────────────────────────
+// Bundle contract (produced by the daily Zapier audit):
+//   { audited, source:{folder_id,path_display}, content:{ID:markdown},
+//     meta:{ID:{title,owner,version,rev,server_modified,name}} }
+// Everything the GUI displays is derived from that payload merged over the
+// embedded register skeleton — nothing about status or counts is hand-kept.
+
+const ID_RE = /SOP-((?:SAL|DES|CON|PRO|FLD|PRC|FIN|SAF|TEC|CX|HR|GOV)-\d{3})/;
+
+function titleFromMd(md, fallback) {
+  const m = md.match(/^#\s*SOP-[A-Z]+-\d{3}\s*[·|-]\s*(.+)$/m);
+  return m ? m[1].trim() : fallback;
+}
+
+function mergeLive(payload) {
+  const content = payload.content || {};
+  const meta = payload.meta || {};
+
+  // Register skeleton carries the 57 catalogued SOPs incl. unauthored ones.
+  // Live corpus decides authored-vs-registered — presence of a file IS the
+  // status. That is the rule build_gui.py already enforces server-side.
+  const rows = new Map(DATA.sops.map(s => ({...s})).map(s => [s.id, s]));
+
+  for (const id of Object.keys(content)) {
+    const m = meta[id] || {};
+    const row = rows.get(id) || {
+      id, title: id, domain: id.split('-')[0], tier: null,
+      status: 'Draft', ver: null, owner: '—', cluster: null, isNew: true
+    };
+    row.title = m.title || titleFromMd(content[id], row.title);
+    if (m.owner) row.owner = m.owner;
+    row.ver = m.version || row.ver || 'v1.0';
+    if (row.status === 'Registered') row.status = 'Draft';
+    row.rev = m.rev || null;
+    row.modified = m.server_modified || null;
+    rows.set(id, row);
+  }
+  // A file removed from Dropbox reverts to Registered — no orphan "authored"
+  // rows pointing at content that no longer exists.
+  for (const [id, row] of rows) {
+    if (id !== 'GOV-000' && !content[id] && row.status !== 'Registered') {
+      row.status = 'Registered';
+      row.ver = null;
+    }
+  }
+
+  SOPS = [...rows.values()].sort((a, b) => a.id.localeCompare(b.id, undefined, {numeric: true}));
+  SOP_CONTENT = content;
+  if (payload.domains) DOMAINS = {...DOMAINS, ...payload.domains};
+  if (payload.spine) SPINE_STEPS = payload.spine;
+  SOURCE = {
+    mode: 'bundle',
+    at: payload.audited || payload.generated || new Date().toISOString(),
+    error: null,
+    files: Object.keys(content).length,
+    path: payload.source?.path_display || null,
+    folderId: payload.source?.folder_id || FEED.folderId
+  };
+}
+
+async function refreshLive(manual = false) {
+  if (!FEED.endpoint) { renderFreshness(); return false; }
+  renderFreshness('loading');
+  const ctl = new AbortController();
+  const timer = setTimeout(() => ctl.abort(), FEED.timeoutMs);
+  try {
+    const url = FEED.endpoint + (FEED.endpoint.includes('?') ? '&' : '?') + 'ts=' + Date.now();
+    const res = await fetch(url, {signal: ctl.signal, cache: 'no-store', headers: {'Accept': 'application/json'}});
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const payload = await res.json();
+    if (!payload || typeof payload.content !== 'object' || !Object.keys(payload.content).length) {
+      throw new Error('empty or malformed payload');
+    }
+    mergeLive(payload);
+    buildNav();
+    renderView();
+    // keep the active SOP highlighted after a rebuild
+    if (currentView === 'sop' && currentSop) {
+      const el = document.querySelector(`.nav-item[data-sop="${currentSop}"]`);
+      if (el) { el.classList.add('active'); el.setAttribute('aria-current', 'page'); }
+    }
+    renderFreshness();
+    return true;
+  } catch (e) {
+    SOURCE.error = e.name === 'AbortError' ? `timed out after ${FEED.timeoutMs / 1000}s` : e.message;
+    renderFreshness();
+    return false;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+function relTime(iso) {
+  if (!iso) return 'unknown';
+  const d = new Date(iso);
+  if (isNaN(d)) return iso;
+  const s = Math.round((Date.now() - d) / 1000);
+  if (s < 60) return 'just now';
+  if (s < 3600) return `${Math.round(s / 60)}m ago`;
+  if (s < 86400) return `${Math.round(s / 3600)}h ago`;
+  return `${Math.round(s / 86400)}d ago`;
+}
+
+function renderFreshness(state) {
+  const el = document.getElementById('freshness');
+  if (!el) return;
+  if (state === 'loading') {
+    el.className = 'freshness loading';
+    el.innerHTML = '<span class="dot"></span><span class="label">Checking Dropbox…</span>';
+    return;
+  }
+  if (!FEED.endpoint) {
+    // Daily-audit model: content is embedded, freshness is the audit date.
+    const at = SOURCE.at;
+    const ageH = at ? (Date.now() - new Date(at)) / 36e5 : Infinity;
+    const stale = !(ageH < FEED.staleAfterHours);
+    el.className = 'freshness ' + (stale ? 'stale' : 'live');
+    el.innerHTML = `<span class="dot"></span><span class="label">`
+      + `<b>${stale ? 'Audit overdue' : 'Audited'} · ${relTime(at)}</b>`
+      + `${SOURCE.files} SOPs${stale ? ' — daily audit has not run' : ' · daily audit'}</span>`;
+    return;
+  }
+  if (SOURCE.mode === 'bundle') {
+    // A live payload can still be stale if the upstream workflow is serving a
+    // cached build. Trust the payload's own timestamp, not the fact it answered.
+    const ageMs = SOURCE.at ? Date.now() - new Date(SOURCE.at) : 0;
+    const stale = ageMs > FEED.staleAfterHours * 36e5;
+    el.className = 'freshness ' + (stale ? 'stale' : 'live');
+    el.innerHTML = `<span class="dot"></span><span class="label"><b>${stale ? 'Bundle stale' : 'Bundle'} · ${relTime(SOURCE.at)}</b>`
+      + `${SOURCE.files} SOPs from Dropbox${stale ? ' — upstream not refreshing' : ''}</span>`
+      + `<button onclick="refreshLive(true)" title="Re-pull from Dropbox now">↻</button>`;
+    return;
+  }
+  el.className = 'freshness error';
+  el.innerHTML = `<span class="dot"></span><span class="label"><b>Offline — showing snapshot</b>${escHtml(SOURCE.error || 'unreachable')} · built ${BUILD.generated || '—'}</span>`
+    + `<button onclick="refreshLive(true)" title="Retry">↻</button>`;
+}
+
+// ──────────────────────── THEME ────────────────────────
+const THEME_KEY = 'klr-sop-theme';
+function applyTheme(t) {
+  document.documentElement.dataset.theme = t;
+  try { localStorage.setItem(THEME_KEY, t); } catch (e) { /* file:// with storage disabled */ }
+}
+function toggleTheme() {
+  applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+}
+function initTheme() {
+  let saved = null;
+  try { saved = localStorage.getItem(THEME_KEY); } catch (e) { /* ignore */ }
+  const prefersDark = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
+  document.documentElement.dataset.theme = saved || (prefersDark ? 'dark' : 'light');
+}
+
+// ──────────────────────── INIT ────────────────────────
+initTheme();
+buildNav();
+routeFromHash();
+window.addEventListener('popstate', routeFromHash);
+window.addEventListener('hashchange', routeFromHash);
+
+// Render from the snapshot first so the UI is usable instantly and offline,
+// then pull live and re-render in place. Never block first paint on network.
+renderFreshness();
+if (FEED.refreshOnLoad) refreshLive();
+// Re-pull when the tab regains focus after being away >5 min — covers the
+// "left it open since Tuesday" case without polling.
+let lastCheck = Date.now();
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && Date.now() - lastCheck > 300000) {
+    lastCheck = Date.now();
+    refreshLive();
+  }
+});
+</script>
+</body>
+</html>

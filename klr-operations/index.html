@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Operations & Digital Assets Command Center | Multi-Project Progress Tracker</title>
+  <meta name="description" content="Centralized multi-project operations tracking system for Contractor Foreman rollout, Company Website & Digital Assets, Frontdesk AI, and County Permits intelligence feed.">
+  
+  <!-- Modern Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- Top Executive Navigation Bar -->
+    <header class="app-header">
+      <div class="brand-section">
+        <div class="brand-badge">⚡</div>
+        <div class="brand-info">
+          <h1>
+            Operations Command Center
+            <span class="role-pill">Ops & Digital Assets</span>
+          </h1>
+          <div class="brand-subtitle">KLR Build • Multi-Initiative Executive Intelligence</div>
+        </div>
+      </div>
+
+      <!-- Center Navigation View Switcher -->
+      <nav class="view-tabs" aria-label="Command Center Views">
+        <button class="tab-btn active" id="tab-dashboard" data-view="dashboard">
+          <span>📊 Overview</span>
+        </button>
+        <button class="tab-btn" id="tab-pipeline" data-view="pipeline">
+          <span>⚡ Trello Pipeline</span>
+        </button>
+        <button class="tab-btn" id="tab-roadmap" data-view="roadmap">
+          <span>📅 Roadmap</span>
+        </button>
+        <button class="tab-btn" id="tab-kanban" data-view="kanban">
+          <span>📋 Kanban</span>
+        </button>
+        <button class="tab-btn" id="tab-permits" data-view="permits">
+          <span>🏗️ County Permits</span>
+        </button>
+      </nav>
+
+      <!-- Quick Action Buttons -->
+      <div class="header-actions">
+        <button class="btn btn-secondary btn-sm" id="btn-executive-briefing" title="Generate Executive Briefing Report">
+          <span>📄 Briefing Report</span>
+        </button>
+        <button class="btn btn-outline btn-sm" id="btn-data-sync" title="Data Backup & Sync">
+          <span>💾 Backup</span>
+        </button>
+        <button class="btn btn-primary btn-sm" id="btn-add-project">
+          <span>+ New Initiative</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Dynamic Application Workspace -->
+    <main class="main-content">
+      
+      <!-- Search & Category Filters Toolbar -->
+      <div class="controls-bar" id="controls-toolbar">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="global-search" placeholder="Search initiatives, milestones, owners, deliverables...">
+        </div>
+
+        <div class="filters-group" role="group" aria-label="Category Filters">
+          <button class="filter-chip active" data-category="all">All Domains</button>
+          <button class="filter-chip" data-category="ops">⚙️ Operational Systems</button>
+          <button class="filter-chip" data-category="digital">🌐 Digital & Brand Assets</button>
+          <button class="filter-chip" data-category="ai">🤖 AI & Automations</button>
+          <button class="filter-chip" data-category="data">📈 Data & Intelligence</button>
+        </div>
+      </div>
+
+      <!-- Dynamic View Injection Container -->
+      <div id="view-container"></div>
+    </main>
+
+    <!-- Global Modal Overlay & Container -->
+    <div class="modal-overlay" id="global-modal-overlay" role="dialog" aria-modal="true">
+      <div class="modal-container" id="global-modal-content">
+        <!-- Injected dynamically by projectModal, reporter, or exportImport modules -->
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Main ES Module Script -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

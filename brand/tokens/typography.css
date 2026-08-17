@@ -1,0 +1,32 @@
+:root{
+--font-display:'Archivo',sans-serif; /* wordmark-weight headings, matches the blocky geometric letterforms in the KLR mark */
+--font-body:'Work Sans',sans-serif; /* plain, legible body copy */
+--font-label:'Barlow Semi Condensed',sans-serif; /* condensed all-caps labels/taglines, matches "DESIGNED WITH INTENT..." treatment */
+
+--text-eyebrow:0.8125rem;
+--text-body-sm:0.9375rem;
+--text-body:1.0625rem;
+--text-body-lg:1.25rem;
+--text-h4:1.5rem;
+--text-h3:2rem;
+--text-h2:2.75rem;
+--text-h1:3.75rem;
+--text-display:5rem;
+
+--leading-tight:1.05;
+--leading-snug:1.25;
+--leading-normal:1.5;
+--leading-relaxed:1.65;
+
+--tracking-tight:-0.01em;
+--tracking-normal:0;
+--tracking-wide:0.04em;
+--tracking-label:0.12em;
+
+--weight-regular:400;
+--weight-medium:500;
+--weight-semibold:600;
+--weight-bold:700;
+--weight-extrabold:800;
+--weight-black:900;
+}
