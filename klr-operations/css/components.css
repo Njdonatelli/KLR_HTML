@@ -1,0 +1,68 @@
+/* Reusable Component Styles */
+
+.btn {
+  font-family: var(--font-body);
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+.btn-primary {
+  background-color: var(--color-tan);
+  color: var(--color-charcoal);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-bronze);
+  color: white;
+}
+
+.btn-secondary {
+  background-color: var(--color-olive);
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-charcoal);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--color-stone);
+  color: var(--color-text);
+}
+
+.btn-outline:hover {
+  border-color: var(--color-charcoal);
+}
+
+/* Card components used in the dashboard */
+.card {
+  background: white;
+  border: 1px solid var(--color-stone);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.card-header {
+  font-family: var(--font-display);
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--color-stone);
+  padding-bottom: 0.5rem;
+}
+
+.card-body {
+  font-size: 0.95rem;
+}

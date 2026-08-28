@@ -18,19 +18,10 @@ export interface LeadPayload {
 }
 
 export const submitLeadToCRM = async (payload: LeadPayload) => {
-  // TODO: Replace with actual API endpoints and credentials when available
-  console.log("Submitting lead to CRM (Contractor Foreman & ClickUp)...");
-  
-  try {
-    // Simulated network request delay
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    
-    // Simulated payload inspection
-    console.log("Lead successfully submitted. Payload:", payload);
-    
-    return { success: true };
-  } catch (error) {
-    console.error("Failed to submit lead to CRM:", error);
-    return { success: false, error };
-  }
+  console.warn("CRM submission is disabled. Endpoint not configured. Payload was:", payload);
+  // Disabled until real Contractor Foreman / ClickUp endpoints are provided
+  return { 
+    success: false, 
+    error: new Error("Lead submission is currently disabled for maintenance. Please call us directly.") 
+  };
 };
