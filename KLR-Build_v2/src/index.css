@@ -1,0 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Starter utility variables remapped onto the KLR Build design tokens. */
+    --background: var(--surface-page);
+    --foreground: var(--text-primary);
+
+    --card: var(--surface-card);
+    --card-foreground: var(--text-primary);
+
+    --popover: var(--surface-card);
+    --popover-foreground: var(--text-primary);
+
+    --primary: var(--accent-primary);
+    --primary-foreground: var(--white);
+
+    --secondary: var(--accent-secondary);
+    --secondary-foreground: var(--white);
+
+    --muted: var(--surface-muted);
+    --muted-foreground: var(--text-muted);
+
+    --accent: var(--accent-tan);
+    --accent-foreground: var(--charcoal);
+
+    --destructive: var(--danger);
+    --destructive-foreground: var(--white);
+
+    --border: var(--border-default);
+    --input: var(--border-default);
+    --ring: var(--navy-light);
+
+    --radius: var(--radius-md);
+  }
+}
+
+@layer components {
+  .animate-float {
+    animation: float 4s ease-in-out infinite;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.7s ease-out;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.5s ease-out;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .parallax-hero {
+      animation: parallaxHero linear;
+      animation-timeline: scroll();
+      animation-range: entry 0% exit 100%;
+    }
+    
+    @keyframes parallaxHero {
+      from {
+        object-position: 0% 50%;
+      }
+      to {
+        object-position: 100% 50%;
+      }
+    }
+  }
+}

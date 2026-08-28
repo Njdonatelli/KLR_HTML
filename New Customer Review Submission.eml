@@ -1,0 +1,211 @@
+Received: from IA3PR10MB8393.namprd10.prod.outlook.com (2603:10b6:208:57c::19)
+ by DM6PR10MB4139.namprd10.prod.outlook.com with HTTPS; Wed, 19 Aug 2026
+ 23:24:30 +0000
+Received: from CH2PR20CA0026.namprd20.prod.outlook.com (2603:10b6:610:58::36)
+ by IA3PR10MB8393.namprd10.prod.outlook.com (2603:10b6:208:57c::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Wed, 19 Aug
+ 2026 23:24:29 +0000
+Received: from DS2PEPF000061C8.namprd02.prod.outlook.com
+ (2603:10b6:610:58:cafe::a) by CH2PR20CA0026.outlook.office365.com
+ (2603:10b6:610:58::36) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.339.8 via Frontend Transport; Wed, 19
+ Aug 2026 23:24:29 +0000
+Authentication-Results: spf=softfail (sender IP is 205.220.189.81)
+ smtp.mailfrom=formsubmit.co; dkim=fail (body hash did not verify)
+ header.d=formsubmit.co;dmarc=fail action=none
+ header.from=formsubmit.co;compauth=softpass reason=201
+Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
+ formsubmit.co discourages use of 205.220.189.81 as permitted sender)
+Received: from dispatch1-usg2.ppe-hosted.com (205.220.189.81) by
+ DS2PEPF000061C8.mail.protection.outlook.com (10.167.23.75) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.339.3
+ via Frontend Transport; Wed, 19 Aug 2026 23:24:28 +0000
+Received: from m0467921.ppops.net (ip6-localhost [127.0.0.1])
+	by engine.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id C024F2006D
+	for <nick@klrbuild.com>; Wed, 19 Aug 2026 23:24:27 +0000 (UTC)
+Authentication-Results-Original: ppe-hosted.com; spf=pass
+ smtp.mailfrom=formsubmit.co; dkim=pass header.d=formsubmit.co header.s=mail;
+ dmarc=pass header.from=formsubmit.co header.policy=none; 
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail.safenote.co (mail.safenote.co [192.99.70.154])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1-usg2.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id E84E538005A
+	for <nick@klrbuild.com>; Wed, 19 Aug 2026 23:24:26 +0000 (UTC)
+Received: by mail.safenote.co (Postfix, from userid 33)
+	id A30F6162D93; Wed, 19 Aug 2026 19:24:26 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=formsubmit.co;
+	s=mail; t=1787181866;
+	bh=GzAc/w4izx8lIpo+G1YzKOIY3dHGP4lP2VYPFlgWC5w=;
+	h=Date:Subject:From:To:From;
+	b=a+14neQh+IRhFi7/lwUiRXpyjDuCZugVP5MsdY3PYEr0DLQS3RlLc2O9rsjeLdKIR
+	 yF3YT/bRZTNIFsoXVI2WgL3MDxF4tORK1BDXC3bjoSaqUrSNXiHnr94VgX63smobrS
+	 l4SHC5fhLhuzgfLcxrSFr1iz5JSrrjq2cyQJjftU=
+Received: from formsubmit.co (localhost [127.0.0.1])
+	by mail.safenote.co (Postfix) with SMTP id A1862162D8E
+	for <nick@klrbuild.com>; Wed, 19 Aug 2026 19:24:26 -0400 (EDT)
+Message-ID: <4be96ed3b3ba69173a64af3d3b4171a9@formsubmit.co>
+Date: Wed, 19 Aug 2026 23:24:26 +0000
+Subject: New Customer Review Submission
+From: FormSubmit <submissions@formsubmit.co>
+To: nick@klrbuild.com
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-MDID: 1787181867-cbwMBgYzLM3E
+X-PPE-STACK: {"stack":"usg2"}
+X-MDID-I: usg2;us-east-1f;1787181867;cbwMBgYzLM3E;<submissions@formsubmit.co>;363aafe198ab0334d28effd781209e4b
+X-PPE-TRUSTED: V=1;DIR=IN;
+Return-Path: submissions@formsubmit.co
+X-MS-Exchange-Organization-ExpirationStartTime: 19 Aug 2026 23:24:28.7918
+ (UTC)
+X-MS-Exchange-Organization-ExpirationStartTimeReason: OriginalSubmit
+X-MS-Exchange-Organization-ExpirationInterval: 1:00:00:00.0000000
+X-MS-Exchange-Organization-ExpirationIntervalReason: OriginalSubmit
+X-MS-Exchange-Organization-Network-Message-Id: 083cee3e-15ff-470f-b02a-08defe490417
+X-EOPAttributedMessage: 0
+X-EOPTenantAttributedMessage: 54938137-6ca7-4bef-a53a-bb198480204a:0
+X-MS-Exchange-Organization-MessageDirectionality: Incoming
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS2PEPF000061C8:EE_|IA3PR10MB8393:EE_|DM6PR10MB4139:EE_
+X-MS-Exchange-Organization-AuthSource: DS2PEPF000061C8.namprd02.prod.outlook.com
+X-MS-Exchange-Organization-AuthAs: Anonymous
+X-MS-Office365-Filtering-Correlation-Id: 083cee3e-15ff-470f-b02a-08defe490417
+X-MS-Exchange-Organization-SCL: 1
+X-Microsoft-Antispam: BCL:3;ARA:13230040|7049299003|5073199012|82310400026|3109299003|42112799006|69100299015|2092899012|12012899012|3072899012|7149299003|10067099003|5063699009|56012099006|18003699003|19002099009|16102099003|8096899003|4076899003;
+X-Forefront-Antispam-Report: CIP:205.220.189.81;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:dispatch1-usg2.ppe-hosted.com;PTR:dispatch1-usg2.ppe-hosted.com;CAT:NONE;SFS:(13230040)(7049299003)(5073199012)(82310400026)(3109299003)(42112799006)(69100299015)(2092899012)(12012899012)(3072899012)(7149299003)(10067099003)(5063699009)(56012099006)(18003699003)(19002099009)(16102099003)(8096899003)(4076899003);DIR:INB;
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2026 23:24:28.5298
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 083cee3e-15ff-470f-b02a-08defe490417
+X-MS-Exchange-CrossTenant-Id: 54938137-6ca7-4bef-a53a-bb198480204a
+X-MS-Exchange-CrossTenant-AuthSource: DS2PEPF000061C8.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR10MB8393
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:02.3651814
+X-MS-Exchange-Processed-By-BccFoldering: 15.21.0315.000
+X-Microsoft-Antispam-Mailbox-Delivery:
+	ucf:0;jmr:0;auth:0;dest:I;ENG:(910005)(944490095)(944506478)(944626604)(4710232)(4713193)(4714117)(4999285)(920097)(930201)(20251009189)(140003);
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?TDNZUll0anA5eHRlNDgwMTluSEhLR1EzdkUwUE0xTUdSZW9OVSsreWZzWkY3?=
+ =?utf-8?B?N1N5M1RaRmVyemZTbktEY0diaE4vclJVWHUycVlZVlhlM1NUSVR0V25wZUJm?=
+ =?utf-8?B?d0dobmdVeHNYMUVrd3FyLzN3dzVvdkQrcXhxM1dER2EyOFlXVnFSbEQ5YWxR?=
+ =?utf-8?B?em1KRlU1SnppTGhvMEE3OHdhSEJiTmNDTDhjbmlQZm1naUxVR3ZXcHhjbUVX?=
+ =?utf-8?B?S3pwMU5ldDVHZldHSStXcy9iV3hNTG9zYkRWTU8vb2syOE8rY1BKVXBxdmY4?=
+ =?utf-8?B?V293QlpTY0FGelBjZ3A1M1pYbWQ5REtNT2VCS21PZVlLdWF1S3kyL3pURTZ6?=
+ =?utf-8?B?NUhLY1pXKzVEZ3didDg4bGRlTnZKSE1YWWEvMjNCVVY2Skh6VGxFYXI5VzFK?=
+ =?utf-8?B?cG9HQ25aWDhTeTNaRDduNklMN1REMk9IcGFyZnkvYTEwNTFSUWU3RG94NGFh?=
+ =?utf-8?B?MjA4azdiSnh6NllUdDBtZ0xPdGhYdTI4eWFKd2VNNmJ5eG8reFoydGRjTFlt?=
+ =?utf-8?B?eTVPcnVYQXVuVm5CYXpOckVqeXRFdTMvZFZSdThIbnJuU2ViSTJFVThDVGVq?=
+ =?utf-8?B?a3lXUFB2aWJycWx4aE9TbDFBYVVvTWp1Z0lyYk9Kd1ZaWTFGQmZNeEUxT0pl?=
+ =?utf-8?B?dU5pZEdDcnhtazdWRmhiU0k5VStHemJRZ0FMa1BGNkJ4ZVhxNVM5a0ZnNHZR?=
+ =?utf-8?B?QXlHOUs1d212ZmlESTIrMFBzYWNkc0VXVlFpbWJqeUhMUURZOWRVbHpLNlAr?=
+ =?utf-8?B?K2FwS0FmLzYzYlZSbkNNZEIydzMxTDdDeTNDOW5XZmFmaTBPT2U2cEE3ZkNa?=
+ =?utf-8?B?VFhBMTFydEpmSG5WaGUvNlhJVEE4RFNGY3J6ZmdVS0ZmTzRpMzlQVVVRdUc2?=
+ =?utf-8?B?YkRrSzllazF0K0VjSnRrb1lnQmRaNTc0cCs1TnBRbzJjVnhQQ0d4V2FvSzFx?=
+ =?utf-8?B?S3A0TjdTV0JVZHN3WmUxajc0WnM1Q2ZOZTJka1MrUHczelNUd3Y1VU5hNXF1?=
+ =?utf-8?B?a251UnRGTTNpclVhNVkyWUtnRUgvOWtJUXd0Z0twY1g0NVl1YjBVOUtwS2po?=
+ =?utf-8?B?VUQwbDFGcUdtVFVZbWJmRCszY2IxeGlJQko2ZTgzUU5SLzM0WHI1ZDNvbDVD?=
+ =?utf-8?B?MkRzcEVLbGtRcjFJaW8zSlpadUxSbHJzbUlHUzlTc1JTd3VOZk9zaUpOMzdx?=
+ =?utf-8?B?OFlEZzBDa0ZTcmFhUU02VnFIQzZaS2tiRFJTd2ZrVkhNN0xOdC84WGtwTEIv?=
+ =?utf-8?B?L1JrcDJqcWREK3k4MkhwRUlTVWJGV1BISkVLNGdSSDZqSGtLRDdCQmM5MXJy?=
+ =?utf-8?B?T29DdURrR2QrRXJYVGZIS0t1ejFYK3pFM2t3RzJGN3RZN0pXemdqV0RoQjRP?=
+ =?utf-8?B?NHpSSFIrWklCMmp2UTJsSlkxL3lyNFpMVkVpaGJYTHpXdTh5anRBbXFtam4r?=
+ =?utf-8?B?cDlocHZpY0t4cUFGT2RocnN4cEhLSm9FRUtjU3lQVk9OS2tQaG1LcUxjQUhF?=
+ =?utf-8?B?NjFjM1cwdjNZdDJ5SUVVeU5USHBHVFVkL0gwVkFQVi8rU3VTczIycUZOUTVM?=
+ =?utf-8?B?KzJQeVhLdDZMTncrdk1pU2lYV0RIZXhBVVJlaWxWb0JSL0Y3dGtjUXA1aHBs?=
+ =?utf-8?B?U3ZERW9OdHFwb29jK3Z2NGpHQjhBRzZrTzB1T25wQ1dpQnZuRHU0QzZCRkU3?=
+ =?utf-8?B?cHdpc3oxclVkV3RESXZ1WDRlN0ZQbEVmWldCUml0Y1lHNW9QcUMvOWdCWDFB?=
+ =?utf-8?B?VDhmbDBQVWErc1k0dThsM1htdm1rZS93Y2JKVG1rR3Y5bVFiSys4R2Fmb1VG?=
+ =?utf-8?B?Zmphd0VMUXJpd2hvTm92aGFTdzRVL2dQWi8xVkJ2b0RaYmZ4WjJqZ2ZEZ1pH?=
+ =?utf-8?B?MnU5RGZ5STVxNkRub3BLaXVod0N2TzV1dEJsanFyd1hqdDNvK01mN09NMmlZ?=
+ =?utf-8?B?VU1OVnZ5U1FkMVRiaDVnWkowRVU1b3BiUTJjMWZrZDdPRzlZVVBZaDBQUHhU?=
+ =?utf-8?B?RjRTaWRrcnhkTTdqK28vaWVxUWVMMzhTWDV0T2h2Q05TVkVLb0lsQXBHb2sr?=
+ =?utf-8?B?eHkwZ3NFSU1ER0RzVCtKekQwemJGNEgyWENkSUUvMTlzeVRUL1pXZWtqcUNz?=
+ =?utf-8?B?Y0xOYm1ic21qQ0JLem9oblNHaDZHNGRLam5Peks2RmlCcC9YVjNnSnltSmRn?=
+ =?utf-8?B?YVFYYUJDUXdYcWdMMmQ5UmdHNWRMSmZZU2l0Q1VTVmtxNmJGOHIzc3lCajMv?=
+ =?utf-8?B?NEhpR2xTY3dGblhDaGNzaExGZGphODBZeG8wL1BkYzUxREFYRUw4Tml0KzNJ?=
+ =?utf-8?B?UWZrY1FwSS9OU2pJUTJWZTRnQ1ZhelJMWmlIcTF5VGhJSHc4SUtCN21DMkN1?=
+ =?utf-8?B?aGFiaUNDdC9VWThXUjBMMS9icnJRcElIc29GQWtKN0ZzVkJaUGZMd2NsY3FD?=
+ =?utf-8?B?WkwrYUJ2bXZEUTMyZWZ2MjROZUI5RHJFYXYzNFNidFpPQzYxbHpxR0ZpTjJS?=
+ =?utf-8?B?ZWIxQllQWTAyYkRJNmFkN08zNWFGcFBtd09Pa1lZcUVhWVZCK3NNbXBEdXBN?=
+ =?utf-8?B?dlkxb1ZFcUtiSjBaYVIrNlp5ZlZaOTd5cXlYazFnWUpGQXFzZ3VlUk94SlNP?=
+ =?utf-8?B?N1d1RVVpODZBTUkvSi9aUEZPUzdXUUdXNE1KNnBqRU1BVnVaam1MTUU5djlh?=
+ =?utf-8?B?SzViUWljbHNPUjZvenlIWUJjTVc5RFNmaGNKWUtDTFRLdUdPeFJXZFQwek81?=
+ =?utf-8?B?elVmakNvR0Z3WnFOaDR4QW1qOU9mbGVza25IVit3ckNkbjlrU0l1UzE3VTdi?=
+ =?utf-8?B?RHBWdDFMYUF2eHkrMkFUTlpZZ0VmMGZEbmxvMVU1dXFOSzJsTCswcW5yeXIz?=
+ =?utf-8?B?Z3NYWlpGaUhrZFIvUkUveFdOS2JGNE9YRGdmK3hyVHZsc3FaNUtPNVJqcDcy?=
+ =?utf-8?B?Zmd2VnhzTFZTVFRBMGZhVmg5VTY0NnVBSkE5aUIwdkVNQ0cyNmloZGxaM1M0?=
+ =?utf-8?B?SXUyVDAvZmtkdXk2MkduVi9teXYvaWI2OEgvS1lCUWF5T21zN0NsVndtbUlr?=
+ =?utf-8?B?cFJrRmhWVmYxSlkrVGdzSXBXOGRzYVMvbksybENYazhsdUNWelRvNUFlN1RH?=
+ =?utf-8?B?TnNLc01RV1ZmeEhpeFlLeTJrWmpFM3VRNFhMUk9hQVRsbUtHb1VDb3lSTmRB?=
+ =?utf-8?B?dGtGcGZ6c0RoSlFvU2ZER0lCL2thZTg5Z0pGYkZMVE45ZWNRc1ZLYmV1cXJi?=
+ =?utf-8?B?ck5ucFJGSitaZm0yaFhGQzR3cnB2MHZiVkphL0pzWGEwSjVYWi9BUHViMVUr?=
+ =?utf-8?B?K1NueUtvc2liaXVIRG9IOTdERzZ5R2xqNkxZNWZYYzZsYmg0M3hZRG1CaTA2?=
+ =?utf-8?B?NFVPMGExTHZTSjN3bHdMVWxhNlhvL1hiK1dCemxhaWdxOCtMVWZuVUlvdz09?=
+MIME-Version: 1.0
+
+<!doctype html><html lang=3D"en"><head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8">
+    <meta name=3D"viewport" content=3D"width=3Ddevice-width, user-scalable=
+=3Dno, initial-scale=3D1.0, maximum-scale=3D1.0, minimum-scale=3D1.0">
+    <meta http-equiv=3D"X-UA-Compatible" content=3D"ie=3Dedge">
+    <title>Easy form endpoints for your HTML forms</title>
+</head>
+<body>
+<p>Someone just submitted your form on http://localhost:8080/.</p>
+<p>Here's what they had to say:</p>
+                    <strong>Rating: </strong><br>
+                    <pre style=3D"margin: 0;white-space: pre-wrap">3 Stars<=
+/pre>
+                <hr>
+                <strong>Name: </strong><br>
+                    <pre style=3D"margin: 0;white-space: pre-wrap">Nick</pr=
+e>
+                <hr>
+                <strong>Review: </strong><br>
+                    <pre style=3D"margin: 0;white-space: pre-wrap">test</pr=
+e>
+                <hr>
+    <p style=3D"text-align: center">Submitted at Wed, Aug 19, 2026 11:24 PM=
+ (UTC)</p>
+<br>
+<div style=3D"background-color: #e8edf3;
+            text-align: center;
+            border-radius: 20px;
+            display: table;
+            margin: 0 auto 0 auto;
+            font-family: Verdana, sans-serif;">
+    <p><a style=3D"text-decoration: none;
+            color: #a9a9a9;
+            border-bottom: 1px dotted #b8b8b8;" href=3D"https://urldefense.=
+proofpoint.com/v2/url?u=3Dhttps-3A__formsubmit.co_sponsor&amp;d=3DDwMFaQ&am=
+p;c=3DeuGZstcaTDllvimEN8b7jXrwqOf-v5A_CdpgnVfiiMM&amp;r=3DxKt_7alH7tolOsyC8=
+trhWWtE4MYhlKPoQMLRGv5jpRc&amp;m=3D4EaBRmRUXjMS-sW7peKLXpCZX7prPDmWybLp7dl0=
+jaZh-Vc2QhRZau42-ZoRYTdE&amp;s=3DG8BHKoQrX1tb_5SBoyFwV6KjgJ_fzAGJgC8AfRhD94=
+U&amp;e=3D">Sponsor</a></p>
+    <p style=3D"padding: 0 25px 10px 25px;">
+        <img height=3D"20px" src=3D"https://i.ibb.co/cJbZsgN/reply-solid.pn=
+g" alt=3D"web development services">
+        <b>Get web development services from an industry expert,
+            <a style=3D"text-decoration: none;" href=3D"https://urldefense.=
+proofpoint.com/v2/url?u=3Dhttps-3A__devrolabs.com_startups-3Fref-3Dformsubm=
+it-2Demail&amp;d=3DDwMFaQ&amp;c=3DeuGZstcaTDllvimEN8b7jXrwqOf-v5A_CdpgnVfii=
+MM&amp;r=3DxKt_7alH7tolOsyC8trhWWtE4MYhlKPoQMLRGv5jpRc&amp;m=3D4EaBRmRUXjMS=
+-sW7peKLXpCZX7prPDmWybLp7dl0jaZh-Vc2QhRZau42-ZoRYTdE&amp;s=3D1MXC3wMyDRJjyN=
+fhQreaKUfkvvhxQpKvL_GW4UdHeSY&amp;e=3D" target=3D"_blank">here =E2=86=92</a=
+>
+        </b>
+    </p>
+</div>
+<br>
+<p>Your friends from,</p>
+<a style=3D"text-decoration: none;" href=3D"https://urldefense.proofpoint.c=
+om/v2/url?u=3Dhttps-3A__formsubmit.co&amp;d=3DDwMFaQ&amp;c=3DeuGZstcaTDllvi=
+mEN8b7jXrwqOf-v5A_CdpgnVfiiMM&amp;r=3DxKt_7alH7tolOsyC8trhWWtE4MYhlKPoQMLRG=
+v5jpRc&amp;m=3D4EaBRmRUXjMS-sW7peKLXpCZX7prPDmWybLp7dl0jaZh-Vc2QhRZau42-ZoR=
+YTdE&amp;s=3D4A-tW89xQa3_1PIPr_MNt8CVZiBlr_LUiOqj1GTwgCM&amp;e=3D"><strong>=
+FormSubmit Team</strong></a>
+</body>
+</html>
+

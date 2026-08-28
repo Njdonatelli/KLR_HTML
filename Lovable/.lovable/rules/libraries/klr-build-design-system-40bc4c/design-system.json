@@ -1,0 +1,932 @@
+{
+  "meta": {
+    "name": "KLR Build Design System",
+    "package": "@ws-rqbetafezvsjxqmxup0o/d2ed3ea2-4f89-44de-ab39-7bf1bc29a635",
+    "version": "1.0.0",
+    "framework": "react",
+    "css_framework": "css-variables",
+    "starter_template": "custom_design_system",
+    "theme_files": [
+      "src/styles/tokens.css"
+    ],
+    "source_type": "local",
+    "source_manifest": {
+      "#enrichment": "62463ef4f5589a979c3ebb43305c110ca973175632c220381f8c9cdee59f3079",
+      ".dsignore": "ee25306d6c3a049b3b4ac4052171d1cb",
+      ".gitignore": "6059213806e442947666752f3db6bfdc",
+      ".lovable/meta.yaml": "d1f4edf35a22268edbfbdaca9f21c0f1",
+      ".lovable/sources.yaml": "8d18f9342ea268b03c33187db93db7de",
+      ".lovable/system.md": "a8fd836a719fbd5aaa849e55339a16f0",
+      "README.md": "d19675c449605f23c7cfa133c69b398b",
+      "bunfig.toml": "25f4c8696b22b0943db7191e0cdf7942",
+      "eslint.config.js": "07a67437fb1a45ab36d6de0145ff09de",
+      "lovable.toml": "9636c1bf32f9901bfba4eabb92981217",
+      "mockupPreviewPlugin.ts": "e42e31c16e4b3b36f860729f5224edad",
+      "package.json": "f0ae266c8f7ec14e23306b9b8bf02110",
+      "public/favicon.png": "2b4ac4d46f80ce1ac1c324b9f1c15b64",
+      "src/assets/logos/logo-dark-text.png": "f19d147da7a37aa751b1b1d4878b0533",
+      "src/assets/logos/logo-light-text.png": "6f463a8cea19edab1ea0eb6a0c23e652",
+      "src/assets/logos/logo-mark.png": "03ec3beabe97ed516f0bb2994e425529",
+      "src/components/Badge.tsx": "b9a136db8bca1740676f08d87ace9c22",
+      "src/components/Button.tsx": "3168aa3cd1981546d778e9cf70ea85d3",
+      "src/components/ContactSection.tsx": "4bf88ee68660d746329308a3f1c83ddc",
+      "src/components/FeatureCard.tsx": "ebe36864cd5b0d6c2f6247878640a0b4",
+      "src/components/Hero.tsx": "66022f34730eb0aa7ade63970ecc7175",
+      "src/components/Input.tsx": "9a3176ed9261008dbcb3c6275c5fc5e2",
+      "src/components/ProcessSection.tsx": "b01e2bf7d50c4a0fdaadf365dd5244ca",
+      "src/components/ProcessStep.tsx": "2a86e56ab5955114ba7a30a84746aa25",
+      "src/components/SectionHeading.tsx": "63f01d5bcf0c36cc9df54efb95569c99",
+      "src/components/SiteHeader.tsx": "712219453d41e00e8581e6f0299b0cf9",
+      "src/components/StatCard.tsx": "f7e5d24d909bbe6f34bb933764450345",
+      "src/components/TestimonialCard.tsx": "e2538d52067f7ad6b199ef8f031d37d8",
+      "src/components/TestimonialSection.tsx": "9cb3583e609db7b44c40616666acf596",
+      "src/components/ValueSection.tsx": "4db2c64996ae9e0cbce34729db1d7907",
+      "src/index.ts": "0acbf25e6a9669d6a9887d5373e286bd",
+      "src/mockup-preview.d.ts": "38969839f35ce2966e32a9f01a5c09ea",
+      "src/routeTree.gen.ts": "e6ce44fa2de88bbc9f7cd48795108c11",
+      "src/router.tsx": "8f905e713b0eba7fa8148b7995a708c9",
+      "src/routes/[__component].preview.$.tsx": "06d671f4774ac83355e59ad69a350bab",
+      "src/routes/[__mockup].preview.$.tsx": "5d9f42470848aa60148f20f9580e240e",
+      "src/routes/__root.tsx": "f4b82eef6a09121f8c6876cf8a07b993",
+      "src/routes/colors.tsx": "f965852634ed29af6976a776718df56e",
+      "src/routes/components.tsx": "0a2d0709015115fba6a759bdba3a54b2",
+      "src/routes/index.tsx": "d7ed97975e3050b966be226edf8b5144",
+      "src/routes/sections.tsx": "e0360ba3cd5d21cc9330018370441bbd",
+      "src/routes/typography.tsx": "657a333796fcea788913c4536bd00d39",
+      "src/showcase/ShowcaseLayout.tsx": "cc5031a4bfc86b7a093cc55d2ba61bbd",
+      "src/styles.css": "9c7c62bb20ff5bc65861906413d28b0e",
+      "src/styles/tokens.css": "39dbec527f695a1d907180db109edf1e",
+      "tsconfig.json": "994abf64c2b9f78b568879f80ed0170e",
+      "vite.config.ts": "9f787596cc6f9a2aa3de5a021aed28f3",
+      "wrangler.jsonc": "680b897d48e44bcc65fe437c29b38f3b"
+    },
+    "pipeline_version": 8
+  },
+  "tokens": {
+    "color": [
+      {
+        "name": "--tan",
+        "raw": "#b4a593",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--tan-dark",
+        "raw": "#8f8069",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--tan-light",
+        "raw": "#cfc4b5",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--olive",
+        "raw": "#5f6043",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--olive-dark",
+        "raw": "#4b4c35",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--navy",
+        "raw": "#20404e",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--navy-light",
+        "raw": "#2f5a6c",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--navy-dark",
+        "raw": "#162d38",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--bronze",
+        "raw": "#7e6e52",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--bronze-dark",
+        "raw": "#665941",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--bronze-light",
+        "raw": "#9c8b6b",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--olive-light",
+        "raw": "#7c7d58",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--charcoal",
+        "raw": "#181e23",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--white",
+        "raw": "#ffffff",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--off-white",
+        "raw": "#f7f5f2",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--stone-100",
+        "raw": "#f2efe9",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--stone-200",
+        "raw": "#e6e0d6",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--stone-300",
+        "raw": "#d3cabb",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--stone-400",
+        "raw": "#a9a196",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--stone-500",
+        "raw": "#8b8479",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--stone-600",
+        "raw": "#6b6459",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--stone-700",
+        "raw": "#4e4942",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--success",
+        "raw": "#4a6b4d",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--warning",
+        "raw": "#a8752f",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--danger",
+        "raw": "#8c3f32",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--focus-ring",
+        "raw": "0 0 0 3px color-mix(in srgb, var(--accent-primary) 35%, transparent)",
+        "source": "src/styles/tokens.css"
+      }
+    ],
+    "spacing": [
+      {
+        "name": "--space-1",
+        "raw": "4px",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--space-2",
+        "raw": "8px",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--space-3",
+        "raw": "12px",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--space-4",
+        "raw": "16px",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--space-5",
+        "raw": "20px",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--space-6",
+        "raw": "24px",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--space-8",
+        "raw": "32px",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--space-10",
+        "raw": "40px",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--space-12",
+        "raw": "48px",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--space-16",
+        "raw": "64px",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--space-20",
+        "raw": "80px",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--space-24",
+        "raw": "96px",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--space-32",
+        "raw": "128px",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--border-width",
+        "raw": "1px",
+        "source": "src/styles/tokens.css"
+      }
+    ],
+    "typography": [
+      {
+        "name": "--font-display",
+        "raw": "\"Archivo\", \"Helvetica Neue\", Arial, sans-serif",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--font-body",
+        "raw": "\"Work Sans\", system-ui, -apple-system, sans-serif",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--font-label",
+        "raw": "\"Barlow Semi Condensed\", \"Arial Narrow\", sans-serif",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--text-display",
+        "raw": "5rem",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--text-h1",
+        "raw": "3.75rem",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--text-h2",
+        "raw": "2.75rem",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--text-h3",
+        "raw": "2rem",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--text-h4",
+        "raw": "1.5rem",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--text-body-lg",
+        "raw": "1.25rem",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--text-body",
+        "raw": "1.0625rem",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--text-body-sm",
+        "raw": "0.9375rem",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--text-caption",
+        "raw": "0.8125rem",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--text-eyebrow",
+        "raw": "0.8125rem",
+        "source": "src/styles/tokens.css"
+      }
+    ],
+    "radius": [
+      {
+        "name": "--radius-none",
+        "raw": "0px",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--radius-sm",
+        "raw": "4px",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--radius-md",
+        "raw": "8px",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--radius-lg",
+        "raw": "14px",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--radius-pill",
+        "raw": "999px",
+        "source": "src/styles/tokens.css"
+      }
+    ],
+    "shadow": [
+      {
+        "name": "--shadow-sm",
+        "raw": "0 1px 2px rgba(24, 30, 35, 0.06), 0 1px 1px rgba(24, 30, 35, 0.04)",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--shadow-md",
+        "raw": "0 4px 12px rgba(24, 30, 35, 0.08), 0 2px 4px rgba(24, 30, 35, 0.05)",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--shadow-lg",
+        "raw": "0 12px 28px rgba(24, 30, 35, 0.12), 0 4px 8px rgba(24, 30, 35, 0.06)",
+        "source": "src/styles/tokens.css"
+      }
+    ],
+    "other": [
+      {
+        "name": "--leading-tight",
+        "raw": "1.05",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--leading-snug",
+        "raw": "1.25",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--leading-normal",
+        "raw": "1.5",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--leading-relaxed",
+        "raw": "1.65",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--tracking-tight",
+        "raw": "-0.01em",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--tracking-normal",
+        "raw": "0",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--tracking-wide",
+        "raw": "0.04em",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--tracking-label",
+        "raw": "0.12em",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--weight-regular",
+        "raw": "400",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--weight-medium",
+        "raw": "500",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--weight-semibold",
+        "raw": "600",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--weight-bold",
+        "raw": "700",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--weight-extrabold",
+        "raw": "800",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--weight-black",
+        "raw": "900",
+        "source": "src/styles/tokens.css"
+      },
+      {
+        "name": "--container-max",
+        "raw": "1200px",
+        "source": "src/styles/tokens.css"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Button",
+      "file": "src/components/Button",
+      "import_path": "",
+      "props": [
+        {
+          "name": "children",
+          "type": "any",
+          "required": true
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "values": [
+            "primary",
+            "secondary",
+            "ghost",
+            "tan"
+          ],
+          "default": "primary"
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "default": "md"
+        },
+        {
+          "name": "onDark",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "type",
+          "type": "enum",
+          "values": [
+            "button",
+            "submit",
+            "reset"
+          ],
+          "default": "button"
+        }
+      ]
+    },
+    {
+      "name": "Badge",
+      "file": "src/components/Badge",
+      "import_path": "",
+      "props": [
+        {
+          "name": "children",
+          "type": "any",
+          "required": true
+        },
+        {
+          "name": "tone",
+          "type": "enum",
+          "values": [
+            "navy",
+            "olive",
+            "bronze",
+            "tan",
+            "outline"
+          ],
+          "default": "navy"
+        }
+      ]
+    },
+    {
+      "name": "Input",
+      "file": "src/components/Input",
+      "import_path": "",
+      "props": [
+        {
+          "name": "label",
+          "type": "string"
+        },
+        {
+          "name": "placeholder",
+          "type": "string"
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "default": "text"
+        },
+        {
+          "name": "multiline",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "value",
+          "type": "string"
+        },
+        {
+          "name": "defaultValue",
+          "type": "string"
+        },
+        {
+          "name": "onChange",
+          "type": "function"
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "error",
+          "type": "string"
+        },
+        {
+          "name": "id",
+          "type": "string"
+        },
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "className",
+          "type": "string"
+        },
+        {
+          "name": "style",
+          "type": "any"
+        }
+      ]
+    },
+    {
+      "name": "SectionHeading",
+      "file": "src/components/SectionHeading",
+      "import_path": "",
+      "props": [
+        {
+          "name": "eyebrow",
+          "type": "string"
+        },
+        {
+          "name": "title",
+          "type": "any",
+          "required": true
+        },
+        {
+          "name": "intro",
+          "type": "string"
+        },
+        {
+          "name": "align",
+          "type": "enum",
+          "values": [
+            "left",
+            "center"
+          ],
+          "default": "left"
+        },
+        {
+          "name": "onDark",
+          "type": "boolean",
+          "default": "false"
+        }
+      ]
+    },
+    {
+      "name": "FeatureCard",
+      "file": "src/components/FeatureCard",
+      "import_path": "",
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "tone",
+          "type": "enum",
+          "values": [
+            "navy",
+            "olive",
+            "bronze",
+            "outline"
+          ],
+          "default": "outline"
+        }
+      ]
+    },
+    {
+      "name": "StatCard",
+      "file": "src/components/StatCard",
+      "import_path": "",
+      "props": [
+        {
+          "name": "stat",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "name": "tone",
+          "type": "enum",
+          "values": [
+            "navy",
+            "olive",
+            "bronze"
+          ],
+          "default": "navy"
+        }
+      ]
+    },
+    {
+      "name": "ProcessStep",
+      "file": "src/components/ProcessStep",
+      "import_path": "",
+      "props": [
+        {
+          "name": "number",
+          "type": "any",
+          "required": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "TestimonialCard",
+      "file": "src/components/TestimonialCard",
+      "import_path": "",
+      "props": [
+        {
+          "name": "quote",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "attribution",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "SiteHeader",
+      "file": "src/components/SiteHeader",
+      "import_path": "",
+      "props": [
+        {
+          "name": "logoSrc",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "logoAlt",
+          "type": "string",
+          "default": "KLR Build LLC"
+        },
+        {
+          "name": "links",
+          "type": "any",
+          "required": true
+        },
+        {
+          "name": "activeId",
+          "type": "string"
+        },
+        {
+          "name": "onSelect",
+          "type": "function"
+        },
+        {
+          "name": "sticky",
+          "type": "boolean",
+          "default": "true"
+        }
+      ]
+    },
+    {
+      "name": "Hero",
+      "file": "src/components/Hero",
+      "import_path": "",
+      "props": [
+        {
+          "name": "eyebrow",
+          "type": "string"
+        },
+        {
+          "name": "headline",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "body",
+          "type": "string"
+        },
+        {
+          "name": "actions",
+          "type": "any"
+        },
+        {
+          "name": "media",
+          "type": "any"
+        }
+      ]
+    },
+    {
+      "name": "ProcessSection",
+      "file": "src/components/ProcessSection",
+      "import_path": "",
+      "props": [
+        {
+          "name": "eyebrow",
+          "type": "string"
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "intro",
+          "type": "string"
+        },
+        {
+          "name": "steps",
+          "type": "any",
+          "required": true
+        },
+        {
+          "name": "columns",
+          "type": "any",
+          "default": "2"
+        }
+      ]
+    },
+    {
+      "name": "ValueSection",
+      "file": "src/components/ValueSection",
+      "import_path": "",
+      "props": [
+        {
+          "name": "eyebrow",
+          "type": "string"
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "intro",
+          "type": "string"
+        },
+        {
+          "name": "stats",
+          "type": "any"
+        },
+        {
+          "name": "featuresTitle",
+          "type": "string"
+        },
+        {
+          "name": "features",
+          "type": "any"
+        }
+      ]
+    },
+    {
+      "name": "TestimonialSection",
+      "file": "src/components/TestimonialSection",
+      "import_path": "",
+      "props": [
+        {
+          "name": "quote",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "attribution",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "ContactSection",
+      "file": "src/components/ContactSection",
+      "import_path": "",
+      "props": [
+        {
+          "name": "eyebrow",
+          "type": "string"
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "body",
+          "type": "string"
+        },
+        {
+          "name": "submitLabel",
+          "type": "string",
+          "default": "Request a Consultation"
+        },
+        {
+          "name": "contactLine",
+          "type": "any"
+        },
+        {
+          "name": "confirmation",
+          "type": "string",
+          "default": "Thanks — we'll be in touch within a day to schedule your consultation."
+        },
+        {
+          "name": "onSubmit",
+          "type": "function"
+        }
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "file": "src/assets/logos/logo-dark-text.png",
+      "kind": "logo",
+      "format": "png"
+    },
+    {
+      "file": "src/assets/logos/logo-light-text.png",
+      "kind": "logo",
+      "format": "png"
+    },
+    {
+      "file": "src/assets/logos/logo-mark.png",
+      "kind": "logo",
+      "format": "png"
+    }
+  ]
+}
