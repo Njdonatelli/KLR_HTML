@@ -1,0 +1,128 @@
+/* Brand fonts first so the external @import stays at the top of the bundle. */
+@import "../../brand/tokens/fonts.css";
+
+@import "tailwindcss";
+
+/* Design-system tokens — the only source of palette, type, spacing, and radii. */
+@import "../../brand/tokens/colors.css";
+@import "../../brand/tokens/typography.css";
+@import "../../brand/tokens/spacing.css";
+
+/*
+ * Wire the brand tokens into the Tailwind theme. `inline` makes each utility
+ * resolve through the token var at runtime, so brand/tokens/ stays the single
+ * source of truth — no literal values are re-declared here.
+ */
+@theme inline {
+  /* palette */
+  --color-*: initial;
+  --color-charcoal: var(--charcoal);
+  --color-navy: var(--navy);
+  --color-navy-light: var(--navy-light);
+  --color-tan: var(--tan);
+  --color-tan-light: var(--tan-light);
+  --color-tan-dark: var(--tan-dark);
+  --color-olive: var(--olive);
+  --color-olive-light: var(--olive-light);
+  --color-bronze: var(--bronze);
+  --color-bronze-light: var(--bronze-light);
+  --color-white: var(--white);
+  --color-off-white: var(--off-white);
+  --color-stone-100: var(--stone-100);
+  --color-stone-200: var(--stone-200);
+  --color-stone-300: var(--stone-300);
+  --color-stone-600: var(--stone-600);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  /* semantic aliases */
+  --color-surface-page: var(--surface-page);
+  --color-surface-card: var(--surface-card);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-surface-inverse: var(--surface-inverse);
+  --color-border-default: var(--border-default);
+  --color-border-strong: var(--border-strong);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-on-inverse: var(--text-on-inverse);
+  --color-text-on-navy: var(--text-on-navy);
+  --color-text-brand-tan: var(--text-brand-tan);
+  --color-accent-primary: var(--accent-primary);
+  --color-accent-primary-hover: var(--accent-primary-hover);
+
+  /* typefaces */
+  --font-*: initial;
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-label: var(--font-label);
+
+  /* type scale */
+  --text-*: initial;
+  --text-eyebrow: var(--text-eyebrow);
+  --text-body-sm: var(--text-body-sm);
+  --text-body: var(--text-body);
+  --text-body-lg: var(--text-body-lg);
+  --text-h4: var(--text-h4);
+  --text-h3: var(--text-h3);
+  --text-h2: var(--text-h2);
+  --text-h1: var(--text-h1);
+  --text-display: var(--text-display);
+
+  --leading-tight: var(--leading-tight);
+  --leading-snug: var(--leading-snug);
+  --leading-normal: var(--leading-normal);
+  --leading-relaxed: var(--leading-relaxed);
+
+  --tracking-tight: var(--tracking-tight);
+  --tracking-normal: var(--tracking-normal);
+  --tracking-wide: var(--tracking-wide);
+  --tracking-label: var(--tracking-label);
+
+  --font-weight-regular: var(--weight-regular);
+  --font-weight-medium: var(--weight-medium);
+  --font-weight-semibold: var(--weight-semibold);
+  --font-weight-bold: var(--weight-bold);
+  --font-weight-extrabold: var(--weight-extrabold);
+  --font-weight-black: var(--weight-black);
+
+  /* spacing derives from the base token: p-6 → calc(var(--space-1) * 6) = --space-6 */
+  --spacing: var(--space-1);
+
+  /* radii */
+  --radius-*: initial;
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-pill: var(--radius-pill);
+
+  /* shadows */
+  --shadow-*: initial;
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+
+  /* layout */
+  --container-site: var(--container-max);
+}
+
+@layer base {
+  html {
+    @media (prefers-reduced-motion: no-preference) {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    background: var(--surface-page);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
+  }
+}
