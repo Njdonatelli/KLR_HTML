@@ -1,5 +1,6 @@
 import { FeatureCard } from "@/components/ui/FeatureCard";
 import { StatCard } from "@/components/ui/StatCard";
+import { whyChoose as features } from "@/lib/content";
 
 const stats = [
   {
@@ -25,26 +26,6 @@ const stats = [
   },
 ] as const;
 
-const features = [
-  {
-    title: "Tailored Design",
-    description:
-      "No generic packages. Projects are shaped around lifestyle, taste, budget, and how each family actually uses the home.",
-    tone: "navy",
-  },
-  {
-    title: "Responsive Service",
-    description:
-      "Questions are answered, updates are shared, and clients stay connected from planning through completion.",
-    tone: "olive",
-  },
-  {
-    title: "Family-Owned",
-    description:
-      "Clients are not passed through a giant system. They work with a team that values trust, flexibility, and accountability.",
-    tone: "bronze",
-  },
-] as const;
 
 export function ValueSection() {
   return (

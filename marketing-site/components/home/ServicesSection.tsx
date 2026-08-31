@@ -1,44 +1,6 @@
 import { FeatureCard } from "@/components/ui/FeatureCard";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-
-const services = [
-  {
-    title: "Patios",
-    description:
-      "Covered and open-air patios designed around how you actually live outside — dining, lounging, shade, and flow from the house.",
-    tone: "navy",
-  },
-  {
-    title: "Hardscape",
-    description:
-      "Concrete, pavers, and retaining walls installed to drainage and grading standards that keep the work solid for decades.",
-    tone: "olive",
-  },
-  {
-    title: "Pools & Water Features",
-    description:
-      "Pools, spas, and water features integrated into the landscape design rather than dropped into it.",
-    tone: "bronze",
-  },
-  {
-    title: "Turf & Planting",
-    description:
-      "Low-maintenance turf and plants selected together at the nursery, suited to the San Diego climate.",
-    tone: "navy",
-  },
-  {
-    title: "Fire Features",
-    description:
-      "Fire pits and fireplaces that anchor the yard and extend your evenings outdoors year-round.",
-    tone: "olive",
-  },
-  {
-    title: "Four-Season Rooms",
-    description:
-      "Enclosed living spaces that blur the line between indoors and out, usable every month of the year.",
-    tone: "bronze",
-  },
-] as const;
+import { services } from "@/lib/content";
 
 export function ServicesSection() {
   return (

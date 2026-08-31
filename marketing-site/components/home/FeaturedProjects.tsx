@@ -1,11 +1,8 @@
 import { Badge } from "@/components/ui/Badge";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { projects as allProjects } from "@/lib/content";
 
-const projects = [
-  { tag: "Hardscape + Turf", tone: "navy", title: "Full-yard transformation", location: "Oceanside" },
-  { tag: "Pool & Patio", tone: "olive", title: "Backyard retreat", location: "Carlsbad" },
-  { tag: "Fire Feature", tone: "bronze", title: "Evening entertaining yard", location: "Vista" },
-] as const;
+const projects = allProjects.slice(0, 3);
 
 export function FeaturedProjects() {
   return (
