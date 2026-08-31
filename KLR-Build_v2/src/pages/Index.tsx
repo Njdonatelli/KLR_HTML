@@ -8,8 +8,12 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { useScrollTracking } from "@/hooks/useAnalytics";
 import { CustomerReviews } from "@/components/CustomerReviews";
+import { useSmoothScroll } from "@/hooks/useSmoothScroll";
+import { scrollTo } from "@/lib/smooth-scroll";
 
 const Index = () => {
+  useSmoothScroll();
+
   // Track scroll depth into major sections
   useScrollTracking("hero");
   useScrollTracking("about");
@@ -52,15 +56,12 @@ const Index = () => {
       <Contact />
       <Footer />
 
-      
       {/* Mobile Sticky CTA */}
       <div className="md:hidden fixed bottom-4 right-4 z-50 animate-in fade-in slide-in-from-bottom-4 duration-500">
         <Button 
           size="lg" 
           className="shadow-xl shadow-primary/20 font-bold rounded-full px-6"
-          onClick={() => {
-            document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-          }}
+          onClick={() => scrollTo("contact")}
         >
           Get an Estimate
         </Button>

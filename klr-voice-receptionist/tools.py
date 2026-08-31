@@ -1,3 +1,7 @@
+# ==============================================================================
+# NOTE: The Twilio integration is NOT built and NOT implemented yet.
+# This code is planned for the future and is currently a stub/work-in-progress.
+# ==============================================================================
 def lookup_project(caller_phone: str):
     """
     Mock function to check if the caller is associated with an active project in Contractor Foreman.

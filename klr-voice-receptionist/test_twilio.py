@@ -1,3 +1,7 @@
+# ==============================================================================
+# NOTE: The Twilio integration is NOT built and NOT implemented yet.
+# This code is planned for the future and is currently a stub/work-in-progress.
+# ==============================================================================
 import os
 from twilio.rest import Client
 from dotenv import load_dotenv

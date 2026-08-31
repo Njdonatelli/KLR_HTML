@@ -52,11 +52,24 @@ export default {
           DEFAULT: "var(--card)",
           foreground: "var(--card-foreground)",
         },
+        "surface-warm": "var(--surface-warm)",
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      transitionTimingFunction: {
+        "out-expo": "var(--ease-out-expo)",
+        "out-quart": "var(--ease-out-quart)",
+        "in-out-quart": "var(--ease-in-out-quart)",
+        "out-cubic": "var(--ease-out-cubic)",
+      },
+      transitionDuration: {
+        "fast": "var(--duration-fast)",
+        "base": "var(--duration-base)",
+        "slow": "var(--duration-slow)",
+        "reveal": "var(--duration-reveal)",
       },
       keyframes: {
         "accordion-down": {

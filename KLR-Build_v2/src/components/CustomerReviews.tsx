@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { useSplitText } from "@/hooks/useSplitText";
 
 const mockReviews = [
   {
@@ -26,21 +28,35 @@ export const CustomerReviews = () => {
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
 
+  const headingRef = useSplitText<HTMLHeadingElement>({ preset: "heading-reveal" });
+  const formRef = useScrollReveal({ variant: "fade-left" });
+  const reviewsRef = useScrollReveal<HTMLDivElement>({
+    variant: "fade-right",
+    staggerChildren: "[data-reveal-card]",
+    staggerDelay: 0.15,
+  });
+
   return (
-    <section className="py-24 bg-[#F5F2EB]" id="reviews">
+    <section className="py-24 bg-surface-warm" id="reviews">
       <div className="container mx-auto px-4 max-w-6xl">
-        <h2 className="text-4xl md:text-5xl font-display font-bold text-center mb-16 text-[#3a352a]">
+        <h2
+          ref={headingRef}
+          className="text-4xl md:text-5xl font-display font-bold text-center mb-16"
+          style={{ color: "var(--text-primary)" }}
+        >
           Customer Reviews
         </h2>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
           {/* Left Column: Form */}
-          <div className="bg-white rounded-xl p-8 shadow-sm border border-border">
-            <h3 className="text-2xl font-display font-bold mb-6 text-[#3a352a]">
+          <div ref={formRef} className="bg-white rounded-xl p-8 shadow-sm border border-border">
+            <h3
+              className="text-2xl font-display font-bold mb-6"
+              style={{ color: "var(--text-primary)" }}
+            >
               Leave a Review
             </h3>
             <form action="https://formsubmit.co/nick@klrbuild.com" method="POST" className="space-y-6">
-              {/* FormSubmit Configuration */}
               <input type="hidden" name="_captcha" value="false" />
               <input type="hidden" name="_subject" value="New Customer Review Submission" />
               <input type="hidden" name="Rating" value={`${rating} Stars`} />
@@ -51,7 +67,8 @@ export const CustomerReviews = () => {
                   id="name"
                   name="Name"
                   placeholder="John Doe"
-                  className="bg-[#F5F2EB]/50 border-border"
+                  className="border-border"
+                  style={{ background: "color-mix(in srgb, var(--surface-warm) 50%, transparent)" }}
                   required
                 />
               </div>
@@ -69,9 +86,9 @@ export const CustomerReviews = () => {
                       onClick={() => setRating(star)}
                     >
                       <Star
-                        className={`w-6 h-6 ${
+                        className={`w-6 h-6 transition-colors duration-fast ${
                           star <= (hoverRating || rating)
-                            ? "fill-[#facc15] text-[#facc15]"
+                            ? "fill-yellow-400 text-yellow-400"
                             : "fill-transparent text-muted-foreground"
                         }`}
                       />
@@ -86,14 +103,18 @@ export const CustomerReviews = () => {
                   id="review"
                   name="Review"
                   placeholder="Share your experience with us..."
-                  className="min-h-[120px] bg-[#F5F2EB]/50 border-border resize-none"
+                  className="min-h-[120px] border-border resize-none"
+                  style={{ background: "color-mix(in srgb, var(--surface-warm) 50%, transparent)" }}
                   required
                 />
               </div>
 
               <Button
                 type="submit"
-                className="w-full bg-[#6b5235] hover:bg-[#574229] text-white font-medium py-6 text-lg rounded-md"
+                className="w-full text-white font-medium py-6 text-lg rounded-md transition-all duration-base ease-out-quart hover:scale-[1.02] hover:shadow-md"
+                style={{
+                  background: "var(--accent-tertiary)",
+                }}
               >
                 Submit Review
               </Button>
@@ -101,24 +122,29 @@ export const CustomerReviews = () => {
           </div>
 
           {/* Right Column: Reviews */}
-          <div className="space-y-8">
-            <h3 className="text-2xl font-display font-bold text-[#3a352a]">
+          <div ref={reviewsRef} className="space-y-8">
+            <h3
+              className="text-2xl font-display font-bold"
+              style={{ color: "var(--text-primary)" }}
+            >
               What Our Customers Say
             </h3>
             <div className="space-y-6">
               {mockReviews.map((review) => (
                 <div
                   key={review.id}
-                  className="bg-white rounded-xl p-8 shadow-sm border border-border flex flex-col gap-4"
+                  data-reveal-card
+                  className="bg-white rounded-xl p-8 shadow-sm border border-border flex flex-col gap-4 transition-all duration-base ease-out-quart hover:-translate-y-1 hover:shadow-md"
                 >
                   <div className="flex justify-between items-start">
                     <div>
-                      <h4 className="font-display font-bold text-lg text-[#3a352a]">
+                      <h4
+                        className="font-display font-bold text-lg"
+                        style={{ color: "var(--text-primary)" }}
+                      >
                         {review.name}
                       </h4>
-                      <p className="text-sm text-muted-foreground mt-1">
-                        {review.date}
-                      </p>
+                      <p className="text-sm text-muted-foreground mt-1">{review.date}</p>
                     </div>
                     <div className="flex gap-1">
                       {Array.from({ length: 5 }).map((_, i) => (
@@ -126,14 +152,14 @@ export const CustomerReviews = () => {
                           key={i}
                           className={`w-5 h-5 ${
                             i < review.rating
-                              ? "fill-[#facc15] text-[#facc15]"
+                              ? "fill-yellow-400 text-yellow-400"
                               : "fill-transparent text-muted"
                           }`}
                         />
                       ))}
                     </div>
                   </div>
-                  <p className="text-[#55524c] leading-relaxed">
+                  <p className="leading-relaxed" style={{ color: "var(--text-secondary)" }}>
                     {review.text}
                   </p>
                 </div>

@@ -1,3 +1,5 @@
+@import "../../brand/tokens/motion.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -37,60 +39,20 @@
   }
 }
 
-@layer components {
-  .animate-float {
-    animation: float 4s ease-in-out infinite;
-  }
+/* Lenis smooth scroll overrides */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
 
-  .animate-slide-up {
-    animation: slideUp 0.7s ease-out;
-  }
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
 
-  .animate-scale-in {
-    animation: scaleIn 0.5s ease-out;
-  }
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
 
-  @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-15px); }
-  }
-
-  @keyframes slideUp {
-    from {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes scaleIn {
-    from {
-      opacity: 0;
-      transform: scale(0.9);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
-  @supports (animation-timeline: scroll()) {
-    .parallax-hero {
-      animation: parallaxHero linear;
-      animation-timeline: scroll();
-      animation-range: entry 0% exit 100%;
-    }
-    
-    @keyframes parallaxHero {
-      from {
-        object-position: 0% 50%;
-      }
-      to {
-        object-position: 100% 50%;
-      }
-    }
-  }
+.lenis.lenis-stopped {
+  overflow: hidden;
 }

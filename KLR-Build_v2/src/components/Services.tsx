@@ -1,4 +1,6 @@
 import { Grid, Waves, TreePine, Lightbulb, Utensils, Leaf } from "lucide-react";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { useSplitText } from "@/hooks/useSplitText";
 
 const services = [
   {
@@ -34,44 +36,66 @@ const services = [
 ];
 
 const Services = () => {
+  const introHeadingRef = useSplitText<HTMLHeadingElement>({ preset: "heading-reveal" });
+  const introBodyRef = useScrollReveal({ variant: "fade-up", delay: 0.15 });
+  const gridHeadingRef = useSplitText<HTMLHeadingElement>({ preset: "heading-reveal" });
+  const gridRef = useScrollReveal<HTMLDivElement>({
+    variant: "fade-up",
+    staggerChildren: "[data-reveal-card]",
+    staggerDelay: 0.1,
+  });
+
   return (
-    <section className="py-24 bg-[#F5F2EB]" id="services">
+    <section className="py-24 bg-surface-warm" id="services">
       <div className="container mx-auto px-4 max-w-6xl">
         {/* Intro Section */}
         <div className="text-center mb-24 max-w-4xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-display font-bold text-[#3a352a] mb-8 leading-tight">
-            We Specialize in the <br/> Custom Design and Installation <br/> of Outdoor Environments
+          <h2
+            ref={introHeadingRef}
+            className="text-4xl md:text-5xl font-display font-bold mb-8 leading-tight"
+            style={{ color: "var(--text-primary)" }}
+          >
+            We Specialize in the Custom Design and Installation of Outdoor Environments
           </h2>
-          <p className="text-lg text-[#55524c] leading-relaxed">
+          <p
+            ref={introBodyRef}
+            className="text-lg leading-relaxed"
+            style={{ color: "var(--text-secondary)" }}
+          >
             Experience outdoor living in a whole new way with KLR BUILD's comprehensive experience and knowledge of design and installation. From fire pits and putting greens to outdoor kitchens, pools, and pergolas, we have the craftsmanship to complete it all with great detail and care.
           </p>
         </div>
 
         {/* Services Grid Section */}
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-display font-bold text-[#3a352a] mb-4">
+          <h2
+            ref={gridHeadingRef}
+            className="text-4xl font-display font-bold mb-4"
+            style={{ color: "var(--text-primary)" }}
+          >
             Our Landscaping Services
           </h2>
-          <p className="text-lg text-[#55524c]">
+          <p className="text-lg" style={{ color: "var(--text-secondary)" }}>
             Comprehensive outdoor solutions designed for North San Diego County's unique climate and lifestyle
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {services.map((service) => {
             const Icon = service.icon;
             return (
               <div
                 key={service.title}
-                className="bg-white rounded-xl p-8 shadow-sm border border-border flex flex-col gap-4"
+                data-reveal-card
+                className="bg-white rounded-xl p-8 shadow-sm border border-border flex flex-col gap-4 transition-all duration-base ease-out-quart hover:-translate-y-1 hover:shadow-md"
               >
-                <div className="text-[#6b5235]">
+                <div style={{ color: "var(--accent-tertiary)" }}>
                   <Icon className="w-8 h-8" />
                 </div>
-                <h3 className="font-display font-bold text-xl text-[#3a352a]">
+                <h3 className="font-display font-bold text-xl" style={{ color: "var(--text-primary)" }}>
                   {service.title}
                 </h3>
-                <p className="text-[#55524c] leading-relaxed">
+                <p className="leading-relaxed" style={{ color: "var(--text-secondary)" }}>
                   {service.description}
                 </p>
               </div>

@@ -1,90 +1,115 @@
 import { Hero as DSHero, Button } from "@/design-system/klr-build-design-system-40bc4c";
 import heroImage from "@/assets/hero-construction.jpg";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { gsap, ScrollTrigger } from "@/lib/gsap-register";
+import { scrollTo } from "@/lib/smooth-scroll";
+import { useSplitText } from "@/hooks/useSplitText";
 
-const scrollToSection = (id: string) => {
-  document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-};
+const prefersReducedMotion = () =>
+  typeof window !== "undefined" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 const Hero = () => {
-  const [scrollProgress, setScrollProgress] = useState(0);
   const imgRef = useRef<HTMLImageElement>(null);
+  const imgWrapRef = useRef<HTMLDivElement>(null);
+  const eyebrowRef = useRef<HTMLSpanElement>(null);
+  const bodyRef = useRef<HTMLParagraphElement>(null);
+  const actionsRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
+  const headlineRef = useSplitText<HTMLHeadingElement>({
+    preset: "hero-reveal",
+    trigger: "mount",
+    delay: 0.3,
+  });
+
+  // GSAP parallax on hero image
   useEffect(() => {
-    let ticking = false;
+    if (prefersReducedMotion() || !imgRef.current || !imgWrapRef.current) return;
 
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          if (imgRef.current) {
-            const rect = imgRef.current.getBoundingClientRect();
-            const viewHeight = window.innerHeight;
-            
-            // Only start scrolling once the image is in full view (bottom of image is above viewport bottom)
-            // End scrolling when the image is completely scrolled past (bottom of image is above viewport top)
-            if (rect.bottom >= viewHeight) {
-              setScrollProgress(0);
-            } else if (rect.bottom <= 0) {
-              setScrollProgress(100);
-            } else {
-              const progress = ((viewHeight - rect.bottom) / viewHeight) * 100;
-              setScrollProgress(progress);
-            }
-          }
-          ticking = false;
-        });
-        ticking = true;
-      }
+    const tween = gsap.to(imgRef.current, {
+      yPercent: 15,
+      scale: 1.05,
+      ease: "none",
+      scrollTrigger: {
+        trigger: imgWrapRef.current,
+        start: "top top",
+        end: "bottom top",
+        scrub: true,
+      },
+    });
+
+    return () => {
+      tween.scrollTrigger?.kill();
+      tween.kill();
     };
+  }, []);
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    // Initial call
-    handleScroll();
-    
-    return () => window.removeEventListener("scroll", handleScroll);
+  // Staggered fade-in for eyebrow, body, actions after headline
+  useEffect(() => {
+    if (prefersReducedMotion()) return;
+
+    const targets = [eyebrowRef.current, bodyRef.current, actionsRef.current].filter(Boolean);
+    if (targets.length === 0) return;
+
+    gsap.set(targets, { opacity: 0, y: 20 });
+
+    const tween = gsap.to(targets, {
+      opacity: 1,
+      y: 0,
+      duration: 0.7,
+      ease: "power3.out",
+      stagger: 0.15,
+      delay: 1.0, // After headline animation completes
+    });
+
+    return () => {
+      tween.kill();
+    };
   }, []);
 
   return (
     <DSHero
       id="home"
-      eyebrow="Family-Owned · Licensed · Insured"
+      eyebrow={<span ref={eyebrowRef}>Family-Owned · Licensed · Insured</span>}
       headline={
-        <>
-          Designed with intent.
-          <br />
-          Built to endure.
-        </>
+        <span ref={headlineRef}>
+          Designed with intent. Built to endure.
+        </span>
       }
-      body="KLR Build is a family-owned general B contractor in Oceanside, California. Custom outdoor environments, hardscaping, and full exterior transformations delivered with the craft and candor a neighbor deserves."
+      body={
+        <p ref={bodyRef} style={{ margin: 0 }}>
+          KLR Build is a family-owned general B contractor in Oceanside, California. Custom outdoor environments, hardscaping, and full exterior transformations delivered with the craft and candor a neighbor deserves.
+        </p>
+      }
       actions={
-        <>
-          <Button size="lg" onDark onClick={() => scrollToSection("contact")}>
+        <div ref={actionsRef} style={{ display: "flex", gap: "var(--space-4)", flexWrap: "wrap" }}>
+          <Button size="lg" onDark onClick={() => scrollTo("contact")}>
             Request a Consultation
           </Button>
           <Button size="lg" variant="secondary" onDark onClick={() => navigate("/projects")}>
             View Our Work
           </Button>
-        </>
+        </div>
       }
       media={
-        <img
-          ref={imgRef}
-          className="parallax-hero"
-          src={heroImage}
-          alt="KLR Build crew framing a custom residential project at sunrise"
-          fetchPriority="high"
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            objectPosition: `${scrollProgress}% 50%`,
-            borderRadius: "var(--radius-sm)",
-            boxShadow: "var(--shadow-lg)",
-            willChange: "object-position",
-          }}
-        />
+        <div ref={imgWrapRef} style={{ width: "100%", height: "100%", overflow: "hidden", borderRadius: "var(--radius-sm)" }}>
+          <img
+            ref={imgRef}
+            src={heroImage}
+            alt="KLR Build crew framing a custom residential project at sunrise"
+            fetchPriority="high"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              objectPosition: "center 40%",
+              boxShadow: "var(--shadow-lg)",
+              willChange: "transform",
+            }}
+          />
+        </div>
       }
     />
   );

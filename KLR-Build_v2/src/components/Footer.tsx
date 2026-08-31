@@ -1,8 +1,12 @@
 import logo from "@/design-system/klr-build-design-system-40bc4c/assets/logos/logo-light-text.png";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const Footer = () => {
+  const footerRef = useScrollReveal({ variant: "fade-up", duration: 0.6 });
+
   return (
     <footer
+      ref={footerRef}
       style={{
         background: "var(--charcoal)",
         borderTop: "var(--border-width) solid var(--bronze-dark)",

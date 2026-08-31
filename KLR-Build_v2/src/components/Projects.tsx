@@ -4,6 +4,7 @@ import projectCommercial from "@/assets/project-commercial.jpg";
 import projectIndustrial from "@/assets/project-industrial.jpg";
 import { Button } from "@/components/ui/button";
 import { Play, Spline } from "lucide-react";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const projects = [
   {
@@ -32,10 +33,16 @@ const projects = [
 ];
 
 const Projects = () => {
+  const gridRef = useScrollReveal<HTMLDivElement>({
+    variant: "fade-up",
+    staggerChildren: "[data-reveal-card]",
+    staggerDelay: 0.15,
+  });
+
   return (
     <section
       id="projects"
-      className="py-24 bg-surface-inverse text-white"
+      className="py-24"
       style={{ background: "var(--surface-inverse)" }}
     >
       <div className="container mx-auto px-4 max-w-7xl">
@@ -47,11 +54,12 @@ const Projects = () => {
           style={{ marginBottom: "var(--space-12)", maxWidth: 620 }}
         />
 
-        <div className="flex flex-col md:grid md:grid-cols-2 gap-8">
+        <div ref={gridRef} className="flex flex-col md:grid md:grid-cols-2 gap-8">
           {projects.map((project) => (
             <article
               key={project.title}
-              className="group rounded-xl overflow-hidden bg-surface-card border border-border flex flex-col hover:shadow-2xl transition-all duration-300"
+              data-reveal-card
+              className="group rounded-xl overflow-hidden border flex flex-col transition-all duration-slow ease-out-expo hover:shadow-2xl"
               style={{
                 background: "var(--surface-card)",
                 borderColor: "var(--border-subtle)",
@@ -59,21 +67,22 @@ const Projects = () => {
             >
               <div className="relative w-full aspect-video overflow-hidden">
                 <img
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                  className="w-full h-full object-cover transition-transform duration-slow ease-out-expo group-hover:scale-105"
                   src={project.image}
                   alt={`${project.title} — ${project.category} project by KLR Build`}
                   loading="lazy"
+                  decoding="async"
                 />
                 
                 {project.has3D && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-base ease-out-quart">
                     <Button variant="secondary" className="gap-2 backdrop-blur-md bg-white/80">
                       <Spline className="w-4 h-4" /> View 3D Render
                     </Button>
                   </div>
                 )}
                 {project.hasBeforeAfter && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-base ease-out-quart">
                     <Button variant="secondary" className="gap-2 backdrop-blur-md bg-white/80">
                       <Play className="w-4 h-4" /> Before / After
                     </Button>
@@ -83,10 +92,10 @@ const Projects = () => {
               
               <div className="p-6 flex flex-col gap-3 flex-1">
                 <div><Badge tone={project.tone}>{project.category}</Badge></div>
-                <h3 className="text-2xl font-display font-bold text-foreground" style={{ color: "var(--text-primary)" }}>
+                <h3 className="text-2xl font-display font-bold" style={{ color: "var(--text-primary)" }}>
                   {project.title}
                 </h3>
-                <p className="text-muted-foreground leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+                <p className="leading-relaxed" style={{ color: "var(--text-secondary)" }}>
                   {project.description}
                 </p>
               </div>

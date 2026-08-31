@@ -86,7 +86,7 @@ const Blog = () => {
                 onClick={() => setTab(value)}
                 className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 capitalize ${
                   tab === value
-                    ? "bg-[#6b5235] text-white shadow-md"
+                    ? "bg-[var(--accent-tertiary)] text-white shadow-md"
                     : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
                 }`}
               >

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useLayoutEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -7,7 +7,7 @@ import { Slider } from "@/components/ui/slider";
 import { useFormStorage, LeadPayload } from "@/hooks/useFormStorage";
 import { submitLeadToCRM } from "@/integrations/crm";
 import { toast } from "sonner";
-import { motion, AnimatePresence } from "framer-motion";
+import { gsap } from "@/lib/gsap-register";
 import { trackEvent } from "@/hooks/useAnalytics";
 
 export const LeadForm = () => {
@@ -18,6 +18,8 @@ export const LeadForm = () => {
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [addressSuggestions, setAddressSuggestions] = useState<any[]>([]);
+  const stepContainerRef = useRef<HTMLDivElement>(null);
+  const prevStepRef = useRef(step);
 
   // Track form abandonment
   useEffect(() => {
@@ -29,6 +31,24 @@ export const LeadForm = () => {
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [step, formData]);
+
+  // GSAP step transition — replaces Framer Motion AnimatePresence
+  useLayoutEffect(() => {
+    const el = stepContainerRef.current;
+    if (!el || step === prevStepRef.current) return;
+
+    const direction = step > prevStepRef.current ? 1 : -1;
+    prevStepRef.current = step;
+
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) return;
+
+    gsap.fromTo(
+      el,
+      { x: direction * 10, opacity: 0 },
+      { x: 0, opacity: 1, duration: 0.25, ease: "power2.out", clearProps: "x" }
+    );
+  }, [step]);
 
   const handleNext = () => {
     trackEvent("form_step_completed", { step });
@@ -87,260 +107,253 @@ export const LeadForm = () => {
       </div>
 
       <form onSubmit={handleSubmit} className="min-h-[250px] flex flex-col justify-between">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={step}
-            initial={{ x: 10, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: -10, opacity: 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            {step === 1 && (
-              <div className="space-y-4">
-                <h3 className="text-xl font-semibold mb-4">What type of project is this?</h3>
-                <RadioGroup
-                  value={formData.projectType || ""}
-                  onValueChange={(val) => handleChange("projectType", val)}
-                  className="space-y-3"
-                >
-                  {["Custom Landscape", "Hardscaping", "Outdoor Structure", "Other"].map((type) => (
-                    <div key={type} className="flex items-center space-x-3 bg-secondary/50 p-4 rounded-lg border border-transparent hover:border-primary/50 transition-colors cursor-pointer has-[:checked]:border-primary has-[:checked]:bg-primary/5">
-                      <RadioGroupItem value={type} id={`type-${type}`} />
-                      <Label htmlFor={`type-${type}`} className="flex-1 cursor-pointer font-medium">{type}</Label>
-                    </div>
-                  ))}
-                </RadioGroup>
-              </div>
-            )}
+        <div ref={stepContainerRef}>
+          {step === 1 && (
+            <div className="space-y-4">
+              <h3 className="text-xl font-semibold mb-4">What type of project is this?</h3>
+              <RadioGroup
+                value={formData.projectType || ""}
+                onValueChange={(val) => handleChange("projectType", val)}
+                className="space-y-3"
+              >
+                {["Custom Landscape", "Hardscaping", "Outdoor Structure", "Other"].map((type) => (
+                  <div key={type} className="flex items-center space-x-3 bg-secondary/50 p-4 rounded-lg border border-transparent hover:border-primary/50 transition-colors cursor-pointer has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+                    <RadioGroupItem value={type} id={`type-${type}`} />
+                    <Label htmlFor={`type-${type}`} className="flex-1 cursor-pointer font-medium">{type}</Label>
+                  </div>
+                ))}
+              </RadioGroup>
+            </div>
+          )}
 
-            {step === 2 && (
-              <div className="space-y-8 mt-4">
-                <h3 className="text-xl font-semibold mb-8">What is your estimated budget?</h3>
-                
-                <div className="px-2">
-                  <Slider
-                    defaultValue={[
-                      formData.budgetRange 
-                        ? parseInt(formData.budgetRange.replace(/[^0-9]/g, '')) 
-                        : 50000
-                    ]}
-                    max={1000000}
-                    min={1000}
-                    step={1000}
-                    onValueChange={(vals) => handleChange("budgetRange", `$${vals[0].toLocaleString()}`)}
-                    className="py-4"
+          {step === 2 && (
+            <div className="space-y-8 mt-4">
+              <h3 className="text-xl font-semibold mb-8">What is your estimated budget?</h3>
+              
+              <div className="px-2">
+                <Slider
+                  defaultValue={[
+                    formData.budgetRange 
+                      ? parseInt(formData.budgetRange.replace(/[^0-9]/g, '')) 
+                      : 50000
+                  ]}
+                  max={1000000}
+                  min={1000}
+                  step={1000}
+                  onValueChange={(vals) => handleChange("budgetRange", `$${vals[0].toLocaleString()}`)}
+                  className="py-4"
+                />
+              </div>
+              
+              <div className="text-center mt-8">
+                <span className="text-5xl font-display font-bold" style={{ color: "var(--text-primary)" }}>
+                  {formData.budgetRange || "$50,000"}
+                </span>
+              </div>
+            </div>
+          )}
+
+          {step === 3 && (
+            <div className="space-y-4">
+              <h3 className="text-xl font-semibold mb-4">Where is the project located?</h3>
+              
+              <div className="space-y-4">
+                <div className="space-y-2 relative">
+                  <Label htmlFor="street">Street address</Label>
+                  <Input
+                    id="street"
+                    placeholder="Start typing to autofill..."
+                    value={formData.street || ""}
+                    onChange={async (e) => {
+                      const val = e.target.value;
+                      handleChange("street", val);
+                      
+                      if (val.length > 3) {
+                        try {
+                          const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(val)}&countrycodes=us&addressdetails=1&limit=5`);
+                          const data = await res.json();
+                          setAddressSuggestions(data);
+                        } catch (err) {
+                          console.error("Failed to fetch address suggestions", err);
+                        }
+                      } else {
+                        setAddressSuggestions([]);
+                      }
+                    }}
+                    onBlur={() => setTimeout(() => setAddressSuggestions([]), 200)}
+                    className="relative z-10"
+                  />
+                  {addressSuggestions.length > 0 && (
+                    <div className="absolute top-[100%] left-0 w-full mt-1 bg-white border border-border rounded-md shadow-lg z-50 max-h-60 overflow-y-auto">
+                      {addressSuggestions.map((suggestion: any) => (
+                        <div
+                          key={suggestion.place_id}
+                          className="p-3 hover:bg-secondary cursor-pointer text-sm"
+                          style={{ color: "var(--text-primary)" }}
+                          onClick={() => {
+                            const addr = suggestion.address;
+                            const house = addr.house_number || "";
+                            const road = addr.road || "";
+                            const streetVal = house || road ? `${house} ${road}`.trim() : suggestion.display_name.split(",")[0];
+                            const cityVal = addr.city || addr.town || addr.village || addr.county || "";
+                            
+                            setFormData(prev => ({
+                              ...prev,
+                              street: streetVal,
+                              city: cityVal,
+                              state: addr.state || "",
+                              zip: addr.postcode || "",
+                            }));
+                            setAddressSuggestions([]);
+                          }}
+                        >
+                          {suggestion.display_name}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="street2">Suite or unit</Label>
+                  <Input
+                    id="street2"
+                    value={formData.street2 || ""}
+                    onChange={(e) => handleChange("street2", e.target.value)}
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="city">City</Label>
+                    <Input
+                      id="city"
+                      value={formData.city || ""}
+                      onChange={(e) => handleChange("city", e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="state">State</Label>
+                    <Input
+                      id="state"
+                      value={formData.state || ""}
+                      onChange={(e) => handleChange("state", e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="zip">Zip code</Label>
+                    <Input
+                      id="zip"
+                      value={formData.zip || ""}
+                      onChange={(e) => handleChange("zip", e.target.value)}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {step === 4 && (
+            <div className="space-y-4 max-h-[50vh] overflow-y-auto pr-2">
+              <h3 className="text-xl font-semibold mb-4">How can we reach you?</h3>
+              <div className="space-y-4">
+                <div className="space-y-1">
+                  <Label htmlFor="company">Company name</Label>
+                  <Input
+                    id="company"
+                    placeholder="Optional"
+                    value={formData.company || ""}
+                    onChange={(e) => handleChange("company", e.target.value)}
                   />
                 </div>
                 
-                <div className="text-center mt-8">
-                  <span className="text-5xl font-display font-bold text-[#3a352a]">
-                    {formData.budgetRange || "$50,000"}
-                  </span>
-                </div>
-              </div>
-            )}
-
-            {step === 3 && (
-              <div className="space-y-4">
-                <h3 className="text-xl font-semibold mb-4">Where is the project located?</h3>
-                
-                <div className="space-y-4">
-                  <div className="space-y-2 relative">
-                    <Label htmlFor="street">Street address</Label>
-                    <Input
-                      id="street"
-                      placeholder="Start typing to autofill..."
-                      value={formData.street || ""}
-                      onChange={async (e) => {
-                        const val = e.target.value;
-                        handleChange("street", val);
-                        
-                        if (val.length > 3) {
-                          try {
-                            const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(val)}&countrycodes=us&addressdetails=1&limit=5`);
-                            const data = await res.json();
-                            setAddressSuggestions(data);
-                          } catch (err) {
-                            console.error("Failed to fetch address suggestions", err);
-                          }
-                        } else {
-                          setAddressSuggestions([]);
-                        }
-                      }}
-                      onBlur={() => setTimeout(() => setAddressSuggestions([]), 200)}
-                      className="relative z-10"
-                    />
-                    {addressSuggestions.length > 0 && (
-                      <div className="absolute top-[100%] left-0 w-full mt-1 bg-white border border-border rounded-md shadow-lg z-50 max-h-60 overflow-y-auto">
-                        {addressSuggestions.map((suggestion: any) => (
-                          <div
-                            key={suggestion.place_id}
-                            className="p-3 hover:bg-secondary cursor-pointer text-sm text-[#3a352a]"
-                            onClick={() => {
-                              const addr = suggestion.address;
-                              const house = addr.house_number || "";
-                              const road = addr.road || "";
-                              const streetVal = house || road ? `${house} ${road}`.trim() : suggestion.display_name.split(",")[0];
-                              const cityVal = addr.city || addr.town || addr.village || addr.county || "";
-                              
-                              setFormData(prev => ({
-                                ...prev,
-                                street: streetVal,
-                                city: cityVal,
-                                state: addr.state || "",
-                                zip: addr.postcode || "",
-                              }));
-                              setAddressSuggestions([]);
-                            }}
-                          >
-                            {suggestion.display_name}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="street2">Suite or unit</Label>
-                    <Input
-                      id="street2"
-                      value={formData.street2 || ""}
-                      onChange={(e) => handleChange("street2", e.target.value)}
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="city">City</Label>
-                      <Input
-                        id="city"
-                        value={formData.city || ""}
-                        onChange={(e) => handleChange("city", e.target.value)}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="state">State</Label>
-                      <Input
-                        id="state"
-                        value={formData.state || ""}
-                        onChange={(e) => handleChange("state", e.target.value)}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="zip">Zip code</Label>
-                      <Input
-                        id="zip"
-                        value={formData.zip || ""}
-                        onChange={(e) => handleChange("zip", e.target.value)}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {step === 4 && (
-              <div className="space-y-4 max-h-[50vh] overflow-y-auto pr-2">
-                <h3 className="text-xl font-semibold mb-4">How can we reach you?</h3>
-                <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-1">
-                    <Label htmlFor="company">Company name</Label>
+                    <Label htmlFor="firstName">First Name *</Label>
                     <Input
-                      id="company"
-                      placeholder="Optional"
-                      value={formData.company || ""}
-                      onChange={(e) => handleChange("company", e.target.value)}
+                      id="firstName"
+                      value={formData.firstName || ""}
+                      onChange={(e) => handleChange("firstName", e.target.value)}
+                      required
                     />
                   </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <Label htmlFor="firstName">First Name *</Label>
-                      <Input
-                        id="firstName"
-                        value={formData.firstName || ""}
-                        onChange={(e) => handleChange("firstName", e.target.value)}
-                        required
-                      />
-                    </div>
-                    <div className="space-y-1">
-                      <Label htmlFor="lastName">Last Name *</Label>
-                      <Input
-                        id="lastName"
-                        value={formData.lastName || ""}
-                        onChange={(e) => handleChange("lastName", e.target.value)}
-                        required
-                      />
-                    </div>
+                  <div className="space-y-1">
+                    <Label htmlFor="lastName">Last Name *</Label>
+                    <Input
+                      id="lastName"
+                      value={formData.lastName || ""}
+                      onChange={(e) => handleChange("lastName", e.target.value)}
+                      required
+                    />
                   </div>
+                </div>
 
-                  <div className="grid grid-cols-3 gap-4">
-                    <div className="space-y-1 col-span-2">
-                      <Label htmlFor="phone">Phone *</Label>
-                      <Input
-                        id="phone"
-                        type="tel"
-                        value={formData.phone || ""}
-                        onChange={(e) => handleChange("phone", e.target.value)}
-                        required
-                      />
-                    </div>
-                    <div className="space-y-1">
-                      <Label htmlFor="phoneExt">Ext.</Label>
-                      <Input
-                        id="phoneExt"
-                        value={formData.phoneExt || ""}
-                        onChange={(e) => handleChange("phoneExt", e.target.value)}
-                      />
-                    </div>
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="space-y-1 col-span-2">
+                    <Label htmlFor="phone">Phone *</Label>
+                    <Input
+                      id="phone"
+                      type="tel"
+                      value={formData.phone || ""}
+                      onChange={(e) => handleChange("phone", e.target.value)}
+                      required
+                    />
                   </div>
-
-                  <div className="grid grid-cols-3 gap-4">
-                    <div className="space-y-1 col-span-2">
-                      <Label htmlFor="phone2">Phone 2</Label>
-                      <Input
-                        id="phone2"
-                        type="tel"
-                        value={formData.phone2 || ""}
-                        onChange={(e) => handleChange("phone2", e.target.value)}
-                      />
-                    </div>
-                    <div className="space-y-1">
-                      <Label htmlFor="phone2Ext">Ext.</Label>
-                      <Input
-                        id="phone2Ext"
-                        value={formData.phone2Ext || ""}
-                        onChange={(e) => handleChange("phone2Ext", e.target.value)}
-                      />
-                    </div>
+                  <div className="space-y-1">
+                    <Label htmlFor="phoneExt">Ext.</Label>
+                    <Input
+                      id="phoneExt"
+                      value={formData.phoneExt || ""}
+                      onChange={(e) => handleChange("phoneExt", e.target.value)}
+                    />
                   </div>
+                </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <Label htmlFor="cell">Cell</Label>
-                      <Input
-                        id="cell"
-                        type="tel"
-                        value={formData.cell || ""}
-                        onChange={(e) => handleChange("cell", e.target.value)}
-                      />
-                    </div>
-                    <div className="space-y-1">
-                      <Label htmlFor="email">Email address *</Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        value={formData.email || ""}
-                        onChange={(e) => handleChange("email", e.target.value)}
-                        required
-                      />
-                    </div>
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="space-y-1 col-span-2">
+                    <Label htmlFor="phone2">Phone 2</Label>
+                    <Input
+                      id="phone2"
+                      type="tel"
+                      value={formData.phone2 || ""}
+                      onChange={(e) => handleChange("phone2", e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <Label htmlFor="phone2Ext">Ext.</Label>
+                    <Input
+                      id="phone2Ext"
+                      value={formData.phone2Ext || ""}
+                      onChange={(e) => handleChange("phone2Ext", e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <Label htmlFor="cell">Cell</Label>
+                    <Input
+                      id="cell"
+                      type="tel"
+                      value={formData.cell || ""}
+                      onChange={(e) => handleChange("cell", e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <Label htmlFor="email">Email address *</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      value={formData.email || ""}
+                      onChange={(e) => handleChange("email", e.target.value)}
+                      required
+                    />
                   </div>
                 </div>
               </div>
-            )}
-          </motion.div>
-        </AnimatePresence>
+            </div>
+          )}
+        </div>
 
         <div className="flex justify-between mt-8 pt-4 border-t border-border">
           {step > 1 ? (
@@ -348,7 +361,7 @@ export const LeadForm = () => {
               Back
             </Button>
           ) : (
-            <div></div> // Spacer
+            <div></div>
           )}
 
           {step < 4 ? (

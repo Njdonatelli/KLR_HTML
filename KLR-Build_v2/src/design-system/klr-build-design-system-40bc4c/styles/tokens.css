@@ -37,6 +37,7 @@
   --surface-muted: var(--stone-100);
   --surface-inverse: var(--charcoal);
   --surface-sunken: var(--stone-100);
+  --surface-warm: #f5f2eb;
 
   /* ---------- Semantic accents ---------- */
   --accent-primary: var(--navy);
