@@ -6,6 +6,27 @@ Public marketing site for KLR Build, a design-build/landscape firm in Oceanside 
 (hardscape, softscape, pools, patios, four-season rooms). Next.js (App Router, SSR for SEO) +
 Tailwind + headless CMS. This is a PORT of an existing design system, not a new design.
 
+## Where these rules apply
+
+This repository is a mixed-purpose workspace, not one application. These rules govern
+`marketing-site/` — the Next.js App Router port — and nothing else.
+
+| Directory | What it is | Status |
+| --- | --- | --- |
+| `marketing-site/` | The Next.js port these rules govern | **Active. Build here.** |
+| `brand/` | Design-system source of truth (tokens, components, `ui_kits/website/`) | Active. Read-only input to the port |
+| `KLR-Build_v2/` | The superseded Vite + React SPA the port replaces | **Legacy. Frozen — do not develop** |
+| `build/` | SOP corpus and its build tooling | Active, governed separately by `docs/ADR-001` |
+| `klr-operations/`, `klr-voice-receptionist/` | Internal ops dashboard and phone-agent prototype | Independent; out of scope here |
+
+Two consequences worth stating outright, because both have caused confusion:
+
+- The `KLR-Build_v2/` Suffolk upgrade (GSAP/Lenis motion, expanded tokens) was authorized by a
+  directive that explicitly overrode the design rules below. That directive applied to the legacy
+  SPA only. It does **not** carry into `marketing-site/` — the rules below hold here unchanged.
+- `docs/klr-platform-blueprint.json` is a proposal (`status: plan-pending-approval`), not a spec.
+  It describes intent beyond this port. Until it is approved, this file wins.
+
 ## Non-negotiable: the design system is the source of truth
 
 - The palette, type, spacing, and radii come ONLY from the token CSS in `brand/` wired into the Tailwind theme. Never introduce a hex, font, or spacing value that isn't a token.

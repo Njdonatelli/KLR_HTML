@@ -3,4 +3,4 @@ dist/
 .env
 *.exe
 *.zip
-.claude/worktrees/repo-audit-readme/
+.claude/worktrees/

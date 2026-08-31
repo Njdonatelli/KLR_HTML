@@ -10,7 +10,11 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+dist-verify*/
 *.local
+
+# Vite writes these when it transpiles the config; they are never source
+vite.config.ts.timestamp-*.mjs
 
 # Editor directories and files
 .vscode/*
