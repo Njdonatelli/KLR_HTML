@@ -1,0 +1,4 @@
+# SPA fallback: every path is served index.html so client-side routes
+# (/projects, /journal, /journal/:slug) resolve on a hard refresh or a
+# shared deep link instead of 404ing. Netlify and Cloudflare Pages format.
+/*  /index.html  200

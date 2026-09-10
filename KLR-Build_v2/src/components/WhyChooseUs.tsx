@@ -34,7 +34,7 @@ const WhyChooseUs = () => {
   });
 
   return (
-    <section className="py-24 bg-white" id="why-choose-us">
+    <section className="py-24 bg-card" id="why-choose-us">
       <div className="container mx-auto px-4 max-w-6xl">
         <h2
           ref={headingRef}

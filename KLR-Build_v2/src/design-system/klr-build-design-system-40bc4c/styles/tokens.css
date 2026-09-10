@@ -51,12 +51,18 @@
   --warning: #a8752f;
   --danger: #8c3f32;
 
-  /* ---------- Semantic text ---------- */
+  /* ----------- Semantic text -----------
+   * Body-copy roles are one palette step darker than the neutral they are
+   * named after. At stone-600 / stone-500 / bronze these landed between
+   * 3.2:1 and 4.45:1 on the light surfaces they are actually used on, short
+   * of WCAG 2.2 SC 1.4.3 (AA, 4.5:1). Every value below is still a palette
+   * token — the brand quadrant colours themselves are unchanged.
+   */
   --text-primary: var(--charcoal);
-  --text-secondary: var(--stone-600);
-  --text-muted: var(--stone-500);
+  --text-secondary: var(--stone-700);
+  --text-muted: var(--stone-600);
   --text-inverse: var(--white);
-  --text-accent: var(--bronze);
+  --text-accent: var(--bronze-dark);
   --text-on-inverse: var(--off-white);
   --text-on-navy: var(--off-white);
   --text-brand-tan: var(--tan-dark);

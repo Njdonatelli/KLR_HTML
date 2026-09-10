@@ -1,4 +1,5 @@
 import { Heart, ShieldCheck, Award, Users } from "lucide-react";
+import { site } from "@/config/site";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useSplitText } from "@/hooks/useSplitText";
 
@@ -44,14 +45,14 @@ const About = () => {
         <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
           {[
             { icon: Heart, title: "Family-Owned", text: "Built on trust, integrity, and genuine care for every project we touch." },
-            { icon: ShieldCheck, title: "Licensed & Insured", text: "License B586838 - Full compliance with all California regulations." },
+            { icon: ShieldCheck, title: "Licensed & Insured", text: `${site.license.display} — full compliance with California contractor licensing, bonding, and insurance requirements.` },
             { icon: Award, title: "Quality First", text: "We don't cut corners. Every project is built to last generations." },
             { icon: Users, title: "Community Focused", text: "Proud to serve North San Diego County families and businesses." },
           ].map(({ icon: Icon, title, text }) => (
             <div
               key={title}
               data-reveal-card
-              className="bg-white rounded-xl p-8 shadow-sm border border-border transition-all duration-base ease-out-quart hover:-translate-y-1 hover:shadow-md"
+              className="bg-card rounded-xl p-8 shadow-sm border border-border transition-all duration-base ease-out-quart hover:-translate-y-1 hover:shadow-md"
             >
               <div
                 className="w-12 h-12 rounded-lg flex items-center justify-center mb-4"

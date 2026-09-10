@@ -87,7 +87,7 @@ const Services = () => {
               <div
                 key={service.title}
                 data-reveal-card
-                className="bg-white rounded-xl p-8 shadow-sm border border-border flex flex-col gap-4 transition-all duration-base ease-out-quart hover:-translate-y-1 hover:shadow-md"
+                className="bg-card rounded-xl p-8 shadow-sm border border-border flex flex-col gap-4 transition-all duration-base ease-out-quart hover:-translate-y-1 hover:shadow-md"
               >
                 <div style={{ color: "var(--accent-tertiary)" }}>
                   <Icon className="w-8 h-8" />

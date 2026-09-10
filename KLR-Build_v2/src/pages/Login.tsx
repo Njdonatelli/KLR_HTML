@@ -80,7 +80,7 @@ export default function Login() {
   }
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-background px-4">
+    <main id="content" tabIndex={-1} className="min-h-screen flex items-center justify-center bg-background px-4">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>{mode === "signin" ? "Sign in" : "Create account"}</CardTitle>

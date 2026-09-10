@@ -33,17 +33,18 @@ export const FeatureCard = React.forwardRef<HTMLDivElement, FeatureCardProps>(
         }}
         {...rest}
       >
-        <div
+        <h3
           style={{
             fontFamily: "var(--font-display)",
             fontWeight: 700,
             fontSize: "var(--text-body)",
+            lineHeight: "inherit",
             color: "var(--charcoal)",
-            marginBottom: "var(--space-2)",
+            margin: "0 0 var(--space-2)",
           }}
         >
           {title}
-        </div>
+        </h3>
         <p
           style={{
             fontFamily: "var(--font-body)",

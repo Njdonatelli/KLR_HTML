@@ -10,6 +10,15 @@ export interface ButtonProps
   onDark?: boolean;
   disabled?: boolean;
   type?: "button" | "submit" | "reset";
+  /**
+   * Render as an anchor instead of a button. Styling is identical — this
+   * exists so navigation CTAs (tel:, mailto:, routes) are real links rather
+   * than a <button> nested inside an <a>, which is invalid and unusable by
+   * keyboard and screen-reader users.
+   */
+  href?: string;
+  target?: string;
+  rel?: string;
 }
 
 const sizes: Record<NonNullable<ButtonProps["size"]>, React.CSSProperties> = {
@@ -18,7 +27,7 @@ const sizes: Record<NonNullable<ButtonProps["size"]>, React.CSSProperties> = {
   lg: { padding: "15px 32px", fontSize: "1.0625rem" },
 };
 
-export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+export const Button = React.forwardRef<HTMLButtonElement & HTMLAnchorElement, ButtonProps>(
   function Button(
     {
       children,
@@ -27,6 +36,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       onDark = false,
       disabled = false,
       type = "button",
+      href,
       className,
       style,
       ...rest
@@ -92,20 +102,40 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       tan: { backgroundColor: "var(--tan-dark)" },
     };
 
+    const composedStyle: React.CSSProperties = {
+      ...base,
+      ...variants[variant],
+      ...(isHover && !disabled ? hover[variant] : {}),
+      ...style,
+    };
+
+    const interactionProps = {
+      className,
+      onMouseEnter: () => setHover(true),
+      onMouseLeave: () => setHover(false),
+      style: composedStyle,
+    };
+
+    if (href !== undefined) {
+      return (
+        <a
+          ref={ref}
+          href={href}
+          aria-disabled={disabled || undefined}
+          {...interactionProps}
+          {...(rest as unknown as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
+        >
+          {children}
+        </a>
+      );
+    }
+
     return (
       <button
         ref={ref}
         type={type}
         disabled={disabled}
-        className={className}
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => setHover(false)}
-        style={{
-          ...base,
-          ...variants[variant],
-          ...(isHover && !disabled ? hover[variant] : {}),
-          ...style,
-        }}
+        {...interactionProps}
         {...rest}
       >
         {children}

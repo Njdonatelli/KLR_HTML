@@ -1,9 +1,9 @@
 import React from "react";
 
 export interface HeroProps extends React.HTMLAttributes<HTMLElement> {
-  eyebrow?: string;
-  headline: string;
-  body?: string;
+  eyebrow?: React.ReactNode;
+  headline: React.ReactNode;
+  body?: React.ReactNode;
   /** Primary and secondary calls to action. */
   actions?: React.ReactNode;
   /** Right-hand media — a real project photograph. */

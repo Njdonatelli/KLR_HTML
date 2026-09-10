@@ -3,27 +3,151 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>KLR BUILD | Family-Owned Construction Excellence</title>
-    <meta name="description" content="KLR BUILD is a family-owned construction company delivering quality residential, commercial, and industrial projects. Licensed, insured, and committed to excellence.">
-    <meta name="author" content="KLR BUILD" />
+    <title>KLR Build | Outdoor Living Design-Build in Oceanside, CA</title>
+    <meta
+      name="description"
+      content="KLR Build is a family-owned design-build company in Oceanside, CA. Patios, hardscape, pools and water features, planting, fire features, and four-season rooms across North San Diego County. CSLB Lic. #1148814."
+    />
+    <meta name="author" content="KLR Build LLC" />
+    <link rel="canonical" href="https://klrbuild.com/" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Work+Sans:wght@400;500;600&family=Barlow+Semi+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+    <!--
+      Fonts are self-hosted latin subsets (SIL OFL) in public/fonts so there is
+      no render-blocking third-party stylesheet and no extra DNS/TLS on the
+      critical path. Only the two faces visible above the fold are preloaded.
+      The klr:hero-preload comment below is replaced at build time by
+      vite.config.ts with a preload for the hero <picture> so the LCP image is
+      discovered from the HTML, not after the JS bundle runs.
+    -->
+    <link rel="preload" href="/fonts/archivo-500-900-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/work-sans-400-600-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <!-- klr:hero-preload -->
+    <style>
+      @font-face {
+        font-family: "Archivo";
+        font-style: normal;
+        font-weight: 500 900;
+        font-display: swap;
+        src: url("/fonts/archivo-500-900-latin.woff2") format("woff2");
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: "Work Sans";
+        font-style: normal;
+        font-weight: 400 600;
+        font-display: swap;
+        src: url("/fonts/work-sans-400-600-latin.woff2") format("woff2");
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: "Barlow Semi Condensed";
+        font-style: normal;
+        font-weight: 500;
+        font-display: swap;
+        src: url("/fonts/barlow-semi-condensed-500-latin.woff2") format("woff2");
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: "Barlow Semi Condensed";
+        font-style: normal;
+        font-weight: 600;
+        font-display: swap;
+        src: url("/fonts/barlow-semi-condensed-600-latin.woff2") format("woff2");
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: "Barlow Semi Condensed";
+        font-style: normal;
+        font-weight: 700;
+        font-display: swap;
+        src: url("/fonts/barlow-semi-condensed-700-latin.woff2") format("woff2");
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+    </style>
 
-    
-    
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://storage.googleapis.com/gpt-engineer-file-uploads/lhv7zFbzW2MvQuzDwqBlvadCwDj2/social-images/social-1772513045624-681C08ED-96DF-4C8F-8A4E-D01FEF02649D.webp">
+    <meta property="og:site_name" content="KLR Build" />
+    <meta property="og:url" content="https://klrbuild.com/" />
+    <meta property="og:title" content="KLR Build | Outdoor Living Design-Build in Oceanside, CA" />
+    <meta
+      property="og:description"
+      content="Family-owned design-build in Oceanside, CA. Patios, hardscape, pools, planting, fire features, and four-season rooms across North San Diego County."
+    />
+    <meta property="og:image" content="https://klrbuild.com/og-image.jpg" />
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@lovable_dev" />
-    <meta name="twitter:image" content="https://storage.googleapis.com/gpt-engineer-file-uploads/lhv7zFbzW2MvQuzDwqBlvadCwDj2/social-images/social-1772513045624-681C08ED-96DF-4C8F-8A4E-D01FEF02649D.webp">
-    <meta property="og:title" content="KLR BUILD | Family-Owned Construction Excellence">
-  <meta name="twitter:title" content="KLR BUILD | Family-Owned Construction Excellence">
-  <meta property="og:description" content="KLR BUILD is a family-owned construction company delivering quality residential, commercial, and industrial projects. Licensed, insured, and committed to excellence.">
-  <meta name="twitter:description" content="KLR BUILD is a family-owned construction company delivering quality residential, commercial, and industrial projects. Licensed, insured, and committed to excellence.">
-</head>
+    <meta name="twitter:title" content="KLR Build | Outdoor Living Design-Build in Oceanside, CA" />
+    <meta
+      name="twitter:description"
+      content="Family-owned design-build in Oceanside, CA. Patios, hardscape, pools, planting, fire features, and four-season rooms across North San Diego County."
+    />
+    <meta name="twitter:image" content="https://klrbuild.com/og-image.jpg" />
+
+    <!--
+      LocalBusiness structured data lives here rather than in a React component
+      so crawlers and rich-result tools read it from the served HTML without
+      executing JavaScript. Keep in sync with src/config/site.ts.
+    -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "GeneralContractor",
+        "@id": "https://klrbuild.com/#business",
+        "name": "KLR Build",
+        "legalName": "KLR Build LLC",
+        "description": "Family-owned outdoor living design-build company serving North San Diego County. Patios, hardscape, pools and water features, turf and planting, fire features, and four-season rooms.",
+        "slogan": "Designed with intent. Built to endure.",
+        "url": "https://klrbuild.com",
+        "image": "https://klrbuild.com/og-image.jpg",
+        "telephone": "+16197391135",
+        "email": "klrbuildllc@gmail.com",
+        "priceRange": "$$$$",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "697 Chimney Rock Dr",
+          "addressLocality": "Oceanside",
+          "addressRegion": "CA",
+          "postalCode": "92058",
+          "addressCountry": "US"
+        },
+        "areaServed": [
+          { "@type": "AdministrativeArea", "name": "North San Diego County" },
+          { "@type": "AdministrativeArea", "name": "San Diego County" }
+        ],
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+            "opens": "07:00",
+            "closes": "17:00"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Saturday"],
+            "opens": "08:00",
+            "closes": "14:00"
+          }
+        ],
+        "hasCredential": {
+          "@type": "EducationalOccupationalCredential",
+          "credentialCategory": "CSLB Contractor License",
+          "identifier": "1148814",
+          "recognizedBy": {
+            "@type": "GovernmentOrganization",
+            "name": "California Contractors State License Board"
+          }
+        },
+        "knowsAbout": [
+          "Patios and hardscape",
+          "Pools and water features",
+          "Turf and planting",
+          "Fire features and outdoor kitchens",
+          "Four-season rooms",
+          "Landscape lighting"
+        ]
+      }
+    </script>
+  </head>
 
   <body>
     <div id="root"></div>

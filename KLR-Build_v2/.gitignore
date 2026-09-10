@@ -25,3 +25,11 @@ dist-ssr
 
 # Lovable sandbox workspace directory
 .workspace/
+
+# Local environment (never commit real values)
+.env
+
+# Local build verification output
+dist-verify/
+dist-verify2/
+vite.config.ts.timestamp-*
