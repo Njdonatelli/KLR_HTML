@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { SiteHeader } from "@/design-system/klr-build-design-system-40bc4c";
-import logo from "@/design-system/klr-build-design-system-40bc4c/assets/logos/logo-dark-text.png";
+import logo from "@/design-system/klr-build-design-system-40bc4c/assets/logos/logo-dark-text.webp";
 import { gsap, ScrollTrigger } from "@/lib/gsap-register";
 import { scrollTo } from "@/lib/smooth-scroll";
 

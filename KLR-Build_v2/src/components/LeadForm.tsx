@@ -1,14 +1,27 @@
-import React, { useState, useEffect, useRef, useLayoutEffect, useCallback } from "react";
+import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Slider } from "@/components/ui/slider";
-import { useFormStorage, LeadPayload } from "@/hooks/useFormStorage";
-import { submitLeadToCRM } from "@/integrations/crm";
+import { useFormStorage } from "@/hooks/useFormStorage";
+import { submitLeadToCRM, type LeadPayload } from "@/integrations/crm";
 import { toast } from "sonner";
 import { gsap } from "@/lib/gsap-register";
 import { trackEvent } from "@/hooks/useAnalytics";
+import { site, telHref } from "@/config/site";
+
+/** What each step needs before the visitor can move on. */
+const STEP_REQUIREMENTS: Record<number, { field: keyof LeadPayload; message: string }[]> = {
+  1: [{ field: "projectType", message: "Pick the option closest to your project." }],
+  2: [{ field: "budgetRange", message: "Slide to an estimated budget so we can plan the right scope." }],
+  3: [
+    { field: "street", message: "Enter the street address of the project." },
+    { field: "city", message: "Enter the city." },
+    { field: "state", message: "Enter the state." },
+    { field: "zip", message: "Enter the ZIP code." },
+  ],
+};
 
 export const LeadForm = () => {
   const [formData, setFormData, clearStorage] = useFormStorage<Partial<LeadPayload>>(
@@ -16,8 +29,9 @@ export const LeadForm = () => {
     {}
   );
   const [step, setStep] = useState(1);
+  const [stepError, setStepError] = useState<string | null>(null);
+  const [honeypot, setHoneypot] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [addressSuggestions, setAddressSuggestions] = useState<any[]>([]);
   const stepContainerRef = useRef<HTMLDivElement>(null);
   const prevStepRef = useRef(step);
 
@@ -50,42 +64,84 @@ export const LeadForm = () => {
     );
   }, [step]);
 
+  // Validate on the attempt to continue, not by disabling the button — a
+  // disabled control gives no explanation of what is missing.
   const handleNext = () => {
+    const missing = (STEP_REQUIREMENTS[step] ?? []).find(
+      ({ field }) => !String(formData[field] ?? "").trim(),
+    );
+    if (missing) {
+      setStepError(missing.message);
+      return;
+    }
+    setStepError(null);
     trackEvent("form_step_completed", { step });
     setStep((s) => Math.min(s + 1, 4));
   };
-  const handleBack = () => setStep((s) => Math.max(s - 1, 1));
+  const handleBack = () => {
+    setStepError(null);
+    setStep((s) => Math.max(s - 1, 1));
+  };
 
   const handleChange = (field: keyof LeadPayload, value: string) => {
+    setStepError(null);
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.firstName || !formData.lastName || !formData.email || !formData.phone) {
-      toast.error("Please fill in all required contact details.");
+
+    // Honeypot: a real person never fills a visually hidden field. Show the
+    // success state so the bot has no signal to tune against, and post nothing.
+    if (honeypot) {
+      setStep(5);
       return;
     }
 
     setIsSubmitting(true);
-    const result = await submitLeadToCRM(formData as LeadPayload);
+    const result = await submitLeadToCRM(formData);
     setIsSubmitting(false);
 
     if (result.success) {
-      toast.success("Thanks — we'll be in touch within one business day!");
+      trackEvent("lead_submitted", {
+        projectType: formData.projectType,
+        budgetRange: formData.budgetRange,
+      });
+      toast.success("Thanks — we'll be in touch within one business day.");
       clearStorage();
       setStep(5); // Success step
-    } else {
-      toast.error("Something went wrong. Please try again or contact us directly.");
+      return;
     }
+
+    trackEvent("lead_submit_failed", { reason: result.reason });
+    if (result.reason === "validation") {
+      setStepError(result.message);
+      return;
+    }
+    // The message names a real phone number, so a failure is still actionable.
+    toast.error(result.message);
   };
 
   if (step === 5) {
     return (
-      <div className="text-center py-12 px-4 rounded-lg bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-800">
-        <h3 className="text-2xl font-bold text-emerald-800 dark:text-emerald-400 mb-2">Request Received</h3>
-        <p className="text-emerald-600 dark:text-emerald-300">
+      <div
+        role="status"
+        className="text-center py-12 px-4 rounded-lg border"
+        style={{
+          background: "color-mix(in srgb, var(--success) 8%, var(--surface-card))",
+          borderColor: "color-mix(in srgb, var(--success) 40%, transparent)",
+        }}
+      >
+        <h3 className="text-2xl font-bold mb-2" style={{ color: "var(--success)" }}>
+          Request Received
+        </h3>
+        <p style={{ color: "var(--text-secondary)" }}>
           We've got your details and will be in touch shortly to schedule your walkthrough.
+          Need us sooner? Call{" "}
+          <a href={telHref} className="font-semibold underline underline-offset-4">
+            {site.phone.display}
+          </a>
+          .
         </p>
       </div>
     );
@@ -106,12 +162,27 @@ export const LeadForm = () => {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="min-h-[250px] flex flex-col justify-between">
+      <form onSubmit={handleSubmit} className="min-h-[250px] flex flex-col justify-between" noValidate>
+        {/* Honeypot — hidden from people, visible to naive bots. */}
+        <div aria-hidden="true" className="absolute -left-[9999px] w-px h-px overflow-hidden">
+          <label htmlFor="lead-website">Leave this field empty</label>
+          <input
+            id="lead-website"
+            name="website"
+            type="text"
+            tabIndex={-1}
+            autoComplete="off"
+            value={honeypot}
+            onChange={(e) => setHoneypot(e.target.value)}
+          />
+        </div>
+
         <div ref={stepContainerRef}>
           {step === 1 && (
             <div className="space-y-4">
               <h3 className="text-xl font-semibold mb-4">What type of project is this?</h3>
               <RadioGroup
+                name="projectType"
                 value={formData.projectType || ""}
                 onValueChange={(val) => handleChange("projectType", val)}
                 className="space-y-3"
@@ -129,12 +200,14 @@ export const LeadForm = () => {
           {step === 2 && (
             <div className="space-y-8 mt-4">
               <h3 className="text-xl font-semibold mb-8">What is your estimated budget?</h3>
-              
+
               <div className="px-2">
                 <Slider
+                  name="budgetRange"
+                  aria-label="Estimated budget"
                   defaultValue={[
-                    formData.budgetRange 
-                      ? parseInt(formData.budgetRange.replace(/[^0-9]/g, '')) 
+                    formData.budgetRange
+                      ? parseInt(formData.budgetRange.replace(/[^0-9]/g, ''))
                       : 50000
                   ]}
                   max={1000000}
@@ -144,7 +217,7 @@ export const LeadForm = () => {
                   className="py-4"
                 />
               </div>
-              
+
               <div className="text-center mt-8">
                 <span className="text-5xl font-display font-bold" style={{ color: "var(--text-primary)" }}>
                   {formData.budgetRange || "$50,000"}
@@ -156,68 +229,26 @@ export const LeadForm = () => {
           {step === 3 && (
             <div className="space-y-4">
               <h3 className="text-xl font-semibold mb-4">Where is the project located?</h3>
-              
+
               <div className="space-y-4">
-                <div className="space-y-2 relative">
+                <div className="space-y-2">
                   <Label htmlFor="street">Street address</Label>
                   <Input
                     id="street"
-                    placeholder="Start typing to autofill..."
+                    name="street"
+                    autoComplete="address-line1"
                     value={formData.street || ""}
-                    onChange={async (e) => {
-                      const val = e.target.value;
-                      handleChange("street", val);
-                      
-                      if (val.length > 3) {
-                        try {
-                          const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(val)}&countrycodes=us&addressdetails=1&limit=5`);
-                          const data = await res.json();
-                          setAddressSuggestions(data);
-                        } catch (err) {
-                          console.error("Failed to fetch address suggestions", err);
-                        }
-                      } else {
-                        setAddressSuggestions([]);
-                      }
-                    }}
-                    onBlur={() => setTimeout(() => setAddressSuggestions([]), 200)}
-                    className="relative z-10"
+                    onChange={(e) => handleChange("street", e.target.value)}
+                    required
                   />
-                  {addressSuggestions.length > 0 && (
-                    <div className="absolute top-[100%] left-0 w-full mt-1 bg-white border border-border rounded-md shadow-lg z-50 max-h-60 overflow-y-auto">
-                      {addressSuggestions.map((suggestion: any) => (
-                        <div
-                          key={suggestion.place_id}
-                          className="p-3 hover:bg-secondary cursor-pointer text-sm"
-                          style={{ color: "var(--text-primary)" }}
-                          onClick={() => {
-                            const addr = suggestion.address;
-                            const house = addr.house_number || "";
-                            const road = addr.road || "";
-                            const streetVal = house || road ? `${house} ${road}`.trim() : suggestion.display_name.split(",")[0];
-                            const cityVal = addr.city || addr.town || addr.village || addr.county || "";
-                            
-                            setFormData(prev => ({
-                              ...prev,
-                              street: streetVal,
-                              city: cityVal,
-                              state: addr.state || "",
-                              zip: addr.postcode || "",
-                            }));
-                            setAddressSuggestions([]);
-                          }}
-                        >
-                          {suggestion.display_name}
-                        </div>
-                      ))}
-                    </div>
-                  )}
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="street2">Suite or unit</Label>
                   <Input
                     id="street2"
+                    name="street2"
+                    autoComplete="address-line2"
                     value={formData.street2 || ""}
                     onChange={(e) => handleChange("street2", e.target.value)}
                   />
@@ -228,24 +259,34 @@ export const LeadForm = () => {
                     <Label htmlFor="city">City</Label>
                     <Input
                       id="city"
+                      name="city"
+                      autoComplete="address-level2"
                       value={formData.city || ""}
                       onChange={(e) => handleChange("city", e.target.value)}
+                      required
                     />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="state">State</Label>
                     <Input
                       id="state"
+                      name="state"
+                      autoComplete="address-level1"
                       value={formData.state || ""}
                       onChange={(e) => handleChange("state", e.target.value)}
+                      required
                     />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="zip">Zip code</Label>
                     <Input
                       id="zip"
+                      name="zip"
+                      autoComplete="postal-code"
+                      inputMode="numeric"
                       value={formData.zip || ""}
                       onChange={(e) => handleChange("zip", e.target.value)}
+                      required
                     />
                   </div>
                 </div>
@@ -254,24 +295,28 @@ export const LeadForm = () => {
           )}
 
           {step === 4 && (
-            <div className="space-y-4 max-h-[50vh] overflow-y-auto pr-2">
+            <div className="space-y-4">
               <h3 className="text-xl font-semibold mb-4">How can we reach you?</h3>
               <div className="space-y-4">
                 <div className="space-y-1">
                   <Label htmlFor="company">Company name</Label>
                   <Input
                     id="company"
+                    name="company"
+                    autoComplete="organization"
                     placeholder="Optional"
                     value={formData.company || ""}
                     onChange={(e) => handleChange("company", e.target.value)}
                   />
                 </div>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-1">
                     <Label htmlFor="firstName">First Name *</Label>
                     <Input
                       id="firstName"
+                      name="firstName"
+                      autoComplete="given-name"
                       value={formData.firstName || ""}
                       onChange={(e) => handleChange("firstName", e.target.value)}
                       required
@@ -281,6 +326,8 @@ export const LeadForm = () => {
                     <Label htmlFor="lastName">Last Name *</Label>
                     <Input
                       id="lastName"
+                      name="lastName"
+                      autoComplete="family-name"
                       value={formData.lastName || ""}
                       onChange={(e) => handleChange("lastName", e.target.value)}
                       required
@@ -293,7 +340,10 @@ export const LeadForm = () => {
                     <Label htmlFor="phone">Phone *</Label>
                     <Input
                       id="phone"
+                      name="phone"
                       type="tel"
+                      autoComplete="tel"
+                      inputMode="tel"
                       value={formData.phone || ""}
                       onChange={(e) => handleChange("phone", e.target.value)}
                       required
@@ -303,6 +353,9 @@ export const LeadForm = () => {
                     <Label htmlFor="phoneExt">Ext.</Label>
                     <Input
                       id="phoneExt"
+                      name="phoneExt"
+                      autoComplete="tel-extension"
+                      inputMode="numeric"
                       value={formData.phoneExt || ""}
                       onChange={(e) => handleChange("phoneExt", e.target.value)}
                     />
@@ -314,7 +367,10 @@ export const LeadForm = () => {
                     <Label htmlFor="phone2">Phone 2</Label>
                     <Input
                       id="phone2"
+                      name="phone2"
                       type="tel"
+                      autoComplete="work tel"
+                      inputMode="tel"
                       value={formData.phone2 || ""}
                       onChange={(e) => handleChange("phone2", e.target.value)}
                     />
@@ -323,6 +379,9 @@ export const LeadForm = () => {
                     <Label htmlFor="phone2Ext">Ext.</Label>
                     <Input
                       id="phone2Ext"
+                      name="phone2Ext"
+                      autoComplete="work tel-extension"
+                      inputMode="numeric"
                       value={formData.phone2Ext || ""}
                       onChange={(e) => handleChange("phone2Ext", e.target.value)}
                     />
@@ -334,7 +393,10 @@ export const LeadForm = () => {
                     <Label htmlFor="cell">Cell</Label>
                     <Input
                       id="cell"
+                      name="cell"
                       type="tel"
+                      autoComplete="mobile tel"
+                      inputMode="tel"
                       value={formData.cell || ""}
                       onChange={(e) => handleChange("cell", e.target.value)}
                     />
@@ -343,7 +405,10 @@ export const LeadForm = () => {
                     <Label htmlFor="email">Email address *</Label>
                     <Input
                       id="email"
+                      name="email"
                       type="email"
+                      autoComplete="email"
+                      inputMode="email"
                       value={formData.email || ""}
                       onChange={(e) => handleChange("email", e.target.value)}
                       required
@@ -355,6 +420,16 @@ export const LeadForm = () => {
           )}
         </div>
 
+        {/* Announced by screen readers when it appears; also visible text. */}
+        <p
+          role="alert"
+          aria-live="assertive"
+          className={`mt-4 text-sm font-medium${stepError ? "" : " hidden"}`}
+          style={{ color: "var(--danger)" }}
+        >
+          {stepError}
+        </p>
+
         <div className="flex justify-between mt-8 pt-4 border-t border-border">
           {step > 1 ? (
             <Button type="button" variant="outline" onClick={handleBack}>
@@ -365,15 +440,7 @@ export const LeadForm = () => {
           )}
 
           {step < 4 ? (
-            <Button
-              type="button"
-              onClick={handleNext}
-              disabled={
-                (step === 1 && !formData.projectType) ||
-                (step === 2 && !formData.budgetRange) ||
-                (step === 3 && (!formData.street || !formData.city || !formData.state || !formData.zip))
-              }
-            >
+            <Button type="button" onClick={handleNext}>
               Continue
             </Button>
           ) : (

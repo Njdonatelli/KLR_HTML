@@ -9,10 +9,19 @@ import { Button } from "@/components/ui/button";
 import { useScrollTracking } from "@/hooks/useAnalytics";
 import { CustomerReviews } from "@/components/CustomerReviews";
 import { useSmoothScroll } from "@/hooks/useSmoothScroll";
+import { useSeo } from "@/hooks/useSeo";
 import { scrollTo } from "@/lib/smooth-scroll";
+import { site } from "@/config/site";
 
 const Index = () => {
   useSmoothScroll();
+
+  useSeo({
+    title: `${site.name} | Outdoor Living Design-Build in ${site.address.city}, CA`,
+    description:
+      "Family-owned design-build in Oceanside, CA. Patios, hardscape, pools and water features, planting, fire features, and four-season rooms across North San Diego County.",
+    path: "/",
+  });
 
   // Track scroll depth into major sections
   useScrollTracking("hero");
@@ -21,45 +30,24 @@ const Index = () => {
   useScrollTracking("reviews");
   useScrollTracking("contact");
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "name": "KLR Build",
-    "image": "https://klrbuild.com/og-image.jpg",
-    "url": "https://klrbuild.com",
-    "telephone": "+16197391135",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "697 Chimney Rock Drive",
-      "addressLocality": "Oceanside",
-      "addressRegion": "CA",
-      "postalCode": "92058",
-      "addressCountry": "US"
-    },
-    "areaServed": ["San Diego County", "Orange County"],
-    "priceRange": "$$$$"
-  };
-
   return (
     <div className="min-h-screen overflow-x-hidden relative">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
       <Navigation />
 
-      <div id="hero"><Hero /></div>
-      <div id="about"><About /></div>
-      <div id="services"><Services /></div>
-      <WhyChooseUs />
-      <CustomerReviews />
-      <Contact />
+      <main id="content" tabIndex={-1}>
+        <div id="hero"><Hero /></div>
+        <div id="about"><About /></div>
+        <div id="services"><Services /></div>
+        <WhyChooseUs />
+        <CustomerReviews />
+        <Contact />
+      </main>
       <Footer />
 
       {/* Mobile Sticky CTA */}
       <div className="md:hidden fixed bottom-4 right-4 z-50 animate-in fade-in slide-in-from-bottom-4 duration-500">
-        <Button 
-          size="lg" 
+        <Button
+          size="lg"
           className="shadow-xl shadow-primary/20 font-bold rounded-full px-6"
           onClick={() => scrollTo("contact")}
         >

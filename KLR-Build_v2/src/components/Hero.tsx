@@ -1,5 +1,8 @@
 import { Hero as DSHero, Button } from "@/design-system/klr-build-design-system-40bc4c";
-import heroImage from "@/assets/hero-construction.jpg";
+import heroImage from "@/assets/hero-pool-patio.jpg";
+import hero600 from "@/assets/hero-pool-patio-600.webp";
+import hero900 from "@/assets/hero-pool-patio-900.webp";
+import hero1200 from "@/assets/hero-pool-patio-1200.webp";
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { gsap, ScrollTrigger } from "@/lib/gsap-register";
@@ -95,20 +98,31 @@ const Hero = () => {
       }
       media={
         <div ref={imgWrapRef} style={{ width: "100%", height: "100%", overflow: "hidden", borderRadius: "var(--radius-sm)" }}>
-          <img
-            ref={imgRef}
-            src={heroImage}
-            alt="KLR Build crew framing a custom residential project at sunrise"
-            fetchPriority="high"
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              objectPosition: "center 40%",
-              boxShadow: "var(--shadow-lg)",
-              willChange: "transform",
-            }}
-          />
+          <picture>
+            <source
+              type="image/webp"
+              srcSet={`${hero600} 600w, ${hero900} 900w, ${hero1200} 1200w`}
+              sizes="(min-width: 1024px) 45vw, 100vw"
+            />
+            <img
+              ref={imgRef}
+              src={heroImage}
+              // Intrinsic size of the source so the browser reserves the box
+              // before the bytes land — this is the LCP element.
+              width={1200}
+              height={800}
+              alt="A finished KLR Build backyard: pool and raised spa framed by a checkerboard paver-and-turf deck, with a covered patio behind"
+              fetchPriority="high"
+              decoding="async"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                objectPosition: "center 40%",
+                boxShadow: "var(--shadow-lg)",
+              }}
+            />
+          </picture>
         </div>
       }
     />

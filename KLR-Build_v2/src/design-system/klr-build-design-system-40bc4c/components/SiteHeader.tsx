@@ -59,10 +59,18 @@ export const SiteHeader = React.forwardRef<HTMLElement, SiteHeaderProps>(
             padding: "var(--space-3) var(--space-6)",
           }}
         >
-          <img src={logoSrc} alt={logoAlt} style={{ height: 44, width: "auto" }} />
+          <img src={logoSrc} alt={logoAlt} width={329} height={128} style={{ height: 44, width: "auto" }} />
           
           <div className="md:hidden flex items-center">
-            <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="p-2 text-[var(--navy)]">
+            <button
+              type="button"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              // Icon-only control: without a name it reaches screen readers as
+              // an unlabelled button (WCAG 4.1.2).
+              aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={isMobileMenuOpen}
+              className="p-2 text-[var(--navy)]"
+            >
               {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
             </button>
           </div>

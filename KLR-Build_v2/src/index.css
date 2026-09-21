@@ -39,6 +39,51 @@
   }
 }
 
+/* ---------- Accessibility baseline (WCAG 2.2 AA) ---------- */
+
+/* SC 2.4.7 / 2.4.11: one visible, high-contrast focus ring everywhere.
+   Tailwind's preflight keeps the UA outline; this makes it consistent and
+   legible on both the light surfaces and the navy/charcoal panels. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 3px solid var(--accent-primary);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px var(--white);
+}
+
+/* SC 2.4.1: skip link. Visually hidden until focused, then pinned top-left so
+   nothing shifts. Target is <main id="content" tabindex="-1">. */
+.skip-link {
+  position: absolute;
+  left: var(--space-4);
+  top: var(--space-4);
+  z-index: 100;
+  padding: var(--space-3) var(--space-4);
+  background: var(--accent-primary);
+  color: var(--text-on-navy);
+  font-family: var(--font-label);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  border-radius: var(--radius-sm);
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+/* SC 2.3.3: honour the OS motion preference for every CSS transition and
+   animation (GSAP and Lenis already check the same media query in JS). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 /* Lenis smooth scroll overrides */
 html.lenis,
 html.lenis body {

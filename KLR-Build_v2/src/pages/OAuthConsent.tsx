@@ -83,7 +83,7 @@ export default function OAuthConsent() {
 
   if (error) {
     return (
-      <main className="min-h-screen flex items-center justify-center px-4">
+      <main id="content" tabIndex={-1} className="min-h-screen flex items-center justify-center px-4">
         <Card className="w-full max-w-md">
           <CardHeader>
             <CardTitle>Could not load this authorization request</CardTitle>
@@ -96,7 +96,7 @@ export default function OAuthConsent() {
 
   if (!details) {
     return (
-      <main className="min-h-screen flex items-center justify-center px-4">
+      <main id="content" tabIndex={-1} className="min-h-screen flex items-center justify-center px-4">
         <Loader2 className="animate-spin text-muted-foreground" />
       </main>
     );
@@ -106,7 +106,7 @@ export default function OAuthConsent() {
   const scopeList = details.scopes ?? (details.scope ? details.scope.split(" ").filter(Boolean) : []);
 
   return (
-    <main className="min-h-screen flex items-center justify-center px-4">
+    <main id="content" tabIndex={-1} className="min-h-screen flex items-center justify-center px-4">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Connect {clientName} to KLR Build</CardTitle>
