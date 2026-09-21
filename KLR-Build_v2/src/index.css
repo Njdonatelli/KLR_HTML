@@ -1,4 +1,4 @@
-@import "../../brand/tokens/motion.css";
+@import "./design-system/klr-build-design-system-40bc4c/styles/motion.css";
 
 @tailwind base;
 @tailwind components;
